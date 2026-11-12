@@ -1,0 +1,19 @@
+{
+  "name": "covaunt-hackathon-handoff",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/engine.test.mjs",
+    "proof": "node scripts/local-proof.mjs",
+    "preview:offline": "node scripts/preview.mjs",
+    "test:sandbox": "node scripts/ensure-sandbox.mjs && node --test tests/sandbox.test.mjs",
+    "verify:static": "node scripts/preflight.mjs",
+    "verify:live": "node scripts/audit-testnet.mjs",
+    "web:dev": "npm --prefix web run dev",
+    "web:build": "npm --prefix web run build",
+    "test:browser": "npm --prefix web run test:browser"
+  },
+  "devDependencies": {
+    "near-workspaces": "^5.0.0"
+  }
+}

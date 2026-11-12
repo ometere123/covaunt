@@ -1,0 +1,49 @@
+name: Verification
+on: [push, pull_request, workflow_dispatch]
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+      - name: Rust unit tests
+        working-directory: contract
+        run: cargo test
+      - name: Install cargo-near
+        run: cargo install cargo-near --version 0.23.0 --locked
+      - name: Build NEAR WASM
+        working-directory: contract
+        run: cargo near build non-reproducible-wasm --no-abi
+      - name: Upload compiled contract
+        uses: actions/upload-artifact@v4
+        with:
+          name: covaunt-wasm
+          path: contract/target/near/covaunt.wasm
+      - name: Sandbox NEAR receipts tests
+        run: |
+          npm ci
+          npm run test:sandbox
+  interface:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm ci
+      - run: npm test
+      - run: npm run proof
+      - run: npm run verify:static
+      - run: npm ci --prefix web
+      - run: npm --prefix web run build
+      - name: Install Playwright Chromium
+        run: npx --prefix web playwright install --with-deps chromium
+      - name: Browser smoke tests
+        run: npm run test:browser

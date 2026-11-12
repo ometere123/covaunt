@@ -1,0 +1,10 @@
+import {SAMPLE,allocate,formatNear,parseNear,assertLedger} from '../web/src/engine.mjs';
+const now=1_800_000_000_000_000_000n;
+const medical=allocate(SAMPLE.contributions,'clinic.testnet',2,parseNear('9'),now);
+const hostile=allocate([SAMPLE.contributions[0]],'clinic.testnet',2,parseNear('1'),now);
+console.log('COVAUNT — deterministic allocator demonstration (NOT a testnet transaction)');
+console.log('Total deposited:',formatNear(SAMPLE.summary.total_deposited),'NEAR');
+console.log('Ledger conservation:',assertLedger(SAMPLE.contributions,SAMPLE.summary)?'PASS':'FAIL');
+console.log('Valid medical mandate:',medical.permitted?'ALLOW':'DENY');
+for(const entry of medical.allocations)console.log('  grant',entry.contribution_id,':',formatNear(entry.amount),'NEAR');
+console.log('Attempt to redirect education-only funds to clinic:',hostile.permitted?'ALLOW — ERROR':'DENY — PASS');
