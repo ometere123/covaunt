@@ -31,7 +31,8 @@ function Shell({ children }: { children: React.ReactNode }) {
           <span><strong>COVAUNT</strong><small>Consent ledger / NEAR</small></span>
         </Link>
         <button className="menu-button" type="button" aria-expanded={open} aria-controls="primary-navigation" onClick={() => setOpen((value) => !value)}>
-          <span>{open ? 'Close' : 'Menu'}</span><i aria-hidden="true">{open ? '×' : '☰'}</i>
+          <span>{open ? 'Close' : 'Menu'}</span>
+          <span className={`menu-icon ${open ? 'is-close' : ''}`} aria-hidden="true"><i /><i /><i /></span>
         </button>
         <nav id="primary-navigation" className={`primary-navigation ${open ? 'is-open' : ''}`} aria-label="Primary navigation">
           {links.map((link) => <Link key={link.href} href={link.href} className={pathname === link.href || pathname.startsWith(`${link.href}/`) ? 'is-current' : ''} onClick={() => setOpen(false)}>{link.label}</Link>)}

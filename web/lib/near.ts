@@ -22,9 +22,10 @@ function decodeBase64(value: string) {
 
 async function rpc(method: string, params: unknown) {
   const controller = new AbortController();
-  const timeout = window.setTimeout(() => controller.abort(), 15_000);
+  const timeout = globalThis.setTimeout(() => controller.abort(), 15_000);
+  const endpoint = typeof window === 'undefined' ? CONFIG.rpc : '/api/near-rpc';
   try {
-    const response = await fetch(CONFIG.rpc, {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ jsonrpc: '2.0', id: ++requestId, method, params }),
@@ -35,7 +36,7 @@ async function rpc(method: string, params: unknown) {
     if (body.error) throw new Error(body.error.message || JSON.stringify(body.error));
     return body.result;
   } finally {
-    window.clearTimeout(timeout);
+    globalThis.clearTimeout(timeout);
   }
 }
 

@@ -19,7 +19,9 @@ export function WalletButton() {
   return (
     <div className="wallet-cluster">
       <button id="wallet-button" className="button button-dark" type="button" onClick={() => void connect()} disabled={busy}>
-        <span className="button-mark" aria-hidden="true">↗</span>{busy ? 'Opening wallet chooser' : 'Choose a wallet'}
+        <span className="button-mark" aria-hidden="true">↗</span>
+        <span className="wallet-label-full">{busy ? 'Opening wallet chooser' : 'Connect wallet'}</span>
+        <span className="wallet-label-short">{busy ? 'Opening' : 'Wallet'}</span>
       </button>
       {error ? <span className="wallet-error" role="status">{error}</span> : <span className="wallet-caption">HOT and Meteor available on testnet</span>}
     </div>

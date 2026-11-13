@@ -15,7 +15,7 @@ function bytes(value) {
 }
 
 async function installLiveFixture(page) {
-  await page.route('**/rpc.testnet.near.org/**', async (route) => {
+  await page.route('**/api/near-rpc', async (route) => {
     const request = route.request().postDataJSON();
     const query = request.params || {};
     let value = null;

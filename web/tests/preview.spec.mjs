@@ -21,6 +21,7 @@ test.describe('deterministic preview mode', () => {
 
   test('preview allocation is deterministic and clearly non-authoritative', async ({ page }) => {
     await page.goto('/mandates?mode=preview');
+    await expect(page.getByText('Preview mode · no transactions')).toBeVisible();
     await page.getByRole('button', { name: 'Preview allocation' }).click();
     await expect(page.getByText('Eligible capital can cover it')).toBeVisible();
     await expect(page.getByText('6.00 Ⓝ')).toBeVisible();
