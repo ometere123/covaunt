@@ -17,9 +17,9 @@ The current evidence set records a real NEAR testnet deployment. It is not a cla
 | DAO proposal bond | `1 NEAR` (`1000000000000000000000000` yoctoNEAR) |
 | Evidence retrieval | `2026-11-13T10:15:56.256Z` |
 
-The authorized public preview is [covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app](https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app), built from branch `release/covaunt-nextjs-vercel-preview` at commit `e084c09`. It is a Vercel preview only; no production alias, contract deployment or DAO upgrade was performed.
+The current authorized public preview is [covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app](https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app), built from branch `feature/covaunt-work-trust` at commit `a7dbb10`. It is a Vercel preview only; no production alias, contract deployment or DAO upgrade was performed. The preserved vault-only checkpoint remains available from the earlier release branch.
 
-At that recorded audit, the ledger reported `18.1 NEAR` deposited, `9 NEAR` paid, `0.1 NEAR` refunded, `9 NEAR` available, zero pending spend, zero pending refund and `is_balanced: true`. The account-solvency estimate backed outstanding donor principal, but the audit also found a FullAccess key capable of replacing contract code. COVAUNT therefore does not claim upgrade immutability.
+At that recorded evidence snapshot, the ledger reported `18.1 NEAR` deposited across four contributions, `9 NEAR` paid, `0.1 NEAR` refunded, `9 NEAR` available, zero pending spend, zero pending refund and `is_balanced: true`. A later read-only audit on `2026-11-13T22:31:39.251Z` found the live ledger at `18.2 NEAR` across five contributions, `9 NEAR` paid, `0.1 NEAR` refunded, `9.1 NEAR` available and zero pending obligations. The additional live entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; the audit did not initiate a transaction. The account-solvency estimate backed outstanding donor principal, but the vault still has a FullAccess key capable of replacing contract code. COVAUNT therefore does not claim upgrade immutability. See [the preserved evidence snapshot](docs/live-evidence/evidence.json) and [the current read-only audit](docs/live-evidence/current-audit.json).
 
 ## Why it is different
 
@@ -107,7 +107,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The sandbox gate requires the repository’s verified NEAR Sandbox preparation and a Linux/CI environment where the pinned binary can run. It covers both the preserved donor vault and the un-deployed Work & Trust artifact; the Work test is not a real Sputnik vote or testnet evidence. The browser suite runs 22 tests across desktop and mobile Chromium in this release: deterministic preview, live-mode RPC interpretation, responsive navigation, wallet-gated error handling, near.social separation, preview-mode write isolation and explicit no-fabrication behavior for the unconfigured work module. Fixture data is labeled as fixture data in the test name and is not evidence of a wallet transaction.
+The sandbox gate requires the repository’s verified NEAR Sandbox preparation and a Linux/CI environment where the pinned binary can run. It covers both the preserved donor vault and the un-deployed Work & Trust artifact; the Work test is not a real Sputnik vote or testnet evidence. The browser suite runs 22 tests across desktop and mobile Chromium in this release: deterministic preview, live-mode RPC interpretation, responsive navigation, wallet-gated error handling, near.social separation, preview-mode write isolation and explicit no-fabrication behavior for the unconfigured work module. The hosted branch preview also passed route, mobile, live-RPC and unconfigured-Work checks. Fixture data is labeled as fixture data in the test name and is not evidence of a wallet transaction.
 
 ## Contract and deployment references
 

@@ -14,16 +14,17 @@
 
 ## Verified public preview
 
-- URL: `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`
+- URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
-- Git branch: `release/covaunt-nextjs-vercel-preview`
-- Git commit: `e084c09b75dd3ab2a766820b8f4f4f72ce2208c5`
-- Preview deployment: READY; public HTTPS route checks and live testnet reads passed
+- Git branch: `feature/covaunt-work-trust`
+- Git commit: `a7dbb10f9245d8497dc75a5847ea096378497907`
+- Deployment: `dpl_9FNhHdDauu8snKeiMw15STYGVHoS`; READY; public HTTPS route checks, mobile checks and live testnet reads passed
+- GitHub Actions: [Verification run 43518426729](https://github.com/ometere123/covaunt/actions/runs/43518426729); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 - Production release: not published
 
 ## Recorded live outcome
 
-At `2026-11-13T10:15:56.256Z`, the evidence set recorded 18.1 NEAR deposited, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending spend, zero pending refund and a balanced ledger. It includes the valid 9 NEAR settlement, the failed 2 NEAR override, an early locked refund rejection and the successful 0.1 NEAR refund.
+At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR deposited across four contributions, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending spend, zero pending refund and a balanced ledger. It includes the valid 9 NEAR settlement, the failed 2 NEAR override, an early locked refund rejection and the successful 0.1 NEAR refund. A separate read-only audit at `2026-11-13T22:31:39.251Z` reports the current chain at 18.2 NEAR deposited across five contributions, 9 NEAR paid, 0.1 NEAR refunded, 9.1 NEAR available and zero pending obligations. The fifth entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; see [current-audit.json](live-evidence/current-audit.json).
 
 ## Local engineering gates
 
@@ -55,7 +56,7 @@ At `2026-11-13T10:15:56.256Z`, the evidence set recorded 18.1 NEAR deposited, 9 
 5. No professional security audit is claimed.
 6. Work & Trust is implemented as a separate, un-deployed auxiliary contract. No live task records, reward settlements or reputation points are claimed.
 7. near.social is read-only mainnet context; signed posting and cross-network identity binding are not enabled.
-8. The new Work branch requires a hosted preview after publication; the preserved vault-only preview remains the release checkpoint.
+8. Work & Trust remains disabled in the public preview because no auxiliary testnet account, real reward settlement or contributor record has been verified. The branch preview is verified for the honest unconfigured state.
 
 ## Release handling
 

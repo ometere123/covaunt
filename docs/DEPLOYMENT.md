@@ -33,15 +33,17 @@ Expected recorded values:
 ledger_balanced true
 dao_match true
 code_hash B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u
-totals contributed 18100000000000000000000000
+totals contributed 18200000000000000000000000
         paid        9000000000000000000000000
         refunded    100000000000000000000000
-        available   9000000000000000000000000
+        available   9100000000000000000000000
         pending_spend 0
         pending_refund 0
 ```
 
 The command’s non-zero exit is expected until the FullAccess key is deliberately handled. Do not silence or weaken that check.
+
+The preserved evidence snapshot at `2026-11-13T10:15:56.256Z` records 18.1 NEAR across four contributions. The current read-only audit at `2026-11-13T22:31:39.251Z` includes a fifth 0.1 NEAR available entry, COV-004 from `elpadree.testnet`, and therefore reports 18.2 NEAR deposited across five contributions. The audit does not broadcast a transaction. The complete current read is recorded in [live-evidence/current-audit.json](live-evidence/current-audit.json).
 
 ## Do not redeploy this instance
 
@@ -77,12 +79,13 @@ NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 
 ## Verified public preview
 
-- URL: `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`
+- URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Project: `covaunt` in the `delealufejoel-4184s-projects` team
-- Source: `ometere123/covaunt`, branch `release/covaunt-nextjs-vercel-preview`, commit `e084c09b75dd3ab2a766820b8f4f4f72ce2208c5`
+- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`, commit `a7dbb10f9245d8497dc75a5847ea096378497907`
+- Deployment: `dpl_9FNhHdDauu8snKeiMw15STYGVHoS`; READY; alias `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
 - Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
-- Verification: public HTTPS 200, all required routes, real final RPC reads, live accounting, preview separation, mobile navigation and read-only proxy guard passed
+- Verification: public HTTPS 200, all required routes, real final RPC reads, current live accounting, preview separation, mobile navigation, no mobile overflow and read-only proxy guard passed
 - Production: no production deployment or alias was retained; do not use `vercel deploy --prod`
 
 Browser reads use the same-origin `/api/near-rpc` route. It accepts only JSON-RPC `query` requests and rejects transaction broadcast methods; the server route is pinned to `https://rpc.testnet.near.org` to prevent a mainnet configuration drift.
@@ -103,6 +106,8 @@ The preserved evidence records:
 4. Early refund rejection with `ERR_STILL_LOCKED`.
 5. A successful 0.1 NEAR donor refund.
 6. A balanced final ledger with zero pending obligations.
+
+The current live ledger also shows a fifth 0.1 NEAR available contribution, so the public preview should be narrated from its current read rather than from the older 18.1 NEAR snapshot.
 
 Explorer links are collected in `docs/live-evidence/evidence.json` and surfaced by `/journal`.
 

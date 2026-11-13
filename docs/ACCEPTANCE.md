@@ -11,21 +11,21 @@ Updated 13 November 2026 from the repository gates and the recorded testnet evid
 | Contract WASM | `cargo near build non-reproducible-wasm --no-abi`; artifact hash recorded | PASS; 183,746-byte artifact |
 | Preserved vault sandbox receipts | `npm run test:sandbox` at the release checkpoint | PASS historically; the preserved test remains in the gate |
 | Work & Trust Rust contract | `cargo test --manifest-path work-contract/Cargo.toml` | PASS; 12/12, no ignored tests |
-| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; 214,923-byte artifact, not deployed |
+| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; 214,944-byte artifact, not deployed |
 | Work & Trust sandbox receipts | `npm run test:sandbox` with Linux NEAR Sandbox 2.14.0 | PASS; 2/2 total receipt tests, no skips, including small callback settlement and direct large-path rejection |
 | Next production build | `cd web && npm run build` | PASS |
 | TypeScript and lint | `npm run typecheck`, `npm run lint` | PASS; zero lint warnings |
 | Browser verification | `npm run test:browser` | PASS; 22/22 desktop/mobile Chromium |
 | Real Sputnik identity | `covaunt26.sputnikv2.testnet`, policy and bond read from RPC | PASS |
-| Real donor contributions | Four recorded contributions, 18.1 NEAR total | PASS in `docs/live-evidence/evidence.json` |
+| Real donor contributions | Preserved evidence: four contributions, 18.1 NEAR; current read: five contributions, 18.2 NEAR | PASS; preserved in `docs/live-evidence/evidence.json`, current read in `docs/live-evidence/current-audit.json` |
 | Compatible settlement | 9 NEAR healthcare payment settled with receipts | PASS; `Gv7yUyZ24JkPSW4p12pM8cLG48e83ZkMkzagZAENioG1` |
 | Approved diversion blocked | 2 NEAR proposal ended in failed downstream execution | PASS; `BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw` |
 | Refund behavior | Early refund failed; later 0.1 NEAR refund settled | PASS; `DKJEShdGxtLai6xPdRC7JzJ8EwAggv4jqHkz2RLRzU7V` |
-| Accounting | 18.1 deposited, 9 paid, 0.1 refunded, 9 available, zero pending, balanced | PASS at evidence retrieval |
+| Accounting | Current read: 18.2 deposited, 9 paid, 0.1 refunded, 9.1 available, zero pending, balanced | PASS at current audit; older 18.1 snapshot retained |
 | Physical solvency | Liquid estimate backed outstanding donor principal | PASS with stated storage-price estimate |
 | Upgrade authority | FullAccess key remains on vault account | BLOCKED for immutability claim |
 | Wallet-to-contract browser writes | Multi-wallet connector installed and fixture-tested; real wallet signature in this migration | NOT RUN / external human flow |
-| Existing public HTTPS preview | Preserved release preview and live route evidence | PASS for the preserved branch; Work branch preview pending |
+| Existing public HTTPS preview | Feature branch preview, live route evidence and honest unconfigured Work state | PASS; `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app` |
 | Hackathon submission | Requires explicit human authorization | BLOCKED |
 | Professional security audit | Not commissioned or claimed | NOT RUN |
 | near.social | Read-only mainnet FastData KV boundary | PASS as a labelled read-only integration; signed posting not enabled |

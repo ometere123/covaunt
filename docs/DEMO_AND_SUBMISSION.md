@@ -9,7 +9,7 @@
 | Time | Screen | Proof to say |
 | --- | --- | --- |
 | 00:00–00:15 | `/` | A DAO can govern. It cannot rewrite a donor’s consent. The ribbon says NEAR testnet and identifies the real vault. |
-| 00:15–00:35 | `/treasury` | Read the live reconciliation: 18.1 NEAR deposited, 9 paid, 0.1 refunded, 9 available, zero pending. |
+| 00:15–00:35 | `/treasury` | Read the live reconciliation: the current chain read is 18.2 NEAR deposited, 9 paid, 0.1 refunded, 9.1 available, zero pending. Explain that the preserved receipt snapshot was 18.1 NEAR before the later 0.1 NEAR entry. |
 | 00:35–00:55 | `/covenants` | Open donor restrictions. Purpose and recipients are data in the vault, not decoration in the browser. |
 | 00:55–01:20 | `/mandates` | Ask the contract for the allocation quote. Show the compatible healthcare path and explain that the quote is re-read before a DAO proposal. |
 | 01:20–01:40 | `/governance` | Show the genuine Sputnik account, council role, 2-of-2 threshold evidence and 1 NEAR proposal bond. A connected visitor does not gain council permissions. |
@@ -41,10 +41,10 @@ The Work & Trust route may be shown only as a scope disclosure until a separatel
 - Valid settlement: `https://explorer.testnet.near.org/transactions/Gv7yUyZ24JkPSW4p12pM8cLG48e83ZkMkzagZAENioG1`
 - Forbidden execution: `https://explorer.testnet.near.org/transactions/BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw`
 - Refund: `https://explorer.testnet.near.org/transactions/DKJEShdGxtLai6xPdRC7JzJ8EwAggv4jqHkz2RLRzU7V`
-- Public testnet preview: `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`
-- Preview source: `release/covaunt-nextjs-vercel-preview` at `e084c09b75dd3ab2a766820b8f4f4f72ce2208c5`
+- Public testnet preview: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Preview source: `feature/covaunt-work-trust` at `a7dbb10f9245d8497dc75a5847ea096378497907`
 
-The public URL above is a verified read-only/live-testnet preview. A real HOT or Meteor wallet signature and browser-to-wallet write walkthrough still require an authorized human; do not describe that write path as independently verified until it is exercised.
+The public URL above is a verified read-only/live-testnet preview. A real HOT or Meteor wallet signature and browser-to-wallet write walkthrough still require an authorized human; do not describe that write path as independently verified until it is exercised. The Work & Trust module is intentionally unconfigured in this preview; local task/reward tests are not public evidence.
 
 ## Public X draft
 
