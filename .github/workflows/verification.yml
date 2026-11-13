@@ -56,6 +56,8 @@ jobs:
       - run: npm run proof
       - run: npm run verify:static
       - run: npm ci --prefix web
+      - run: npm --prefix web run typecheck
+      - run: npm --prefix web run lint
       - run: npm --prefix web run build
       - name: Install Playwright Chromium
         run: npx --prefix web playwright install --with-deps chromium

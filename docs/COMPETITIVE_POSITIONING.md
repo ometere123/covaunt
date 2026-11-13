@@ -21,7 +21,7 @@ Typical DAO treasuries give approved governance significant spending authority o
 - No independent audit of the beneficiary's use of proceeds; purpose is a proposal category label.
 - No high-throughput optimized accounting; on-chain scan capped at 256 contributions.
 - No audited emergency recovery; failed callbacks remain a critical risk if runtime/gas limitations emerge.
-- DAO authentication checks caller address, not whether that contract is truly Sputnik. Verify it at setup.
+- The live audit verifies that the vault’s stored DAO is `covaunt26.sputnikv2.testnet`; future deployments must repeat that identity check because account names alone are not proof of contract code.
 - Code can still be replaced if the contract account retains FullAccess keys.
 
 ## What can be judged objectively

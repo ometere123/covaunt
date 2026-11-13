@@ -1,68 +1,69 @@
-# COVAUNT — system architecture and rules
+# COVAUNT architecture
 
-## Authority separation
+## System boundary
 
 ```text
-DONOR with NEAR wallet -- contribute(amount, purposeMask, recipientAllowlist, expiry)
-                  | 
-                  v
-             COVAUNT escrow (native NEAR)
-            /   immutable grants       \
-           /       quote()              \ expires
-          v                              v
- SPUTNIK DAO COUNCIL                 DONOR refund request
-   propose FunctionCall                   | permissionless callback
-   vote / execute                         v
-         |                          returning donor balance
-         v
-  execute_spend(id, recipient, purpose, amount, title, reference)
-         |
-     permission + liquidity + expiry revalidation
-         |
-   reserve allocations (available -> pending_spend)
-         |
-   NEAR Promise transfer -> recipient
-         |
-   private self callback -> success: pending_spend -> paid
-                        -> failure: pending_spend -> available
+NEAR testnet
+├── Sputnik DAO: covaunt26.sputnikv2.testnet
+│   ├── council policy and threshold
+│   ├── add_proposal(FunctionCall)
+│   ├── act_proposal(VoteApprove / VoteReject)
+│   └── downstream execution receipt
+└── COVAUNT vault: vault.covauntops26.testnet
+    ├── immutable Contribution records
+    ├── deterministic eligible allocation
+    ├── pending spend / refund reservations
+    ├── native NEAR transfer
+    └── private callback finality or restoration
 ```
 
-No arbitrary user can issue a direct spending call. No governance vote can alter the permission mask, recipient list, amount paid from each contribution, donor address, or unlock time. The deployer account and its FullAccess keys remain a separate upgrade risk until locked down.
+The vault was initialized with the verified DAO account and display name `COVAUNT`. `dao_id` is stored in contract state and is not mutable through the public ABI. The contract has no unrestricted administrator withdrawal method.
 
-## Models
+## Consent model
 
-`Contribution`: fixed donor, original principal, mask, allowlist, creation and expiry, mutable accounted balances (`available`, `pending_spend`, `pending_refund`, `paid`, `refunded`). `Spend`: unique mandate ID, exact recipient and declared purpose, title, reference, amount, deterministic allocations, status (`InFlight`, `Settled`, `Failed`), timestamps. `Summary`: aggregate reconciliation across all contribution balances. All on-chain currency is `u128` yoctoNEAR, rendered as decimal strings through `U128` JSON wrappers.
+A donor contribution stores:
 
-### Allocation algorithm
+- integer principal and available balance in yoctoNEAR;
+- a non-zero purpose bit mask;
+- one to eight unique recipient account IDs;
+- a withdrawal-unlock timestamp;
+- an optional bounded note.
 
-1. Scan only grants with `available > 0`, `now < withdraw_after_ns`, a matching purpose bit and exact recipient membership.
-2. Sort candidate grants by `(number of allowed purpose bits, recipient allowlist size, contribution ID)` ascending, preserving more flexible donor capital for future requests.
-3. Greedily consume compatible capital; cap at 24 allocations per spend; fail when the entire requested amount is not covered.
-4. On successful DAO invocation, reserve all chosen amounts before scheduling the transfer.
-5. Return an explicit shortfall rather than borrowing from incompatible grants.
+The contract never expands these conditions after deposit. A spend request contains exactly one purpose bit, one recipient, one amount and a replay-resistant mandate ID. `compute_allocation` considers only active available contributions whose purpose mask contains the requested purpose and whose allowlist contains the exact recipient. Candidates are ordered by narrower purpose mask, narrower recipient list, then contribution ID.
 
-This deterministic greedy algorithm intentionally prioritizes narrow grants. It is not guaranteed to maximize future allocation feasibility across arbitrary future proposals; that would require predicting future demand. The contract re-evaluates quotes at execution time because other valid spending and refunds can make a previously positive quote stale.
+## Governance path
 
-### Capacity, gas and storage
+The browser reads the live DAO policy and uses the current `proposal_bond`. It creates a genuine Sputnik `FunctionCall` proposal whose action is the exact base64-encoded `execute_spend` call. Council voting uses the deployed DAO’s `act_proposal` format and 300 Tgas for approval calls, matching the verified second-vote receipt.
 
-- At most 256 donor contributions, 8 beneficiary accounts per contribution, 1,024 stored spending records, 24 allocations per individual payment, 180-byte donor notes and 200-byte evidence references.
-- An initialization reserve of at least **5 NEAR** is segregated from donor principal in accounting. New on-chain record creation fails closed once estimated storage staking would approach the reserve minus a 0.1 NEAR buffer. This guard must be verified against real NEAR runtime storage accounting.
-- `get_contributions` and `get_spends` are paginated with a 40-entry cap per query. The application retrieves the pages for a complete ledger (up to the contribution cap).
-- Execution uses a 30 Tgas callback budget; DAO action gas is 150 Tgas. Real testnet traces must confirm sufficiency. Unexpected callback failures can strand `pending` values; they require a documented operational recovery strategy before using real funds.
-- Pending transfers and pending refunds cannot be spent twice. `get_summary.is_balanced` is an internal ledger conservation check, not a proof that the on-chain account's **liquid** balance fully backs donor obligations.
+The boundary is deliberately two-stage:
 
-## Exact trust boundaries
+1. Sputnik decides whether the DAO policy authorizes the proposal.
+2. COVAUNT checks predecessor identity and donor consent when Sputnik invokes the target.
+3. COVAUNT reserves exact allocations and starts a native transfer.
+4. The callback marks the spend `Settled` only if the transfer receipt succeeds; otherwise it restores each allocation and marks `Failed`.
 
-**On-chain facts:** donor signature/attached deposit; immutable permissions; deterministic allocation; original DAO caller account; transaction inclusion; NEAR transfer receipts; the contract's own accounting state.
+An `Approved` or `Executed` DAO proposal is never rendered as a payment by the web application. A beneficiary payment requires a matching COVAUNT spend with `Settled` status and a receipt trail.
 
-**Off-chain assumptions:** a beneficiary's identity and intended use; donor comprehension of recipient controls; reliability of RPC endpoints and wallet software; public documentation claims; DAO policy legitimacy; actual impact after payment.
+## Frontend architecture
 
-**Important:** A DAO supplies a declared purpose value with its proposal. The contract can verify that purpose **label** and the exact destination are permitted, but not that the recipient will use the transferred funds for that purpose. When a recipient appears in several purposes, a DAO may relabel the same transfer; users should restrict recipient scope accordingly. Use known purpose-specific recipient accounts when demonstrating.
+The frontend is a Next.js App Router application under `web/`:
 
-## Why Sputnik DAO matters
+- server-rendered route shells live under `web/app/`;
+- browser-only data and wallet state live in client components under `web/components/`;
+- `web/lib/near.ts` performs finality reads against the public testnet RPC;
+- `web/lib/wallet.ts` is the only near-connect boundary and is never imported by server-only code;
+- `web/components/DataProvider.tsx` separates live RPC state from deterministic `?mode=preview` fixtures;
+- `web/components/WalletProvider.tsx` restores the selected account, listens for sign-in/sign-out and keeps signing failures explicit;
+- all monetary formatting uses integer yoctoNEAR values and `BigInt`.
 
-Sputnik `add_proposal` receives a function-call proposal containing the exact COVAUNT contract ID and serialized `execute_spend` arguments. Council member voting uses `act_proposal` and policy-defined thresholds. On approval, Sputnik invokes COVAUNT and becomes its `predecessor_account_id`. The COVAUNT contract still validates **every** permission. COVAUNT has no admin method to waive those checks. A DAO proposal marked approved or executed is not proof a NEAR native transfer succeeded: check COVAUNT `get_spend` status and transaction receipts.
+The installed wallet connector is `@hot-labs/near-connect` 0.12.0. It opens a multi-wallet chooser and its current manifest exposes HOT and Meteor on testnet. HERE is not claimed because it is not present in the verified manifest used by this release. The frontend never accepts keys, mnemonics or passwords.
 
-## UX architecture
+## Public audit routes
 
-The web app is a manually authored, framework-light Vite application. Its ledger reads NEAR JSON RPC `view` responses, formats integer yoctoNEAR amounts without floating-point rounding, and lazily loads Wallet Selector only when configured. Browser-side calculation is a preview; the Rust contract is authoritative. Illustration mode is explicitly labeled and disables real writes. The UI never falls back to illustrative balances after a live-data failure.
+`/treasury` reconciles the contract summary and separates storage reserve from donor principal. `/covenants` and `/covenants/[id]` expose donor permissions and the donor-only refund action. `/mandates` and `/mandates/[id]` separate allocation quotes, DAO states and vault settlement. `/journal` links the supplied receipts. `/governance` explains the live Sputnik roles without granting council status to connected visitors. `/work` explicitly declines to show unimplemented tasks or reputations.
+
+## Availability and limits
+
+Live RPC failure is fail-closed: the application shows an unavailable state and does not display sample balances. A transaction result is shown as submitted or finalized only from the wallet response; settlement is then read from chain state. No automatic retry is performed after transaction uncertainty, avoiding duplicate proposals or deposits.
+
+The deployed code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The account still has a FullAccess key capable of code replacement, so this release makes no immutable-upgrade claim. That key must only be removed after explicit human authorization, a reviewed recovery procedure and a post-removal audit.

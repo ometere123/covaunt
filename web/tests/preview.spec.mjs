@@ -1,51 +1,41 @@
-import {test,expect} from '@playwright/test';
+import { test, expect } from '@playwright/test';
 
-test('editorial product preview renders distinct brand and explicit preview label',async({page})=>{
- await page.goto('/');
- await expect(page).toHaveTitle(/COVAUNT/);
- await expect(page.locator('#hero-title')).toContainText('rewrite consent');
- await expect(page.locator('#mode-ribbon')).toContainText('DESIGN PREVIEW');
- await expect(page.locator('#ledger-count')).toContainText('03');
- await expect(page.locator('.ledger-table tbody tr')).toHaveCount(3);
- await expect(page.locator('#stat-total')).toContainText('18.00');
-});
+test.describe('deterministic preview mode', () => {
+  test('labels preview data and preserves the editorial route shell', async ({ page }) => {
+    await page.goto('/?mode=preview');
+    await expect(page).toHaveTitle(/COVAUNT/);
+    await expect(page.getByText('Preview mode · no transactions')).toBeVisible();
+    await expect(page.getByRole('heading', { name: /The majority can govern/ })).toBeVisible();
+    await expect(page.getByText('18.00', { exact: false }).first()).toBeVisible();
+    await expect(page.getByText('Illustrative data is labelled')).toBeVisible();
+  });
 
-test('the preview remains safe: wallets and transaction buttons never claim success',async({page})=>{
- await page.goto('/');
- await page.locator('#wallet-button').click();
- await expect(page.locator('#toast')).toContainText('DESIGN PREVIEW');
- await expect(page.locator('#contribution-form .submit-button')).toBeDisabled();
- await expect(page.locator('#deposit-feedback')).toContainText('Design preview');
- await expect(page.locator('#mandate-form .submit-button')).toBeDisabled();
- await expect(page.locator('#mandate-feedback')).toContainText('Design preview');
-});
+  test('preview writes are disabled and the data is explicitly illustrative', async ({ page }) => {
+    await page.goto('/covenants?mode=preview');
+    await expect(page.getByRole('note').getByText('Illustrative preview')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Preview is read-only' })).toBeDisabled();
+    await page.goto('/mandates?mode=preview');
+    await expect(page.getByRole('button', { name: 'Preview is read-only' })).toBeDisabled();
+    await expect(page.getByText('Preview docket is intentionally empty')).toBeVisible();
+  });
 
-test('deterministic medical mandate preview allocates only donor-permitted funds',async({page})=>{
- await page.goto('/');
- await page.locator('#quote-button').click();
- await expect(page.locator('#allocation-content')).toContainText('Capital is compatible');
- await expect(page.locator('#allocation-content')).toContainText('6.00');
- await expect(page.locator('#allocation-content')).toContainText('3.00');
- await expect(page.locator('#allocation-content')).toContainText('ILLUSTRATIVE ONLY');
-});
+  test('preview allocation is deterministic and clearly non-authoritative', async ({ page }) => {
+    await page.goto('/mandates?mode=preview');
+    await page.getByRole('button', { name: 'Preview allocation' }).click();
+    await expect(page.getByText('Eligible capital can cover it')).toBeVisible();
+    await expect(page.getByText('6.00 Ⓝ')).toBeVisible();
+    await expect(page.getByText('3.00 Ⓝ')).toBeVisible();
+    await expect(page.getByText(/Illustrative preview only/)).toBeVisible();
+  });
 
-test('education contribution remains inspectable and refunds are not offered prematurely',async({page})=>{
- await page.goto('/');
- await page.locator('[data-view="0"]').click();
- await expect(page.locator('#info-dialog')).toBeVisible();
- await expect(page.locator('#dialog-content')).toContainText('Education');
- await expect(page.locator('#dialog-content')).toContainText('school.testnet');
- await expect(page.locator('#refund-now')).toHaveCount(0);
- await page.locator('#close-dialog').click();
- await expect(page.locator('#info-dialog')).not.toBeVisible();
-});
-
-test('narrow viewport retains readable document and navigation',async({page,isMobile})=>{
- await page.goto('/');
- await expect(page.locator('#hero-title')).toBeVisible();
- await expect(page.locator('#contribution-form')).toBeAttached();
- await expect(page.locator('#mandate-form')).toBeAttached();
- // Cross-axis overflow should never cause invisible clipped form submission controls.
- const dimensions=await page.evaluate(()=>({viewport:window.innerWidth,document:document.documentElement.scrollWidth}));
- expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport+4);
+  test('narrow preview layouts do not overflow the viewport', async ({ page }) => {
+    await page.goto('/covenants?mode=preview');
+    const dimensions = await page.evaluate(() => ({ viewport: window.innerWidth, document: document.documentElement.scrollWidth }));
+    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport + 4);
+    const menu = page.locator('.menu-button');
+    if (await menu.isVisible()) {
+      await menu.click();
+      await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
+    }
+  });
 });

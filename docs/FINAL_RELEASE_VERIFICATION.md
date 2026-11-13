@@ -1,67 +1,68 @@
-# COVAUNT — final release verification report
+# COVAUNT final release verification
 
-**Date:** 13 November 2026
-**Artifact:** `COVAUNT_RELEASE_HANDOFF`  
-**Engineering verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
+**Artifact:** `COVAUNT_RELEASE_HANDOFF`
+**Verification date:** 13 November 2026 (Africa/Lagos)
+**Network:** NEAR testnet
+**Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
-## A. Contract
+## Identity and evidence
 
-The Rust contract compiles against `near-sdk 5.30.1`. `cargo test` passes 13/13 unit tests with no ignored tests. The contract builds with `cargo-near-near 0.23.0`; the distributable `contract/artifacts/covaunt.wasm` is 183,746 bytes and has SHA-256 `96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888`.
+The configured vault is `vault.covauntops26.testnet`; its immutable stored DAO is `covaunt26.sputnikv2.testnet`. The recorded deployed code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. `docs/live-evidence/evidence.json` was retrieved at `2026-11-13T10:15:56.256Z` and preserves the valid settlement, failed override, early refund and successful refund receipts.
 
-The tests cover immutable purpose/recipient permissions, exact narrow-before-flexible allocation, DAO caller enforcement, replay protection, early and wrong-donor refunds, failed payout/refund restoration, expiry, capacity bounds and conservation. The asynchronous callback handlers now require exactly one promise result before finalizing.
+The live accounting snapshot is 18.1 NEAR deposited, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending obligations and balanced. The read-only account audit estimates liquid principal backing after storage staking, but exits with a deliberate security blocker because a FullAccess key can replace the vault code.
 
-Remaining contract risks are documented in `docs/SECURITY_REVIEW.md`: upgrade-key custody, physical account solvency, callback operational monitoring and the fact that declared purpose cannot prove off-chain recipient behavior.
+## Frontend correction
 
-## B. DAO
+The retired Vite single page was replaced with Next.js App Router and TypeScript. Required routes are real filesystem routes, not hash sections. The application has a shared live/preview data boundary, explicit error/loading states, a live treasury register, covenant details and refund action, Sputnik proposal and vote workflows, separate DAO/vault states, a public journal, governance policy view, a scope-honest Work page and architecture disclosures.
 
-The frontend and ABI documentation implement the current Sputnik FunctionCall shape: read the live proposal bond, add a proposal containing `execute_spend`, and use `act_proposal` with the voted proposal kind. The local Sandbox test verifies the COVAUNT DAO-predecessor boundary but intentionally uses a controlled account.
+Wallet integration uses `@hot-labs/near-connect` 0.12.0. Its installed current manifest exposed HOT and Meteor on testnet. HERE is not advertised because it was not exposed by the verified manifest. The frontend contains no private keys, seed phrases or passwords.
 
-No real Sputnik DAO was created or connected in this workspace. No council policy, DAO code hash, proposal, vote or testnet execution receipt is claimed. This is the main external acceptance blocker.
-
-## C. Frontend
-
-The Vite production build passes. Playwright passes 10/10 across desktop Chromium and a 390px mobile viewport. The tests cover the editorial identity, explicit design-preview labeling, disabled preview transaction buttons, illustrative allocation math, contribution inspection, premature-refund suppression and mobile overflow.
-
-The UI preserves the civic-ledger/luxury-editorial direction: parchment, ink, oxblood, brass, serif headlines, mono audit metadata and hard rules. Browser-captured screenshots are included at:
-
-- `docs/screenshots/covaunt-desktop-preview.png`
-- `docs/screenshots/covaunt-mobile-preview.png`
-
-These are design-preview screenshots only. `web/src/config.js` has empty account IDs, so the wallet and transaction controls remain disabled rather than implying live execution.
-
-## D. Deployment
-
-The intended signer `covauntops26.testnet` and target `vault.covauntops26.testnet` were confirmed by final NEAR testnet RPC. The target had 7 NEAR and `view_code` returned `NO_CONTRACT_CODE`. No Sputnik DAO account, deployment transaction, on-chain code hash, recipient balance, explorer URL or HTTPS hosting destination exists yet. Nothing has been deployed. The exact remaining sequence is in `docs/DEPLOYMENT.md`.
-
-## E. Testing record
+## Executed gates
 
 | Command | Result |
-|---|---|
-| `npm install` | PASS on Windows after `.npmrc` platform fix; advisories disclosed |
-| `npm test` | 12 passed, 0 failed, 0 skipped |
-| `npm run proof` | PASS; illustrated 8/6/4 allocation |
-| `npm run verify:static` | PASS; 13 required files |
-| `cd contract && cargo test` | 13 passed, 0 failed, 0 ignored; doc tests 0 |
-| `cargo near build non-reproducible-wasm --no-abi` | PASS; hash recorded above |
-| `npm run test:sandbox` | 1 passed, 0 failed, 0 skipped under WSL/Linux; Sandbox 2.14.0 |
-| `cd web && npm install` | PASS; 10 low production advisories in wallet dependency graph |
-| `cd web && npm run build` | PASS with third-party bundle warnings |
-| `cd web && npm run test:browser` | 10 passed, 0 failed, 0 skipped |
+| --- | --- |
+| `npm ci` | PASS in root checkout |
+| `npm test` | PASS: 12/12 |
+| `npm run proof` | PASS |
+| `npm run verify:static` | PASS |
+| `cd contract && cargo test` | PASS: 13/13, no ignored tests; WSL |
+| `cargo near build non-reproducible-wasm --no-abi` | PASS; 183,746-byte artifact |
+| `npm run test:sandbox` | PASS: 1/1 receipt/state-machine test, no skips; WSL NEAR Sandbox 2.14.0 |
+| `cd web && npm ci` | PASS; Node 22.23.3 / npm 10.9.9 |
+| `npm run typecheck` | PASS |
+| `npm run lint` | PASS; 0 warnings |
+| `npm run build` | PASS; 10 routes generated |
+| `npm run test:browser` | PASS; 14/14 desktop/mobile Chromium |
+| `npm run verify:live` | Read-only audit values PASS; command exits 1 on intentional FullAccess blocker |
 
-The receipt test produced actual local Sandbox logs for `spend_settled`, `spend_failed`, restored availability, `refund_settled`, `ERR_DAO_ONLY`, `ERR_NOT_ENOUGH_ELIGIBLE_CAPITAL` and `ERR_REPLAY`.
+## Browser evidence
 
-## F. Submission materials
+The Playwright suite is split into:
 
-The README, contract API, architecture, threat model, acceptance matrix, deployment runbook, demo storyboard, track recommendation, public X draft, screenshots, evidence template and security review are included. The recommended category is **Social Money**, with DAO/governance infrastructure as a secondary category where available.
+- `web/tests/preview.spec.mjs`: deterministic `?mode=preview`, no writes, no live claims, mobile overflow and menu checks.
+- `web/tests/live.spec.mjs`: labeled RPC fixtures for final ledger interpretation, route navigation and wallet-gated error handling. These fixtures are not chain evidence.
 
-The submission is not yet ready to advertise as a live deployment. Replace placeholders only after collecting real testnet evidence and an authorized public repository/HTTPS URL.
+A real HOT or Meteor wallet signature and hosted browser return was not independently exercised during this migration. That remains an external verification step, not a hidden pass. Screenshots reviewed locally are in `docs/screenshots/covaunt-next-live.png`, `docs/screenshots/covaunt-next-desktop.png` and `docs/screenshots/covaunt-next-mobile.png`.
 
-## G. Blocking issues
+## Artifact
 
-1. Provide or authorize a funded NEAR testnet deployer and donor/council accounts.
-2. Create and verify the genuine Sputnik DAO: account, code hash, council policy, threshold and proposal bond.
-3. Run `bash scripts/deploy-testnet.sh`, `node scripts/audit-testnet.mjs`, the full donor/DAO/refund workflow and the live browser wallet flow.
-4. Record code hash, all transaction receipts, final recipient balances, logical and physical solvency, and FullAccess-key review in `docs/EVIDENCE_TEMPLATE.json`.
-5. Authorize a public HTTPS host and repository push if publication is required; then run the production browser-to-wallet verification.
+`contract/artifacts/covaunt.wasm` is 183,746 bytes. SHA-256:
 
-Until those external steps are complete, the correct release statement is local engineering complete, testnet verification blocked, not audited and not approved for real-value funds.
+```text
+96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888
+```
+
+Base58 code hash:
+
+```text
+B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u
+```
+
+## Blocking actions requiring a human
+
+1. Review the FullAccess-key recovery and immutability decision. Do not delete it automatically.
+2. Authorize and verify a public HTTPS host if one is required.
+3. Exercise a real testnet wallet flow through the public host, including contribution, proposal creation, council vote, final settlement observation and eligible refund.
+4. Review and authorize any GitHub push, hosting publication or hackathon submission.
+
+No mainnet transaction, contract upgrade, key deletion or hackathon submission was performed by this release work.
