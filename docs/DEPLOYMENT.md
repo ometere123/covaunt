@@ -1,12 +1,13 @@
 # COVAUNT — deployment, integration, and recovery runbook
 
-**Environment:** testnet only. **Current status (12 Nov 2026):** the contract WASM and local receipt tests are complete, but no keys, funded signer, deployed contract, Sputnik DAO, transaction IDs or web deployment were available in this workspace. All account values in this document are placeholders. No address, hash or success state is invented.
+**Environment:** testnet only. **Current status (13 Nov 2026):** the contract WASM and local receipt tests are complete. Final NEAR testnet RPC checks confirmed the intended signer account `covauntops26.testnet` with approximately 2.9928850104625 NEAR and the proposed target account `vault.covauntops26.testnet` with 7 NEAR. `view_code` returned `NO_CONTRACT_CODE` for the target. No Sputnik DAO, deployment transaction, contract code hash or web deployment exists yet. No private keys were read or committed.
 
 ## 0. Required software and real accounts
 
 - Rust stable, `wasm32-unknown-unknown` target, `cargo-near` (the local verification used `cargo-near-near 0.23.0`), `near-cli-rs` (verify installed command syntax against `near --help` and `cargo near --help`)
 - Node.js 22+, npm, Git; an accessible public NEAR testnet RPC
-- A funded testnet account **owned by the deployer**, distinct from the DAO; at least 5 NEAR storage reserve plus gas and account-storage headroom
+- The intended testnet signer is `covauntops26.testnet`; verify the active near-cli keychain identity and retain gas/account-storage headroom before any live command.
+- The proposed COVAUNT target is `vault.covauntops26.testnet`; its existence and 7 NEAR balance were confirmed by final RPC, but it has no contract code yet. Recheck existence and balance immediately before deployment.
 - A **real Sputnik DAO on testnet** with council roles that can add and approve `FunctionCall` proposals. Verify actual proposal permissions, `get_policy`, `get_last_proposal_id`, voting threshold and current `proposal_bond` before integrating. The DAO must have a real testnet contract code hash and be able to transfer to COVAUNT by a function-call proposal.
 - At least three donor accounts, a school account, a clinic account, and two council voters (if policy requires two). Fund donors and DAO bond payer from testnet funding only.
 
@@ -56,13 +57,14 @@ Confirm your DAO account accepts `add_proposal` with `FunctionCall` and that `ac
 ## 3. Deploy COVAUNT contract
 
 ```bash
-export DAO_ACCOUNT='real-council-dao.testnet'
-export COVAUNT_ACCOUNT='funded-new-contract.testnet'
+# Do not replace DAO_ACCOUNT until a real Sputnik DAO is created and verified.
+export DAO_ACCOUNT='REPLACE_WITH_VERIFIED_SPUTNIK_DAO'
+export COVAUNT_ACCOUNT='vault.covauntops26.testnet'
 export COVAUNT_DEPLOY_CONFIRM=YES
 bash scripts/deploy-testnet.sh
 ```
 
-The script runs unit tests and builds WASM first. It then calls the actual `near contract deploy ... with-init-call new` with `dao_id`, `name: "The Commons"`, and a **5 NEAR attached init deposit** paid by the deployer, not donors. Do not rerun the init transaction on an initialized contract. Confirm the precise CLI syntax for the installed CLI revision; if syntax differs, adjust the command with explicit provenance and rerun all checks.
+The script runs unit tests and builds WASM first. It then calls the actual `near contract deploy ... with-init-call new` with `dao_id`, `name: "COVAUNT"`, and a **5 NEAR attached init deposit** paid by the deployer, not donors. Do not rerun the init transaction on an initialized contract. Confirm the precise CLI syntax for the installed CLI revision; if syntax differs, adjust the command with explicit provenance and rerun all checks.
 
 After deployment, inspect:
 

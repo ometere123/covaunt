@@ -5,7 +5,7 @@
 ## Initialization
 
 ```json
-{"dao_id":"your-dao.testnet","name":"The Commons"}
+{"dao_id":"your-dao.testnet","name":"COVAUNT"}
 ```
 
 `new(dao_id: AccountId, name: String)` payable at least 5 NEAR from deployer as non-donor storage reserve. The DAO account cannot equal the COVAUNT contract account.
@@ -33,7 +33,7 @@ Caller must be exactly `dao_id`. ID UTF-8 bytes 8–64, title 1–120, reference
   "proposal": {
     "description": "COVAUNT | equipment reimbursement",
     "kind": {"FunctionCall": {
-      "receiver_id": "your-covaunt.testnet",
+      "receiver_id": "vault.covauntops26.testnet",
       "actions": [{
         "method_name": "execute_spend",
         "args": "BASE64_ENCODING_OF_UTF8_JSON_ABOVE",

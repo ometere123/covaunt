@@ -37,7 +37,7 @@ test('sandbox actual NEAR transfer and vote-incompatible rejection', {timeout:24
   const school=await root.createSubAccount('school');
   const clinic=await root.createSubAccount('clinic');
   const contract=await root.devDeploy(wasm);
-  await contract.call(contract,'new',{dao_id:dao.accountId,name:'The Commons'},{attachedDeposit:N(5).toString()});
+  await contract.call(contract,'new',{dao_id:dao.accountId,name:'COVAUNT'},{attachedDeposit:N(5).toString()});
   await donorA.call(contract,'contribute',{allowed_purposes:1,recipients:[school.accountId],withdraw_after_ns:FUTURE,note:'Learning only'},{attachedDeposit:N(8).toString()});
   await donorB.call(contract,'contribute',{allowed_purposes:2,recipients:[clinic.accountId],withdraw_after_ns:FUTURE,note:'Medical only'},{attachedDeposit:N(6).toString()});
   await donorC.call(contract,'contribute',{allowed_purposes:3,recipients:[clinic.accountId,school.accountId],withdraw_after_ns:FUTURE,note:'Flexible'},{attachedDeposit:N(4).toString()});

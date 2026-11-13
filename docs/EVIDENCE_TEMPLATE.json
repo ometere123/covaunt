@@ -1,7 +1,7 @@
 {
   "status": "LOCAL_VERIFIED_EXTERNAL_BLOCKED",
   "network": "testnet",
-  "contract_account": null,
+  "contract_account": "vault.covauntops26.testnet",
   "dao_account": null,
   "contract_code_hash": null,
   "dao_code_hash": null,
@@ -29,5 +29,5 @@
   "public_demo_url": null,
   "public_x_post_url": null,
   "local_wasm_sha256": "96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888",
-  "reviewer_notes": "Local Rust, sandbox and browser gates passed on 12 Nov 2026. Replace live nulls only from actual RPC/explorer/CI outputs. Never manufacture evidence."
+  "reviewer_notes": "Local Rust, sandbox and browser gates passed. On 13 Nov 2026, final testnet RPC confirmed covauntops26.testnet and vault.covauntops26.testnet; the target had 7 NEAR and view_code returned NO_CONTRACT_CODE. This is account preparation, not deployment evidence. Replace live nulls only from actual RPC/explorer/CI outputs. Never manufacture evidence."
 }

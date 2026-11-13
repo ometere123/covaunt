@@ -16,7 +16,21 @@ jobs:
         working-directory: contract
         run: cargo test
       - name: Install cargo-near
-        run: cargo install cargo-near --version 0.23.0 --locked
+        env:
+          CARGO_NEAR_VERSION: 0.23.0
+          CARGO_NEAR_INSTALLER_SHA256: 76ae71bc6a99864a09cc67c1c0bf82a2b7812d8ab4c93034b680235df6d22028
+        run: |
+          set -euo pipefail
+          installer="$(mktemp)"
+          trap 'rm -f "$installer"' EXIT
+          curl --proto '=https' --tlsv1.2 --fail --silent --show-error --location \
+            "https://github.com/near/cargo-near/releases/download/cargo-near-v${CARGO_NEAR_VERSION}/cargo-near-installer.sh" \
+            --output "$installer"
+          printf '%s  %s\n' "$CARGO_NEAR_INSTALLER_SHA256" "$installer" | sha256sum --check --status
+          sh "$installer"
+          export PATH="$HOME/.cargo/bin:$PATH"
+          echo "$HOME/.cargo/bin" >> "$GITHUB_PATH"
+          cargo near --version
       - name: Build NEAR WASM
         working-directory: contract
         run: cargo near build non-reproducible-wasm --no-abi

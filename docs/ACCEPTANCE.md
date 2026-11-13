@@ -12,7 +12,7 @@ The 25/25 number is a **target**, not a self-awarded or guaranteed NEAR score. A
 | G06 NEAR receipt semantics | near-workspaces sandbox, real transfer and callback tests | **PASS — 1/1, no skips** |
 | G07 Browser UX | Responsive desktop/mobile, controls, keyboard, wallet return | **PASS for preview/mobile layout; live wallet return BLOCKED** |
 | G08 DAO authenticity | Real Sputnik testnet DAO, role policy, code hash and bond | **BLOCKED — no DAO/account access** |
-| G09 Donor deposits | Three real contributed transactions; summary balanced | **BLOCKED — no funded signer** |
+| G09 Donor deposits | Three real contributed transactions; summary balanced | **BLOCKED — no deployed contract or verified DAO** |
 | G10 Compatible payment | DAO proposal approved, NEAR transfer settled, recipient credited | **BLOCKED — no testnet deployment** |
 | G11 Unanimous diversion blocked | Real DAO-approved `FunctionCall` cannot spend incompatible donor money | **BLOCKED live proof; local contract behavior PASS** |
 | G12 Replay and caller abuse | Exact failure receipts for direct attacker, replay, wrong permission | **PASS in Rust/Sandbox; live receipt BLOCKED** |
@@ -20,7 +20,7 @@ The 25/25 number is a **target**, not a self-awarded or guaranteed NEAR score. A
 | G14 Financial solvency | Contract account liquid+storage-staked backing reconciled to obligations and reserve | **BLOCKED — requires deployed account audit** |
 | G15 Governance key review | FullAccess keys inventory; no unacknowledged code-upgrade power | **BLOCKED — requires deployed account** |
 | G16 Independent reproducibility | Clean checkout builds, tests and repeats fixed sample | **BLOCKED — local/WSL repeat passed; hosted CI run not observed** |
-| G17 Public demo | Working app URL, narrated demo, source and X public post | **BLOCKED — no authorized hosting/repo target** |
+| G17 Public demo | Working app URL, narrated demo, source and X public post | **BLOCKED — no authorized HTTPS hosting target** |
 | G18 Submission | Accepted by actual hackathon submission portal before deadline | **BLOCKED — external submission not authorized** |
 
 ## Category targets

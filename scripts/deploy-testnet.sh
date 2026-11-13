@@ -15,7 +15,7 @@ WASM="target/near/covaunt.wasm"
 echo "Building and deploying to ${COVAUNT_ACCOUNT} with DAO ${DAO_ACCOUNT}"
 echo 'WARNING: reserve 5 NEAR to contract storage; verify account ownership and balances first.'
 near contract deploy "$COVAUNT_ACCOUNT" use-file "$WASM" \
- with-init-call new json-args "{\"dao_id\":\"${DAO_ACCOUNT}\",\"name\":\"The Commons\"}" \
+ with-init-call new json-args "{\"dao_id\":\"${DAO_ACCOUNT}\",\"name\":\"COVAUNT\"}" \
  prepaid-gas '100 Tgas' attached-deposit '5 NEAR' \
  network-config testnet sign-with-keychain send
 printf '\nDeployment command executed. Verify state, transfer callback tests and key security before claiming release readiness.\n'

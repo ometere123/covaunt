@@ -1,4 +1,4 @@
-# Local verification results — 12 November 2026
+# Local verification results — 13 November 2026
 
 These are executed local or WSL checks from the extracted release tree. They are not NEAR testnet evidence and do not prove Sputnik governance.
 
@@ -17,8 +17,9 @@ These are executed local or WSL checks from the extracted release tree. They are
 | Browser screenshots | Full-page desktop 1440px and mobile 390px captures visually inspected | PASS; design preview only |
 | `npm audit --omit=dev` in root | 0 production vulnerabilities | PASS |
 | `npm audit --omit=dev` in web | 10 low findings through `elliptic`; force-fix would be breaking | REVIEW REQUIRED |
-| Real Sputnik DAO / testnet deployment | No funded signer, DAO account, deployment authority or wallet session available | BLOCKED, not attempted |
-| Public HTTPS hosting / GitHub push | No authorized destination supplied | BLOCKED, not attempted |
+| Testnet account preparation | Final RPC confirmed `covauntops26.testnet` and `vault.covauntops26.testnet` with 2.9928850104625 NEAR and 7 NEAR; target returned `NO_CONTRACT_CODE` | PASS for account-readiness check; no deployment |
+| Real Sputnik DAO / testnet deployment | No Sputnik DAO account, policy or deployment transaction available | BLOCKED, not attempted |
+| Public HTTPS hosting / GitHub push | GitHub repository is public; no HTTPS hosting target supplied | BLOCKED for hosting |
 
 ## Sandbox behavior observed
 

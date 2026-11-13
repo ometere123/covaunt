@@ -1,6 +1,6 @@
 # COVAUNT — final release verification report
 
-**Date:** 12 November 2026  
+**Date:** 13 November 2026
 **Artifact:** `COVAUNT_RELEASE_HANDOFF`  
 **Engineering verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
@@ -31,7 +31,7 @@ These are design-preview screenshots only. `web/src/config.js` has empty account
 
 ## D. Deployment
 
-No COVAUNT testnet account, Sputnik DAO account, funded signer, keychain, deployment transaction, code hash, recipient balance, explorer URL or HTTPS hosting destination was available. Nothing has been deployed or published from this workspace. The exact remaining sequence is in `docs/DEPLOYMENT.md`.
+The intended signer `covauntops26.testnet` and target `vault.covauntops26.testnet` were confirmed by final NEAR testnet RPC. The target had 7 NEAR and `view_code` returned `NO_CONTRACT_CODE`. No Sputnik DAO account, deployment transaction, on-chain code hash, recipient balance, explorer URL or HTTPS hosting destination exists yet. Nothing has been deployed. The exact remaining sequence is in `docs/DEPLOYMENT.md`.
 
 ## E. Testing record
 

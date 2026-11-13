@@ -4,7 +4,7 @@
 
 A purpose- and beneficiary-bound native NEAR treasury for communities using Sputnik DAO governance. The community can vote to spend pooled capital, but even a unanimous vote cannot move a donor's principal outside the donor's fixed conditions. Contributions can be mixed for compatible payments, and expired unspent balances are recoverable by the original donor.
 
-> **RELEASE STATUS — LOCAL ENGINEERING GATES COMPLETE / TESTNET GATES BLOCKED (12 Nov 2026).** The Rust contract compiles with near-sdk 5.30.1, 13/13 contract unit tests pass, the 2.14.0 NEAR Sandbox receipt suite passes, the WASM artifact is built, and the responsive browser suite passes 10/10 across desktop and mobile Chromium. No funded testnet signer, real Sputnik DAO account, deployed COVAUNT account, hosted URL or transaction evidence was available in this workspace. Therefore this release is **READY_WITH_DISCLOSED_LIMITATIONS for local reproducibility only**: it is not a live deployment, professional audit or approval for real-value funds. See `docs/FINAL_RELEASE_VERIFICATION.md`, `docs/SECURITY_REVIEW.md` and `docs/ACCEPTANCE.md` before publishing any live claim.
+> **RELEASE STATUS — LOCAL ENGINEERING GATES COMPLETE / TESTNET GATES BLOCKED (13 Nov 2026).** The Rust contract compiles with near-sdk 5.30.1, 13/13 contract unit tests pass, the 2.14.0 NEAR Sandbox receipt suite passes, the WASM artifact is built, and the responsive browser suite passes 10/10 across desktop and mobile Chromium. Final testnet RPC checks confirmed the intended signer account `covauntops26.testnet` and target account `vault.covauntops26.testnet`; the target had 7 NEAR and no contract code at that check. No real Sputnik DAO, deployed COVAUNT contract, hosted URL or transaction evidence exists yet. Therefore this release is **READY_WITH_DISCLOSED_LIMITATIONS for local reproducibility only**: it is not a live deployment, professional audit or approval for real-value funds. See `docs/FINAL_RELEASE_VERIFICATION.md`, `docs/SECURITY_REVIEW.md` and `docs/ACCEPTANCE.md` before publishing any live claim.
 
 ## What COVAUNT does — in one end-to-end story
 
@@ -109,14 +109,17 @@ Rendered UI evidence: [desktop preview](docs/screenshots/covaunt-desktop-preview
 Read **`docs/DEPLOYMENT.md` from start to finish**. Do not deploy before creating and verifying a Sputnik DAO on testnet and verifying the exact `near-cli-rs` and `cargo-near` syntax in your shell.
 
 ```bash
-export DAO_ACCOUNT='your-sputnik-dao.testnet'
-export COVAUNT_ACCOUNT='your-covaunt.testnet'
+# The near-cli keychain signer must be covauntops26.testnet.
+export DAO_ACCOUNT='REPLACE_WITH_VERIFIED_SPUTNIK_DAO'
+export COVAUNT_ACCOUNT='vault.covauntops26.testnet'
 export COVAUNT_DEPLOY_CONFIRM=YES
 bash scripts/deploy-testnet.sh
 node scripts/audit-testnet.mjs
 node scripts/set-config.mjs "$COVAUNT_ACCOUNT" "$DAO_ACCOUNT"
 cd web && npm run build
 ```
+
+As of 13 Nov 2026, final testnet RPC confirmed `covauntops26.testnet` exists with approximately 2.9928850104625 NEAR and `vault.covauntops26.testnet` exists with 7 NEAR. `view_code` returned `NO_CONTRACT_CODE` for the target, so this is prepared configuration, not deployment evidence. Do not replace `DAO_ACCOUNT` until the real Sputnik DAO account and policy are verified.
 
 `COVAUNT_DEPLOY_CONFIRM=YES` is a deliberate gate, not proof that deployment succeeded. No keys or mnemonic phrases should be committed.
 

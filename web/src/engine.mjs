@@ -56,7 +56,7 @@ export function assertLedger(grants, stats) {
 }
 export const SAMPLE = Object.freeze({
   summary: {
-    name:'The Commons',dao_id:'council.sputnik-v2.testnet',reserve:(5n*YOCTO).toString(),
+    name:'COVAUNT',dao_id:'council.sputnik-v2.testnet',reserve:(5n*YOCTO).toString(),
     total_deposited:(18n*YOCTO).toString(),total_paid:'0',total_refunded:'0',
     available:(18n*YOCTO).toString(),pending_spend:'0',pending_refund:'0',
     contributions:3,spends:0,is_balanced:true,

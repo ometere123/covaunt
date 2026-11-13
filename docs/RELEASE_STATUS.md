@@ -1,9 +1,9 @@
 # COVAUNT — release verification status
 
-**Verification date:** 12 November 2026 (Africa/Lagos)  
+**Verification date:** 13 November 2026 (Africa/Lagos)
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS` for local engineering review; **not a live testnet release**.  
 **Network target:** NEAR testnet only.  
-**Contract / DAO accounts:** not configured; no addresses or transaction IDs are claimed.
+**Account preparation:** `covauntops26.testnet` and `vault.covauntops26.testnet` were confirmed by final testnet RPC. The target had 7 NEAR and `view_code` returned `NO_CONTRACT_CODE`; no DAO or deployment transaction is claimed.
 
 ## Executed gates
 
@@ -17,9 +17,9 @@
 | NEAR Sandbox receipts | **PASS — 1/1; 0 failed; 0 skipped** | `npm run test:sandbox` under WSL/Linux |
 | Web production bundle | **PASS** | `cd web && npm run build` |
 | Browser UI | **PASS — 10/10** | `cd web && npm run test:browser` on desktop/mobile Chromium |
-| Real Sputnik DAO lifecycle | **BLOCKED** | No funded testnet signer or DAO account supplied |
-| NEAR testnet deployment and evidence | **BLOCKED** | No deployment authority, account or keys supplied |
-| Public HTTPS deployment | **BLOCKED** | No authorized hosting/repository target supplied |
+| Real Sputnik DAO lifecycle | **BLOCKED** | No Sputnik DAO account, policy or code hash exists yet |
+| NEAR testnet deployment and evidence | **BLOCKED** | Target account exists and is funded, but DAO verification and deployment are intentionally pending |
+| Public HTTPS deployment | **BLOCKED** | No authorized HTTPS hosting target supplied |
 | Independent professional audit | **NOT_RUN** | Outside this workspace's available access |
 
 ## Toolchain record
@@ -57,7 +57,7 @@ The sandbox uses a controlled account as the DAO predecessor. It does **not** pr
 ## Known limitations and blockers
 
 - `web/src/config.js` still contains empty `contractId` and `daoId`, so the UI remains in explicit design preview and transaction controls are disabled.
-- No testnet DAO code hash, policy, proposal bond, council membership, receipt, recipient balance or deployed contract account exists in this artifact.
+- No testnet DAO code hash, policy, proposal bond, council membership, receipt, recipient balance or deployed contract code exists in this artifact. The proposed target account is `vault.covauntops26.testnet`.
 - The contract's logical conservation invariant is tested; physical liquid balance, storage staking, account keys and pending obligations require the live audit script after deployment.
 - Contract upgrade authority is a deployment-account concern. Until live FullAccess keys are reviewed and deliberately handled, no immutable-upgrade claim is permitted.
 - `npm audit` reports 10 low-severity production dependency findings in the web wallet dependency graph through `elliptic`; `npm audit fix --force` proposes a breaking wallet-selector downgrade and was not applied. This is a release-review item, not evidence of a contract exploit.

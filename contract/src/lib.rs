@@ -419,7 +419,7 @@ mod tests {
     }
     fn setup() -> Covaunt {
         testing_env!(ctx("deployer.testnet", 5 * YOCTO, T).build());
-        Covaunt::new(id("council.testnet"), "The Commons".into())
+        Covaunt::new(id("council.testnet"), "COVAUNT".into())
     }
     fn grant(c: &mut Covaunt, who: &str, amount: u128, mask: u8, recipients: Vec<&str>) -> u64 {
         testing_env!(ctx(who, amount, T + 1).build());
@@ -430,7 +430,7 @@ mod tests {
     #[should_panic(expected = "ERR_STORAGE_RESERVE")]
     fn reserve_required() {
         testing_env!(ctx("deployer.testnet", YOCTO, T).build());
-        Covaunt::new(id("council.testnet"), "The Commons".into());
+        Covaunt::new(id("council.testnet"), "COVAUNT".into());
     }
     #[test]
     fn deposit_is_restricted_and_ledger_balanced() {
