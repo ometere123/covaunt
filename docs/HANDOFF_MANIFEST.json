@@ -6,6 +6,13 @@
   "contract_account": "vault.covauntops26.testnet",
   "dao_account": "covaunt26.sputnikv2.testnet",
   "contract_code_hash": "B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u",
+  "hosted_preview": {
+    "url": "https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app",
+    "branch": "release/covaunt-nextjs-vercel-preview",
+    "commit": "e084c09b75dd3ab2a766820b8f4f4f72ce2208c5",
+    "network": "testnet",
+    "production_published": false
+  },
   "wasm_artifact": {
     "path": "contract/artifacts/covaunt.wasm",
     "bytes": 183746,
@@ -39,9 +46,8 @@
   },
   "required_human_actions": [
     "Review the FullAccess key and authorize any irreversible key-custody action",
-    "Authorize and verify a public HTTPS frontend if required",
     "Exercise the real HOT or Meteor wallet-to-contract flow",
-    "Review and authorize any push, publication or hackathon submission"
+    "Review and authorize any hackathon submission or production publication"
   ],
   "security_disclosure": "The deployed vault retains FullAccess key ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz; no immutable-upgrade claim is made."
 }

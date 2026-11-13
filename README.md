@@ -17,6 +17,8 @@ The current evidence set records a real NEAR testnet deployment. It is not a cla
 | DAO proposal bond | `1 NEAR` (`1000000000000000000000000` yoctoNEAR) |
 | Evidence retrieval | `2026-11-13T10:15:56.256Z` |
 
+The authorized public preview is [covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app](https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app), built from branch `release/covaunt-nextjs-vercel-preview` at commit `e084c09`. It is a Vercel preview only; no production alias, contract deployment or DAO upgrade was performed.
+
 At that recorded audit, the ledger reported `18.1 NEAR` deposited, `9 NEAR` paid, `0.1 NEAR` refunded, `9 NEAR` available, zero pending spend, zero pending refund and `is_balanced: true`. The account-solvency estimate backed outstanding donor principal, but the audit also found a FullAccess key capable of replacing contract code. COVAUNT therefore does not claim upgrade immutability.
 
 ## Why it is different
@@ -46,7 +48,7 @@ The frontend is a real Next.js App Router application with live and preview mode
 - `/work` — explicit scope boundary; no invented task or reputation records
 - `/about` — architecture, security limitations and deployment identity
 
-Live pages read final NEAR JSON-RPC state. They never fall back to sample balances when RPC fails. `?mode=preview` is deterministic and visibly illustrative; all write controls are disabled.
+Live pages read final NEAR JSON-RPC state through a same-origin, read-only `/api/near-rpc` route restricted to NEAR testnet `query` calls. They never fall back to sample balances when RPC fails. `?mode=preview` is deterministic and visibly illustrative; all write controls are disabled.
 
 ### Visual review
 
@@ -116,4 +118,4 @@ COVAUNT proves declared on-chain purpose and recipient conditions. It cannot pro
 
 ## Release posture
 
-**Engineering verdict: `READY_WITH_DISCLOSED_LIMITATIONS`.** The contract and frontend gates are reproducible, and the supplied testnet evidence is preserved. The public application is deployment-ready but no public HTTPS URL is claimed here, and the wallet-to-contract write path has not been independently exercised in this migration. Do not remove the FullAccess key, deploy a new contract, upgrade the vault, use mainnet or submit a hackathon application without explicit human authorization.
+**Engineering verdict: `READY_WITH_DISCLOSED_LIMITATIONS`.** The contract and frontend gates are reproducible, the supplied testnet evidence is preserved, and the authorized Vercel preview has passed hosted route, responsive, live-RPC and preview-separation checks. The wallet-to-contract write path has not been independently exercised in this migration. Do not remove the FullAccess key, deploy a new contract, upgrade the vault, use mainnet or submit a hackathon application without explicit human authorization.

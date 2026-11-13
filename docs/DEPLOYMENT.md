@@ -51,7 +51,7 @@ The script remains available for a separately authorized fresh testnet deploymen
 
 ## Frontend deployment preparation
 
-The web app is Next.js, not the retired Vite bundle. A Vercel deployment should use:
+The web app is Next.js, not the retired Vite bundle. The authorized Vercel preview uses:
 
 ```text
 Root directory: web
@@ -69,9 +69,21 @@ NEXT_PUBLIC_COVAUNT_DAO=covaunt26.sputnikv2.testnet
 NEXT_PUBLIC_NEAR_EXPLORER=https://explorer.testnet.near.org
 ```
 
+## Verified public preview
+
+- URL: `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`
+- Project: `covaunt` in the `delealufejoel-4184s-projects` team
+- Source: `ometere123/covaunt`, branch `release/covaunt-nextjs-vercel-preview`, commit `e084c09b75dd3ab2a766820b8f4f4f72ce2208c5`
+- Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
+- Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
+- Verification: public HTTPS 200, all required routes, real final RPC reads, live accounting, preview separation, mobile navigation and read-only proxy guard passed
+- Production: no production deployment or alias was retained; do not use `vercel deploy --prod`
+
+Browser reads use the same-origin `/api/near-rpc` route. It accepts only JSON-RPC `query` requests and rejects transaction broadcast methods; the server route is pinned to `https://rpc.testnet.near.org` to prevent a mainnet configuration drift.
+
 No wallet key, seed phrase, mnemonic, private RPC credential or deploy key is needed by the frontend. The app reads public RPC state in the browser and uses near-connect to hand transaction approval to the selected wallet.
 
-Before publishing, exercise a real testnet wallet flow with an authorized human: connect HOT or Meteor, verify account persistence and disconnect, contribute a small authorized covenant, create a real proposal with the live bond, vote only from an actual council account, inspect the DAO outcome separately from `get_spend`, and request a refund only after on-chain eligibility. This repository does not claim that browser-to-wallet write sequence was independently exercised during the migration.
+Before treating the preview as a complete public write surface, exercise a real testnet wallet flow with an authorized human: connect HOT or Meteor, verify account persistence and disconnect, contribute a small authorized covenant, create a real proposal with the live bond, vote only from an actual council account, inspect the DAO outcome separately from `get_spend`, and request a refund only after on-chain eligibility. This repository does not claim that browser-to-wallet write sequence was independently exercised during the migration.
 
 ## Evidence sequence
 

@@ -39,8 +39,10 @@
 - Valid settlement: `https://explorer.testnet.near.org/transactions/Gv7yUyZ24JkPSW4p12pM8cLG48e83ZkMkzagZAENioG1`
 - Forbidden execution: `https://explorer.testnet.near.org/transactions/BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw`
 - Refund: `https://explorer.testnet.near.org/transactions/DKJEShdGxtLai6xPdRC7JzJ8EwAggv4jqHkz2RLRzU7V`
+- Public testnet preview: `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`
+- Preview source: `release/covaunt-nextjs-vercel-preview` at `e084c09b75dd3ab2a766820b8f4f4f72ce2208c5`
 
-Add a public HTTPS URL only after it actually works and has passed browser-to-wallet checks. Do not replace it with a placeholder.
+The public URL above is a verified read-only/live-testnet preview. A real HOT or Meteor wallet signature and browser-to-wallet write walkthrough still require an authorized human; do not describe that write path as independently verified until it is exercised.
 
 ## Public X draft
 

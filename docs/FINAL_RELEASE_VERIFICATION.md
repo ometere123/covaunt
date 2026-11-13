@@ -34,6 +34,7 @@ Wallet integration uses `@hot-labs/near-connect` 0.12.0. Its installed current m
 | `npm run build` | PASS; 10 routes generated |
 | `npm run test:browser` | PASS; 14/14 desktop/mobile Chromium |
 | `npm run verify:live` | Read-only audit values PASS; command exits 1 on intentional FullAccess blocker |
+| Hosted Vercel preview | PASS; public route, responsive, live-RPC, preview-separation and read-only proxy checks |
 
 ## Browser evidence
 
@@ -43,6 +44,8 @@ The Playwright suite is split into:
 - `web/tests/live.spec.mjs`: labeled RPC fixtures for final ledger interpretation, route navigation and wallet-gated error handling. These fixtures are not chain evidence.
 
 A real HOT or Meteor wallet signature and hosted browser return was not independently exercised during this migration. That remains an external verification step, not a hidden pass. Screenshots reviewed locally are in `docs/screenshots/covaunt-next-live.png`, `docs/screenshots/covaunt-next-desktop.png` and `docs/screenshots/covaunt-next-mobile.png`.
+
+The authorized public preview is `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`, sourced from `release/covaunt-nextjs-vercel-preview` at `e084c09`. It is not a production release.
 
 ## Artifact
 
@@ -61,8 +64,7 @@ B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u
 ## Blocking actions requiring a human
 
 1. Review the FullAccess-key recovery and immutability decision. Do not delete it automatically.
-2. Authorize and verify a public HTTPS host if one is required.
-3. Exercise a real testnet wallet flow through the public host, including contribution, proposal creation, council vote, final settlement observation and eligible refund.
-4. Review and authorize any GitHub push, hosting publication or hackathon submission.
+2. Exercise a real testnet wallet flow through the public preview, including contribution, proposal creation, council vote, final settlement observation and eligible refund.
+3. Review and authorize any hackathon submission or future production publication.
 
 No mainnet transaction, contract upgrade, key deletion or hackathon submission was performed by this release work.
