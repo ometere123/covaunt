@@ -15,6 +15,13 @@ NEAR testnet
     ├── pending spend / refund reservations
     ├── native NEAR transfer
     └── private callback finality or restoration
+Auxiliary, opt-in boundary (not deployed in this release)
+└── COVAUNT Work & Trust contract artifact
+    ├── task-specific attached budgets only
+    ├── single claimant and bounded completion evidence
+    ├── verifier / approver / Sputnik DAO reward paths
+    ├── dispute and replay guards
+    └── private payout/refund callbacks and contributor stats
 ```
 
 The vault was initialized with the verified DAO account and display name `COVAUNT`. `dao_id` is stored in contract state and is not mutable through the public ABI. The contract has no unrestricted administrator withdrawal method.
@@ -56,14 +63,16 @@ The frontend is a Next.js App Router application under `web/`:
 - `web/components/WalletProvider.tsx` restores the selected account, listens for sign-in/sign-out and keeps signing failures explicit;
 - all monetary formatting uses integer yoctoNEAR values and `BigInt`.
 
-The installed wallet connector is `@hot-labs/near-connect` 0.12.0. It opens a multi-wallet chooser and its current manifest exposes HOT and Meteor on testnet. HERE is not claimed because it is not present in the verified manifest used by this release. The frontend never accepts keys, mnemonics or passwords.
+The installed wallet connector is `@hot-labs/near-connect` 0.12.0. It opens a multi-wallet chooser using the options exposed by its current manifest. Browser signing compatibility for a specific wallet remains an external verification step for this release. HERE is not claimed because it is not present in the verified manifest used by this release. The frontend never accepts keys, mnemonics or passwords. On mobile the wallet action remains in the header; the hamburger only controls navigation.
+
+The Work & Trust module is an independent Next.js data and wallet boundary in `web/lib/work.ts`. It is disabled unless `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is explicitly configured. Its Rust contract is source-matched in `work-contract/` and has no reference to the vault account, donor records or vault methods. The public app shows an unconfigured state rather than substituting tasks, payments or reputations.
 
 ## Public audit routes
 
-`/treasury` reconciles the contract summary and separates storage reserve from donor principal. `/covenants` and `/covenants/[id]` expose donor permissions and the donor-only refund action. `/mandates` and `/mandates/[id]` separate allocation quotes, DAO states and vault settlement. `/journal` links the supplied receipts. `/governance` explains the live Sputnik roles without granting council status to connected visitors. `/work` explicitly declines to show unimplemented tasks or reputations.
+`/treasury` reconciles the contract summary and separates storage reserve from donor principal. `/covenants` and `/covenants/[id]` expose donor permissions and the donor-only refund action. `/mandates` and `/mandates/[id]` separate allocation quotes, DAO states and vault settlement. `/journal` links the supplied receipts. `/governance` explains the live Sputnik roles without granting council status to connected visitors. `/work`, `/work/funding`, `/work/submit` and `/work/tasks/[id]` form the optional Work & Trust surface; without a configured auxiliary account they display the deployment boundary. `/contributors/[account]` keeps contract-derived work stats separate from the optional read-only near.social mainnet panel.
 
 ## Availability and limits
 
 Live RPC failure is fail-closed: the application shows an unavailable state and does not display sample balances. A transaction result is shown as submitted or finalized only from the wallet response; settlement is then read from chain state. No automatic retry is performed after transaction uncertainty, avoiding duplicate proposals or deposits.
 
-The deployed code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The account still has a FullAccess key capable of code replacement, so this release makes no immutable-upgrade claim. That key must only be removed after explicit human authorization, a reviewed recovery procedure and a post-removal audit.
+The deployed code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The account still has a FullAccess key capable of code replacement, so this release makes no immutable-upgrade claim. That key must only be removed after explicit human authorization, a reviewed recovery procedure and a post-removal audit. Work & Trust is not included in that deployed hash; its un-deployed artifact is documented separately.

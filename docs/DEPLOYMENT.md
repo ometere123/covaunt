@@ -67,7 +67,13 @@ NEXT_PUBLIC_NEAR_RPC=https://rpc.testnet.near.org
 NEXT_PUBLIC_COVAUNT_CONTRACT=vault.covauntops26.testnet
 NEXT_PUBLIC_COVAUNT_DAO=covaunt26.sputnikv2.testnet
 NEXT_PUBLIC_NEAR_EXPLORER=https://explorer.testnet.near.org
+# Leave empty until a separately funded Work & Trust account is independently verified.
+NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=
+# Optional public read endpoint; this is near.social mainnet context, not COVAUNT testnet.
+NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 ```
+
+`NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` must remain unset for the preserved vault-only preview. Setting it enables the task funding, claim, evidence, verification, contributor and reward UI against that exact auxiliary account; it does not deploy or upgrade anything. Do not point it at the vault account. The source-matched local artifact and its no-deployment status are recorded in [Work & Trust](WORK_AND_TRUST.md).
 
 ## Verified public preview
 
@@ -83,7 +89,9 @@ Browser reads use the same-origin `/api/near-rpc` route. It accepts only JSON-RP
 
 No wallet key, seed phrase, mnemonic, private RPC credential or deploy key is needed by the frontend. The app reads public RPC state in the browser and uses near-connect to hand transaction approval to the selected wallet.
 
-Before treating the preview as a complete public write surface, exercise a real testnet wallet flow with an authorized human: connect HOT or Meteor, verify account persistence and disconnect, contribute a small authorized covenant, create a real proposal with the live bond, vote only from an actual council account, inspect the DAO outcome separately from `get_spend`, and request a refund only after on-chain eligibility. This repository does not claim that browser-to-wallet write sequence was independently exercised during the migration.
+Before treating the preview as a complete public write surface, exercise a real testnet wallet flow with an authorized human: select one wallet from the chooser, verify account persistence and disconnect, contribute a small authorized covenant, create a real proposal with the live bond, vote only from an actual council account, inspect the DAO outcome separately from `get_spend`, and request a refund only after on-chain eligibility. This repository does not claim that browser-to-wallet write sequence was independently exercised during the migration.
+
+The Work & Trust forms are a separate gate. They must not be enabled in a public deployment until a separately funded auxiliary account is confirmed, its WASM hash is recorded, the small/medium/large authorization paths are tested, and a real graphical wallet flow is exercised. A task budget is not donor principal. Large rewards must be invoked by the configured Sputnik DAO, not by a connected visitor.
 
 ## Evidence sequence
 

@@ -55,3 +55,21 @@ Do not promise that Sputnik DAO signatures alone establish rightful consent: pol
 - Recovery of funds if a callback becomes permanently stuck before independent engineering resolves the issue
 
 The protocol's useful innovation is constrained **routing authorization** for pooled funds, not a magical universal determination of donor intent.
+
+## Work & Trust auxiliary threat boundary
+
+The optional Work & Trust contract is a separate escrow registry, not a permission extension for the deployed vault. Its capital comes only from the task creator's attached deposit. The following properties are covered by the Rust tests and the Linux/CI sandbox test:
+
+| Work threat | Enforced property | Remaining limitation |
+| --- | --- | --- |
+| Duplicate claimant | `Open → Claimed` is atomic and one claimant is stored | A human verifier still decides whether evidence is sufficient |
+| Unauthorized evidence | Only the stored claimant can submit once, before deadline | URI/hash does not prove physical-world work |
+| Fake verification | Only the stored verifier can approve/reject | Verifier account governance is an operational dependency |
+| Unauthorized medium payout | Only the exact configured approver can start it | Approver compromise is not prevented by the task contract |
+| Direct large payout | Only the configured Sputnik DAO predecessor can execute it | The auxiliary DAO identity must be verified at any future deployment |
+| Payout replay | One payout key per task/tier, failed attempts only, eight-attempt cap | A permanently failing recipient needs a human recovery path through the task creator/contract rules |
+| Callback spoofing | Private callbacks, in-flight state and amount checks | A permanently stuck callback can leave funds pending |
+| Dispute replay | One open dispute, DAO-only resolution, no unsettled reward after an upheld dispute | Settled native rewards are not clawed back |
+| Vault bypass | No vault account, donor map, vault call or unrestricted withdrawal exists in the auxiliary contract | Deployment configuration must not point the UI at an unreviewed contract |
+
+The public interface is fail-closed when `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is absent. No work records, task balances or reputation points are fabricated from COVAUNT donations or near.social activity. Work reputation is derived only from callback-settled reward records in the auxiliary contract.

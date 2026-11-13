@@ -2,69 +2,66 @@
 
 **Artifact:** `COVAUNT_RELEASE_HANDOFF`
 **Verification date:** 13 November 2026 (Africa/Lagos)
-**Network:** NEAR testnet
+**Network:** NEAR testnet for COVAUNT; near.social reads public mainnet data only
+**Branch:** `feature/covaunt-work-trust`
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
-## Identity and evidence
+## Preserved live identity and evidence
 
-The configured vault is `vault.covauntops26.testnet`; its immutable stored DAO is `covaunt26.sputnikv2.testnet`. The recorded deployed code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. `docs/live-evidence/evidence.json` was retrieved at `2026-11-13T10:15:56.256Z` and preserves the valid settlement, failed override, early refund and successful refund receipts.
+The deployed vault is `vault.covauntops26.testnet`; its stored Sputnik DAO is `covaunt26.sputnikv2.testnet`; its recorded code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. `docs/live-evidence/evidence.json` preserves the valid settlement, failed override, early refund and successful refund receipts.
 
-The live accounting snapshot is 18.1 NEAR deposited, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending obligations and balanced. The read-only account audit estimates liquid principal backing after storage staking, but exits with a deliberate security blocker because a FullAccess key can replace the vault code.
+The recorded accounting is 18.1 NEAR deposited, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending obligations and balanced. The vault still has a FullAccess key capable of replacing code. This release makes no immutable-upgrade claim and did not remove or change that key.
 
-## Frontend correction
+## Product changes
 
-The retired Vite single page was replaced with Next.js App Router and TypeScript. Required routes are real filesystem routes, not hash sections. The application has a shared live/preview data boundary, explicit error/loading states, a live treasury register, covenant details and refund action, Sputnik proposal and vote workflows, separate DAO/vault states, a public journal, governance policy view, a scope-honest Work page and architecture disclosures.
+- Preserved the deployed vault and DAO configuration without redeploying or upgrading either account.
+- Corrected the wallet caption to `Select a testnet wallet`; the interface does not claim unverified HOT/Meteor testnet signing support. On mobile, Connect wallet remains visible in the header; the hamburger only opens navigation.
+- Added a separate Rust `work-contract/` for task funding, one claimant, evidence, verifier decisions, bounded reward tiers, disputes, callbacks and contract-derived contributor stats. It has no vault account, donor map or unrestricted withdrawal path.
+- Added real Next.js routes for `/work`, `/work/funding`, `/work/submit`, `/work/tasks/[id]` and `/contributors/[account]`. The public app shows no work records unless `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is explicitly configured.
+- Added a read-only near.social mainnet FastData KV boundary. Signed posting is disabled and social activity is not work evidence or reputation.
+- Investigated Trezu and documented the exact compatibility boundary; no provider-only label or duplicate treasury was added.
 
-Wallet integration uses `@hot-labs/near-connect` 0.12.0. Its installed current manifest exposed HOT and Meteor on testnet. HERE is not advertised because it was not exposed by the verified manifest. The frontend contains no private keys, seed phrases or passwords.
-
-## Executed gates
+## Executed local gates
 
 | Command | Result |
 | --- | --- |
-| `npm ci` | PASS in root checkout |
-| `npm test` | PASS: 12/12 |
-| `npm run proof` | PASS |
-| `npm run verify:static` | PASS |
-| `cd contract && cargo test` | PASS: 13/13, no ignored tests; WSL |
-| `cargo near build non-reproducible-wasm --no-abi` | PASS; 183,746-byte artifact |
-| `npm run test:sandbox` | PASS: 1/1 receipt/state-machine test, no skips; WSL NEAR Sandbox 2.14.0 |
-| `cd web && npm ci` | PASS; Node 22.23.3 / npm 10.9.9 |
-| `npm run typecheck` | PASS |
-| `npm run lint` | PASS; 0 warnings |
-| `npm run build` | PASS; 10 routes generated |
-| `npm run test:browser` | PASS; 14/14 desktop/mobile Chromium |
-| `npm run verify:live` | Read-only audit values PASS; command exits 1 on intentional FullAccess blocker |
-| Hosted Vercel preview | PASS; public route, responsive, live-RPC, preview-separation and read-only proxy checks |
+| `npm ci` | PASS at the preserved root checkout |
+| `npm test` | PASS at the preserved release checkpoint |
+| `npm run proof` | PASS at the preserved release checkpoint |
+| `npm run verify:static` | PASS after Work & Trust preflight additions |
+| `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 12/12, no ignored tests |
+| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS: 214,923-byte artifact |
+| `npm --prefix web run typecheck` | PASS |
+| `npm --prefix web run lint` | PASS; zero warnings |
+| `npm --prefix web run build` | PASS; 15 route entries |
+| `npm run test:browser` | PASS: 22/22 desktop/mobile Chromium |
+| `npm run test:sandbox` on Windows | Expected environment block: Windows cannot execute the Linux sandbox binary |
+| `npm run test:sandbox` in WSL Linux Node 22 | PASS: 2/2 receipt/state-machine tests, no skips; preserved vault plus Work & Trust callback and DAO-only rejection |
 
-## Browser evidence
+The preserved vault sandbox receipt test and the new Work sandbox test both passed in the Linux WSL run. The Work test remains a local sandbox result, not public testnet evidence.
 
-The Playwright suite is split into:
+## Artifact records
 
-- `web/tests/preview.spec.mjs`: deterministic `?mode=preview`, no writes, no live claims, mobile overflow and menu checks.
-- `web/tests/live.spec.mjs`: labeled RPC fixtures for final ledger interpretation, route navigation and wallet-gated error handling. These fixtures are not chain evidence.
+Preserved vault artifact:
 
-A real HOT or Meteor wallet signature and hosted browser return was not independently exercised during this migration. That remains an external verification step, not a hidden pass. Screenshots reviewed locally are in `docs/screenshots/covaunt-next-live.png`, `docs/screenshots/covaunt-next-desktop.png` and `docs/screenshots/covaunt-next-mobile.png`.
+- `contract/artifacts/covaunt.wasm`
+- Size: 183,746 bytes
+- SHA-256: `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`
+- Deployed code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
 
-The authorized public preview is `https://covaunt-git-release-covaunt-260dfa-delealufejoel-4184s-projects.vercel.app`, sourced from `release/covaunt-nextjs-vercel-preview` at `e084c09`. It is not a production release.
+Auxiliary Work & Trust artifact:
 
-## Artifact
+- `work-contract/artifacts/covaunt_work.wasm`
+- Size: 214,944 bytes
+- SHA-256: `4743f7dcf2fd61607e717c78d744340451f11c357a7596eeeca7919dc47f6107`
+- Testnet account: none; deployment intentionally not performed
 
-`contract/artifacts/covaunt.wasm` is 183,746 bytes. SHA-256:
+## Human and external gates remaining
 
-```text
-96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888
-```
+1. Publish and inspect a Vercel preview for this feature branch; do not promote it to production.
+2. Exercise one real supported testnet wallet through the public preview. Verify connection, persistence, explicit approval and returned state; no wallet compatibility is claimed until that happens.
+3. Do not enable `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` publicly until a separately funded auxiliary account, source-matched hash and real small/medium/large authorization evidence exist.
+4. Review the vault FullAccess key. Lockdown is irreversible unless another recovery key exists; perform it only with explicit human authorization and a tested recovery plan.
+5. Do not redeploy, upgrade, remove keys, move donor funds, use mainnet for COVAUNT or submit the hackathon application from this release work.
 
-Base58 code hash:
-
-```text
-B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u
-```
-
-## Blocking actions requiring a human
-
-1. Review the FullAccess-key recovery and immutability decision. Do not delete it automatically.
-2. Exercise a real testnet wallet flow through the public preview, including contribution, proposal creation, council vote, final settlement observation and eligible refund.
-3. Review and authorize any hackathon submission or future production publication.
-
-No mainnet transaction, contract upgrade, key deletion or hackathon submission was performed by this release work.
+No mainnet COVAUNT transaction, contract upgrade, key deletion, auxiliary testnet deployment or hackathon submission was performed.

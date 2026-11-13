@@ -34,7 +34,10 @@
 - DAO status and vault settlement are displayed as separate state machines.
 - Recipient, amount and proposal inputs are bounded before wallet calls; the contract remains authoritative.
 - The app has visible keyboard focus, semantic labels, mobile navigation and reduced-motion CSS.
-- Public work/reputation claims are not fabricated; `/work` is an explicit scope boundary.
+- Public work/reputation claims are not fabricated; `/work` is contract-backed only when an auxiliary account is configured and otherwise shows the deployment boundary.
+- The auxiliary Work & Trust contract is isolated from the vault, has bounded task/submission/payout storage, private callbacks, one-claim/one-submission guards, tier-specific authorization and an eight-attempt payout cap.
+- The near.social surface is read-only mainnet context. Posts and profile data are not used as work evidence or reputation input.
+- Trezu is documented as not integrated; no duplicate treasury or provider-only label was added.
 - `npm audit --omit=dev --audit-level=high` has no high/critical findings. The audit still reports four low-severity transitive `elliptic` findings through `@near-js/transactions` → `@near-js/crypto` → `secp256k1`; `npm audit fix --force` proposes a breaking downgrade, so it was not applied without an upstream-compatible fix.
 
 ## Live evidence
@@ -48,7 +51,9 @@ The supplied evidence records a valid 9 NEAR settlement, a unanimous 2 NEAR over
 3. The contract validates declared purpose and account recipient, not off-chain use of funds or work completion.
 4. Sputnik policy and council membership remain governance dependencies. A connected wallet is not automatically a council member.
 5. Testnet RPC, wallet manifests, explorer indexing and account solvency can change after the evidence timestamp.
-6. The browser wallet flow has not been independently signed through HOT or Meteor in this migration; it is wired and fixture-tested, not claimed as end-to-end wallet evidence.
+6. The browser wallet flow has not been independently signed through a specific testnet wallet in this migration; it is wired and fixture-tested, not claimed as end-to-end wallet evidence.
+7. Work & Trust has no testnet deployment or live task/reward evidence in this release. Its unit tests and sandbox test do not prove a public account or real Sputnik execution.
+8. near.social reads mainnet public data only; signed posting and cross-network identity attribution remain disabled.
 
 ## Key recommendation
 

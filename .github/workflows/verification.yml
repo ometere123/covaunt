@@ -15,6 +15,8 @@ jobs:
       - name: Rust unit tests
         working-directory: contract
         run: cargo test
+      - name: Work & Trust Rust unit tests
+        run: cargo test --manifest-path work-contract/Cargo.toml
       - name: Install cargo-near
         env:
           CARGO_NEAR_VERSION: 0.23.0
@@ -34,11 +36,19 @@ jobs:
       - name: Build NEAR WASM
         working-directory: contract
         run: cargo near build non-reproducible-wasm --no-abi
+      - name: Build Work & Trust WASM
+        working-directory: work-contract
+        run: cargo near build non-reproducible-wasm --no-abi
       - name: Upload compiled contract
         uses: actions/upload-artifact@v4
         with:
           name: covaunt-wasm
           path: contract/target/near/covaunt.wasm
+      - name: Upload Work & Trust contract
+        uses: actions/upload-artifact@v4
+        with:
+          name: covaunt-work-wasm
+          path: work-contract/target/near/covaunt_work.wasm
       - name: Sandbox NEAR receipts tests
         run: |
           npm ci

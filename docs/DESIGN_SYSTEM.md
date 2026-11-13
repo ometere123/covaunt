@@ -28,19 +28,21 @@ System serif headlines carry promises and consequences. Arial is used for interf
 6. `/mandates/[id]` — DAO outcome versus vault settlement
 7. `/journal` — receipt-backed public evidence
 8. `/governance` — policy and council role without automatic privileges
-9. `/work` — honest boundary around unimplemented task records
-10. `/about` — architecture, limitations and deployment identity
+9. `/work` — task register when an auxiliary contract is configured, otherwise an explicit deployment boundary
+10. `/work/funding`, `/work/submit`, `/work/tasks/[id]` — task funding, evidence submission and accountable task detail
+11. `/contributors/[account]` — contract-derived settled-work record plus separately labelled near.social context
+12. `/about` — architecture, limitations and deployment identity
 
 ## Interaction rules
 
 - Live RPC errors fail closed; sample values are never shown after a live failure.
 - `?mode=preview` is visibly illustrative and disables every write.
-- Wallet connection uses a real multi-wallet chooser through near-connect; the site never accepts a key, phrase or password.
+- Wallet connection uses a real multi-wallet chooser through near-connect; the site never accepts a key, phrase or password. Connect wallet remains visible on mobile without requiring the navigation menu.
 - Contribution, proposal and refund actions have a busy guard and do not retry after uncertain signing.
 - Quotes are advisory and re-read from the contract before proposal creation.
 - A Sputnik status is never shown as paid; only a COVAUNT `Settled` spend and receipt count as settlement.
 - Refund eligibility is donor-only and expiry-bound by contract state.
-- Every control has a semantic label, visible focus ring, keyboard path and explicit status copy.
+- Every control has a semantic label, visible focus ring, keyboard path and explicit status copy. Work actions display the configured contract authority and never imply DAO council rights from connection alone.
 - Reduced-motion preferences remove nonessential transitions.
 
 ## Implementation
@@ -49,4 +51,4 @@ The implementation is a handcrafted CSS system in `web/app/globals.css` with Nex
 
 ## Verification
 
-The browser suite covers 14 desktop/mobile tests for preview safety, live-mode RPC interpretation, route navigation, responsive menus, allocation preview and wallet-gated writes. Screenshots are generated from the actual Next app as a release artifact; any screenshot labeled preview is not live-chain evidence. A full WCAG audit has not been commissioned, although keyboard focus, labels, contrast-oriented palette, landmarks and reduced motion are implemented.
+The browser suite covers 22 desktop/mobile tests for preview safety, live-mode RPC interpretation, route navigation, responsive menus, Work & Trust no-fabrication behavior, near.social separation, preview-mode write isolation, allocation preview and wallet-gated writes. The current Work & Trust desktop/mobile captures are `docs/screenshots/covaunt-work-desktop.png` and `docs/screenshots/covaunt-work-mobile.png`; they show the unconfigured release boundary. Screenshots are generated from the actual production Next app; any screenshot labeled preview or unconfigured is not live-chain evidence. A full WCAG audit has not been commissioned, although keyboard focus, labels, contrast-oriented palette, landmarks and reduced motion are implemented.

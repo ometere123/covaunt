@@ -12,6 +12,7 @@ const links = [
   { href: '/treasury', label: 'Treasury' },
   { href: '/covenants', label: 'Covenants' },
   { href: '/mandates', label: 'Mandates' },
+  { href: '/work', label: 'Work' },
   { href: '/journal', label: 'Journal' },
   { href: '/governance', label: 'Governance' },
 ];

@@ -23,7 +23,7 @@ export function WalletButton() {
         <span className="wallet-label-full">{busy ? 'Opening wallet chooser' : 'Connect wallet'}</span>
         <span className="wallet-label-short">{busy ? 'Opening' : 'Wallet'}</span>
       </button>
-      {error ? <span className="wallet-error" role="status">{error}</span> : <span className="wallet-caption">HOT and Meteor available on testnet</span>}
+      {error ? <span className="wallet-error" role="status">{error}</span> : <span className="wallet-caption">Select a testnet wallet</span>}
     </div>
   );
 }

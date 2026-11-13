@@ -18,6 +18,12 @@
     "bytes": 183746,
     "sha256": "96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888"
   },
+  "work_artifact": {
+    "path": "work-contract/artifacts/covaunt_work.wasm",
+    "bytes": 214944,
+    "sha256": "4743f7dcf2fd61607e717c78d744340451f11c357a7596eeeca7919dc47f6107",
+    "deployed": false
+  },
   "live_evidence": {
     "path": "docs/live-evidence/evidence.json",
     "retrieved_at": "2026-11-13T10:15:56.256Z",
@@ -40,13 +46,15 @@
     "next_typecheck": "PASS",
     "next_lint": "PASS_ZERO_WARNINGS",
     "next_build": "PASS",
-    "browser_tests": "PASS_14_OF_14_DESKTOP_MOBILE",
+    "browser_tests": "PASS_22_OF_22_DESKTOP_MOBILE",
     "rust_tests": "PASS_13_OF_13_WSL",
-    "sandbox_tests": "PASS_1_OF_1_WSL_NO_SKIPS"
+    "work_rust_tests": "PASS_12_OF_12",
+    "sandbox_tests": "PASS_2_OF_2_WSL_NO_SKIPS"
   },
   "required_human_actions": [
     "Review the FullAccess key and authorize any irreversible key-custody action",
-    "Exercise the real HOT or Meteor wallet-to-contract flow",
+    "Exercise one real supported testnet wallet-to-contract flow",
+    "Deploy and independently verify the separate Work & Trust contract before enabling its public configuration",
     "Review and authorize any hackathon submission or production publication"
   ],
   "security_disclosure": "The deployed vault retains FullAccess key ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz; no immutable-upgrade claim is made."

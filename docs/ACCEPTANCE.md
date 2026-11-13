@@ -9,10 +9,13 @@ Updated 13 November 2026 from the repository gates and the recorded testnet evid
 | Allocator and invariants | `npm test`, `npm run proof` | PASS; rerun recorded in final report |
 | Rust contract | `cd contract && cargo test` | PASS; 13/13 in WSL |
 | Contract WASM | `cargo near build non-reproducible-wasm --no-abi`; artifact hash recorded | PASS; 183,746-byte artifact |
-| Sandbox receipts | `npm run test:sandbox` | PASS; 1/1 in WSL NEAR Sandbox 2.14.0, no skips |
+| Preserved vault sandbox receipts | `npm run test:sandbox` at the release checkpoint | PASS historically; the preserved test remains in the gate |
+| Work & Trust Rust contract | `cargo test --manifest-path work-contract/Cargo.toml` | PASS; 12/12, no ignored tests |
+| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; 214,923-byte artifact, not deployed |
+| Work & Trust sandbox receipts | `npm run test:sandbox` with Linux NEAR Sandbox 2.14.0 | PASS; 2/2 total receipt tests, no skips, including small callback settlement and direct large-path rejection |
 | Next production build | `cd web && npm run build` | PASS |
 | TypeScript and lint | `npm run typecheck`, `npm run lint` | PASS; zero lint warnings |
-| Browser verification | `npm run test:browser` | PASS; 14/14 desktop/mobile Chromium |
+| Browser verification | `npm run test:browser` | PASS; 22/22 desktop/mobile Chromium |
 | Real Sputnik identity | `covaunt26.sputnikv2.testnet`, policy and bond read from RPC | PASS |
 | Real donor contributions | Four recorded contributions, 18.1 NEAR total | PASS in `docs/live-evidence/evidence.json` |
 | Compatible settlement | 9 NEAR healthcare payment settled with receipts | PASS; `Gv7yUyZ24JkPSW4p12pM8cLG48e83ZkMkzagZAENioG1` |
@@ -22,9 +25,12 @@ Updated 13 November 2026 from the repository gates and the recorded testnet evid
 | Physical solvency | Liquid estimate backed outstanding donor principal | PASS with stated storage-price estimate |
 | Upgrade authority | FullAccess key remains on vault account | BLOCKED for immutability claim |
 | Wallet-to-contract browser writes | Multi-wallet connector installed and fixture-tested; real wallet signature in this migration | NOT RUN / external human flow |
-| Public HTTPS hosting | No authorized hosting target or URL | BLOCKED |
+| Existing public HTTPS preview | Preserved release preview and live route evidence | PASS for the preserved branch; Work branch preview pending |
 | Hackathon submission | Requires explicit human authorization | BLOCKED |
 | Professional security audit | Not commissioned or claimed | NOT RUN |
+| near.social | Read-only mainnet FastData KV boundary | PASS as a labelled read-only integration; signed posting not enabled |
+| Trezu | Compatibility investigation and adapter boundary | NOT INTEGRATED; existing DAO compatibility unverified |
+| Public Work & Trust deployment | Separate funded testnet account and live task evidence | NOT RUN; intentionally not deployed |
 
 ## Critical acceptance scenario
 
