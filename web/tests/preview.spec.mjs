@@ -73,7 +73,7 @@ test.describe('deterministic preview mode', () => {
     await expect(page.getByText('No live work contract configured')).toBeVisible();
     await expect(page.getByText('near.social activity')).toBeVisible();
     await expect(page.getByText('Mainnet · read only')).toBeVisible();
-    await page.getByRole('button', { name: 'Read public activity' }).click();
+    await page.getByRole('button', { name: 'Read recent posts' }).click();
     await expect(page.getByText(/Fixture social context/)).toBeVisible();
     await expect(page.getByText(/not task evidence, payment proof or a reputation input/)).toBeVisible();
   });

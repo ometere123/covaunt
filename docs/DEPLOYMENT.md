@@ -71,22 +71,21 @@ NEXT_PUBLIC_NEAR_RPC=https://rpc.testnet.near.org
 NEXT_PUBLIC_COVAUNT_CONTRACT=vault.covauntops26.testnet
 NEXT_PUBLIC_COVAUNT_DAO=covaunt26.sputnikv2.testnet
 NEXT_PUBLIC_NEAR_EXPLORER=https://explorer.testnet.near.org
-# Leave empty until a separately funded Work & Trust account is independently verified.
-NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=
+NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet
 # Optional public read endpoint; this is near.social mainnet context, not COVAUNT testnet.
 NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 ```
 
-`NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` must remain unset for the preserved vault-only preview. Setting it enables the task funding, claim, evidence, verification, contributor and reward UI against that exact auxiliary account; it does not deploy or upgrade anything. Do not point it at the vault account. The source-matched local artifact and its no-deployment status are recorded in [Work & Trust](WORK_AND_TRUST.md).
+`NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is set to `covaunt-work.testnet` in the verified production environment. It enables the task funding, claim, evidence, verification, contributor and reward UI against that exact auxiliary account; it does not deploy or upgrade anything. Do not point it at the vault account. If the variable is absent, the app fail-closes to the explicit unconfigured state. The source-matched artifact, live account and receipts are recorded in [Work & Trust](WORK_AND_TRUST.md) and [live Work evidence](live-evidence/work-evidence.json).
 
 ## Work & Trust deployment preparation
 
-The auxiliary deployment is intentionally separate from the preserved vault. The reviewed candidate artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43578729757](https://github.com/ometere123/covaunt/actions/runs/43578729757), SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`, 216,158 bytes, base58 code hash `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
+The auxiliary deployment is intentionally separate from the preserved vault. The reviewed artifact is `work-contract/artifacts/covaunt_work.wasm`, SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`, 216,158 bytes, base58 code hash `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`. It is deployed as `covaunt-work.testnet`, initialized with the existing DAO and audited with `npm run verify:work-live`. The account was separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
 
 After a human has created/funded the dedicated account, run from WSL or another environment with the verified `near-cli-rs` command:
 
 ```bash
-export COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet'
+export COVAUNT_WORK_ACCOUNT='covaunt-work.testnet'
 export COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet'
 export COVAUNT_WORK_DEPLOY_CONFIRM=YES
 ./scripts/deploy-work-testnet.sh
@@ -95,21 +94,21 @@ export COVAUNT_WORK_DEPLOY_CONFIRM=YES
 The script refuses the original vault account, verifies the artifact hash, uses testnet only, initializes `COVAUNT Work` with the existing DAO binding and signs through the configured keychain. It does not read or print private keys. Immediately after a successful receipt, run the read-only audit:
 
 ```bash
-COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet' COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet' npm run verify:work-live
+COVAUNT_WORK_ACCOUNT='covaunt-work.testnet' COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet' npm run verify:work-live
 ```
 
-Do not set `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` or publish task records until the audit confirms the code hash, DAO binding, balanced summary, storage reserve and account solvency, and the three reward tiers have each been exercised with genuine receipts.
+The verified audit confirmed the code hash, DAO binding, balanced summary, storage reserve and account solvency before the production variable was enabled. Live task receipts are recorded in `docs/live-evidence/work-evidence.json`; task 2 must remain labelled DAO-gated and not settled until the second council vote and Work callback are verified.
 
 ## Verified public deployment
 
 - URL: `https://covaunt.vercel.app`
 - Project: `covaunt` in the `delealufejoel-4184s-projects` team
-- Source verified before this documentation checkpoint: `ometere123/covaunt`, branch `main`, commit `df5123d7eff54ab930bb3eb6f7e78d597cafedf1`
-- Deployment inspected: `dpl_Bv9qg1Nh6EP1Bm1f36YCF96pFafq`; READY. Vercel deployment IDs rotate after every main push; inspect the production alias for the current immutable deployment.
+- Source: `ometere123/covaunt`, branch and commit are recorded in the final release report after the follow-up PR merge
+- Deployment: the production alias is `https://covaunt.vercel.app`; Vercel deployment IDs rotate after every reviewed push, so inspect the alias for the current immutable deployment.
 - Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
-- Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
-- Verification: public HTTPS 200, all required routes, real final RPC reads, current live accounting, preview separation, mobile navigation, no mobile overflow and read-only proxy guard passed
-- Work status: production remains intentionally unconfigured; no auxiliary testnet contract is claimed
+- Environment: NEAR testnet only; public Work configuration is `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet`; near.social remains optional mainnet read-only context
+- Verification: public HTTPS 200, all required routes, real final vault and Work RPC reads, current live accounting, mobile navigation, no mobile overflow and read-only proxy guard passed
+- Work status: live task records are read from the separately funded auxiliary account; no donor vault capital is used
 
 Browser reads use the same-origin `/api/near-rpc` route. It accepts only JSON-RPC `query` requests and rejects transaction broadcast methods; the server route is pinned to `https://rpc.testnet.near.org` to prevent a mainnet configuration drift.
 
@@ -117,7 +116,7 @@ No wallet key, seed phrase, mnemonic, private RPC credential or deploy key is ne
 
 Before treating the preview as a complete public write surface, exercise a real testnet wallet flow with an authorized human: select one wallet from the chooser, verify account persistence and disconnect, contribute a small authorized covenant, create a real proposal with the live bond, vote only from an actual council account, inspect the DAO outcome separately from `get_spend`, and request a refund only after on-chain eligibility. This repository does not claim that browser-to-wallet write sequence was independently exercised during the migration.
 
-The Work & Trust forms are a separate gate. They must not be enabled in a public deployment until a separately funded auxiliary account is confirmed, its WASM hash is recorded, the small/medium/large authorization paths are tested, and a real graphical wallet flow is exercised. A task budget is not donor principal. Large rewards must be invoked by the configured Sputnik DAO, not by a connected visitor.
+The Work & Trust forms remain a separate trust domain. A task budget is not donor principal. Small and medium live receipts are verified; the large path must be invoked by the configured Sputnik DAO, not by a connected visitor, and its public status must only change after downstream callback settlement.
 
 ## Evidence sequence
 
@@ -132,7 +131,7 @@ The preserved evidence records:
 
 The current live ledger also shows a fifth 0.1 NEAR available contribution, so the public preview should be narrated from its current read rather than from the older 18.1 NEAR snapshot.
 
-Explorer links are collected in `docs/live-evidence/evidence.json` and surfaced by `/journal`.
+Explorer links are collected in `docs/live-evidence/evidence.json` and `docs/live-evidence/work-evidence.json`, and surfaced by the corresponding public routes.
 
 ## Key-custody recommendation
 

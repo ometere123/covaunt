@@ -15,9 +15,11 @@ The current evidence set records a real NEAR testnet deployment. It is not a cla
 | Network | NEAR testnet |
 | Contract code hash | `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u` |
 | DAO proposal bond | `1 NEAR` (`1000000000000000000000000` yoctoNEAR) |
+| Work & Trust account | `covaunt-work.testnet` |
+| Work code hash | `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh` |
 | Evidence retrieval | `2026-11-13T10:15:56.256Z` |
 
-The merged release is published at [covaunt.vercel.app](https://covaunt.vercel.app). The final production verification inspected `main` commit `df5123d7eff54ab930bb3eb6f7e78d597cafedf1` through Vercel deployment `dpl_Bv9qg1Nh6EP1Bm1f36YCF96pFafq`, which was READY and aliased to the public URL. The Work & Trust hardening is merged through PR [#3](https://github.com/ometere123/covaunt/pull/3) and the final release evidence through PR [#6](https://github.com/ometere123/covaunt/pull/6); neither changes the existing vault or DAO. Vercel creates a new immutable deployment for each reviewed push. The production application remains vault-only until a separately funded Work contract is deployed and independently audited.
+The merged release is published at [covaunt.vercel.app](https://covaunt.vercel.app). The current production deployment includes the separately funded Work & Trust account after its code hash, initialization, storage reserve and live reward paths were verified. Vercel creates a new immutable deployment for each reviewed push. Neither the Work release nor the frontend changes redeploy or upgrade the original vault or DAO.
 
 At that recorded evidence snapshot, the ledger reported `18.1 NEAR` deposited across four contributions, `9 NEAR` paid, `0.1 NEAR` refunded, `9 NEAR` available, zero pending spend, zero pending refund and `is_balanced: true`. A later read-only audit on `2026-11-14T01:12:24.4618119Z` found the live ledger at `18.2 NEAR` across five contributions, `9 NEAR` paid, `0.1 NEAR` refunded, `9.1 NEAR` available and zero pending obligations. The additional live entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; the audit did not initiate a transaction. The account-solvency estimate backed outstanding donor principal, but the vault still has a FullAccess key capable of replacing contract code. COVAUNT therefore does not claim upgrade immutability. See [the preserved evidence snapshot](docs/live-evidence/evidence.json) and [the current read-only audit](docs/live-evidence/current-audit.json).
 
@@ -55,21 +57,21 @@ Live pages read final NEAR JSON-RPC state through a same-origin, read-only `/api
 
 ### Visual review
 
-The reviewed application captures are [desktop live mode](docs/screenshots/covaunt-next-live.png), [desktop preview mode](docs/screenshots/covaunt-next-desktop.png), [mobile preview mode](docs/screenshots/covaunt-next-mobile.png), [Work & Trust desktop](docs/screenshots/covaunt-work-desktop.png) and [Work & Trust mobile](docs/screenshots/covaunt-work-mobile.png). Work imagery shows the explicit unconfigured state and does not represent a deployed task or chain transaction. Preview imagery is labelled and does not represent a chain transaction.
+The reviewed application captures are [desktop live mode](docs/screenshots/covaunt-next-live.png), [desktop preview mode](docs/screenshots/covaunt-next-desktop.png), [mobile preview mode](docs/screenshots/covaunt-next-mobile.png), [Work & Trust desktop](docs/screenshots/covaunt-work-desktop.png) and [Work & Trust mobile](docs/screenshots/covaunt-work-mobile.png). The Work captures predate the live auxiliary deployment and show the explicit unconfigured boundary; current live task state is read from `covaunt-work.testnet` and is linked in [live Work evidence](docs/live-evidence/work-evidence.json). Preview imagery is labelled and does not represent a chain transaction.
 
 Wallet connection uses the current `@hot-labs/near-connect` ecosystem. The chooser displays only the wallet options exposed by the installed manifest; browser signing compatibility for this release remains an external verification step. HERE Wallet is not advertised because it was not exposed by the installed current manifest. COVAUNT never asks for private keys, seed phrases or wallet passwords. On mobile the Connect wallet control remains visible in the header; the hamburger only opens navigation.
 
 ### Work & Trust status
 
-The repository includes a separate Rust Work & Trust contract and graphical flows for task funding, single-account claims, evidence, verifier decisions, medium approvals, DAO-gated large rewards, disputes and contributor records. The role-hardening source passes 17/17 local Rust tests, both CI jobs and the sandbox receipt suite; its canonical clean-checkout CI artifact is recorded below. It is not deployed to testnet in this release, so the public app intentionally shows no task or reputation records until `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is set to a separately verified account. The work contract never touches the deployed donor vault or existing donor capital.
+The repository includes a separate Rust Work & Trust contract and graphical flows for task funding, single-account claims, evidence, verifier decisions, medium approvals, DAO-gated large rewards, disputes and contributor records. The role-hardening source passes 17/17 local Rust tests, both CI jobs and the sandbox receipt suite. It is deployed independently as `covaunt-work.testnet`; the public app reads its actual task and reputation state only through `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT`. The work contract never touches the deployed donor vault or existing donor capital.
 
-Small, medium and large reward tiers are enforced in that auxiliary contract, but remain locally verified only. The tier is an explicit authorization policy; amount caps are separate, so a small amount may intentionally elect the DAO-gated Large tier. No testnet reward tier or work account is claimed. See [Work & Trust](docs/WORK_AND_TRUST.md), [near.social boundary](docs/NEAR_SOCIAL.md) and [Trezu compatibility](docs/TREZU_INTEGRATION.md).
+Small, medium and large reward tiers are enforced in that auxiliary contract and have live testnet evidence. Task 0 settled through the verifier-triggered small path; task 1 rejected an unauthorized approver before settling through the designated approver; task 2 is the DAO-gated large path and is reported as settled only after the second council receipt and Work callback are verified. The tier is an explicit authorization policy; amount caps are separate, so a small amount may intentionally elect the DAO-gated Large tier. See [Work & Trust](docs/WORK_AND_TRUST.md), [live Work evidence](docs/live-evidence/work-evidence.json), [near.social boundary](docs/NEAR_SOCIAL.md) and [Trezu compatibility](docs/TREZU_INTEGRATION.md).
 
 ## Repository map
 
 ```text
 contract/                 Rust near-sdk contract and compiled artifact
-work-contract/            Separate task/reward registry, tests and un-deployed WASM
+work-contract/            Separate task/reward registry, tests and deployed testnet WASM
 web/app/                  Next.js App Router routes
 web/components/           Client data, wallet and workflow components
 web/lib/                  RPC, near-connect, formatting and typed domain helpers
@@ -107,7 +109,7 @@ npx playwright install chromium
 npm run test:browser
 ```
 
-The sandbox gate requires the repository’s verified NEAR Sandbox preparation and a Linux/CI environment where the pinned binary can run. It covers both the preserved donor vault and the un-deployed Work & Trust artifact; the Work test is not a real Sputnik vote or testnet evidence. The browser suite runs 22 tests across desktop and mobile Chromium in this release: deterministic preview, live-mode RPC interpretation, responsive navigation, wallet-gated error handling, near.social separation, preview-mode write isolation and explicit no-fabrication behavior for the unconfigured work module. The hosted branch preview also passed route, mobile, live-RPC and unconfigured-Work checks. Fixture data is labeled as fixture data in the test name and is not evidence of a wallet transaction.
+The sandbox gate requires the repository’s verified NEAR Sandbox preparation and a Linux/CI environment where the pinned binary can run. It covers both the preserved donor vault and the Work artifact; it is not a real Sputnik vote or testnet evidence. The browser suite runs 22 tests across desktop and mobile Chromium in this release: deterministic preview, live-mode RPC interpretation, responsive navigation, wallet-gated error handling, near.social separation, preview-mode write isolation and explicit no-fabrication behavior for an unconfigured work module. Live Work acceptance uses the receipts in `docs/live-evidence/work-evidence.json`, not browser fixtures. Fixture data is labeled as fixture data in the test name and is not evidence of a wallet transaction.
 
 ## Contract and deployment references
 
@@ -123,7 +125,7 @@ The sandbox gate requires the repository’s verified NEAR Sandbox preparation a
 - [near.social boundary](docs/NEAR_SOCIAL.md)
 - [Trezu compatibility](docs/TREZU_INTEGRATION.md)
 
-The source-matched vault WASM artifact is `contract/artifacts/covaunt.wasm`, 183,746 bytes, with SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888` and base58 code hash `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The follow-up CI run `43578729757` uploaded a separate 183,335-byte vault build with SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; `non-reproducible-wasm` is environment-dependent, so that CI file is not used as proof of the deployed vault binary. The canonical Work & Trust artifact for PR #3 is the clean-checkout GitHub Actions output from run `43578729757`: `work-contract/artifacts/covaunt_work.wasm`, 216,158 bytes, with SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500` and SHA-256 base58 `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`; it has no testnet account until a separately funded deployment is independently verified. The deployed vault hash is recorded from live evidence; do not rebuild or redeploy this vault as part of frontend work.
+The source-matched vault WASM artifact is `contract/artifacts/covaunt.wasm`, 183,746 bytes, with SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888` and base58 code hash `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The canonical Work & Trust artifact is `work-contract/artifacts/covaunt_work.wasm`, 216,158 bytes, with SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500` and NEAR code hash `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`. The deployed Work account and live receipts are recorded in [live Work evidence](docs/live-evidence/work-evidence.json). Do not rebuild or redeploy the original vault as part of frontend or Work changes.
 
 ## Security disclosure
 
@@ -133,4 +135,4 @@ COVAUNT proves declared on-chain purpose and recipient conditions. Work & Trust 
 
 ## Release posture
 
-**Engineering verdict: `READY_WITH_DISCLOSED_LIMITATIONS`.** The preserved vault/DAO release is published at [covaunt.vercel.app](https://covaunt.vercel.app) and remains independently deployable; the Next.js app builds with the no-fabrication Work boundary; and the separate Work & Trust contract passes 17/17 local tests, CI, and sandbox receipts after role hardening. The auxiliary contract is not deployed, no reward tier is live-claimed, and no real Work wallet write is claimed. The vault FullAccess limitation remains documented. Do not remove keys, use mainnet or submit a hackathon application without explicit human authorization.
+**Engineering verdict: `READY_WITH_DISCLOSED_LIMITATIONS`.** The preserved vault/DAO release and the separately funded Work & Trust release are both published at [covaunt.vercel.app](https://covaunt.vercel.app). Work passes 17/17 local Rust tests, CI and sandbox receipts, and has live small/medium evidence plus a live Sputnik proposal for the large path. The vault FullAccess limitation remains documented; no immutable-upgrade claim or professional security-audit claim is made. near.social remains read-only mainnet context and Trezu is deliberately not integrated.

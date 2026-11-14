@@ -6,7 +6,7 @@ near.social is a NEAR mainnet social protocol. COVAUNT treats it as optional pub
 
 Contributor profiles can request read-only public FastData KV records through `web/app/api/near-social/route.ts`. The route accepts only a validated NEAR account ID and the `profile/` or `post/` key prefixes, then reads the public mainnet endpoint configured by `NEXT_PUBLIC_NEAR_SOCIAL_API` (default: `https://kv.main.fastnear.com`). No secret or wallet credential is used.
 
-The UI labels the result **near.social activity — Mainnet · read only** and states that posts, likes and followers are not task evidence, settlement history or reputation input. The app does not sign `__fastdata_kv` writes.
+The UI labels the result **near.social activity — Mainnet · read only**, lets a visitor request recent posts or public profile fields, and renders a bounded readable summary rather than exposing the upstream response as raw JSON. It states that posts, likes and followers are not task evidence, settlement history or reputation input. The app does not sign `__fastdata_kv` writes.
 
 ## Why writes are disabled
 

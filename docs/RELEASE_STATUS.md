@@ -8,56 +8,59 @@
 
 - Vault: `vault.covauntops26.testnet`
 - Sputnik DAO: `covaunt26.sputnikv2.testnet`
-- Code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
-- Proposal bond: 1 NEAR
-- Display name: COVAUNT
+- Vault code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
+- Work & Trust account: `covaunt-work.testnet`
+- Work code hash: `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`
+- Work artifact SHA-256: `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500` (216,158 bytes)
+- DAO proposal bond: `1 NEAR`
+- Display name: `COVAUNT`
 
-## Verified public deployment
+## Public deployment
 
 - URL: `https://covaunt.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
-- Git branch: `main`
-- Production verification commit: `df5123d7eff54ab930bb3eb6f7e78d597cafedf1`
-- Deployment inspected: `dpl_Bv9qg1Nh6EP1Bm1f36YCF96pFafq`; READY; public route checks, mobile checks and live testnet reads passed
-- Follow-up branch: `feature/covaunt-work-trust-live`; PR [#3](https://github.com/ometere123/covaunt/pull/3)
-- Follow-up CI: [Verification run 43580869712](https://github.com/ometere123/covaunt/actions/runs/43580869712); interface and contract jobs passed, including both WASM uploads and sandbox receipts
+- Production configuration: `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet`
+- The final deployment ID and release commit are recorded after the follow-up PR merge; Vercel immutable deployment IDs rotate per reviewed push.
 
-## Recorded live outcome
+## Live financial evidence
 
-At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR deposited across four contributions, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending spend, zero pending refund and a balanced ledger. It includes the valid 9 NEAR settlement, the failed 2 NEAR override, an early locked refund rejection and the successful 0.1 NEAR refund. A separate read-only audit at `2026-11-14T01:12:24.4618119Z` reports the current chain at 18.2 NEAR deposited across five contributions, 9 NEAR paid, 0.1 NEAR refunded, 9.1 NEAR available and zero pending obligations. The fifth entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; see [current-audit.json](live-evidence/current-audit.json).
+The latest read-only vault audit reports `18.2 NEAR` deposited, `9 NEAR` paid, `0.1 NEAR` refunded, `9.1 NEAR` available and zero pending obligations. The ledger is balanced. The original evidence snapshot retaining the 18.1 NEAR four-contribution history remains in `docs/live-evidence/evidence.json`; the current audit is in `docs/live-evidence/current-audit.json`.
 
-## Local engineering gates
+The Work account was separately funded and initialized with a 1 NEAR reserve. Its live audit passed with a balanced zero-liability state before tasks were exercised. Live task receipts and final summaries are in `docs/live-evidence/work-evidence.json`.
+
+## Engineering gates
 
 | Gate | Result |
 | --- | --- |
 | Node allocator tests | PASS; 12/12 |
 | Deterministic proof | PASS |
 | Static preflight | PASS |
-| Rust contract tests | PASS; 13/13, no ignored tests; WSL |
-| Contract WASM | PASS; source-matched 183,746-byte checked-in artifact; final CI upload separately disclosed as non-byte-identical |
-| Sandbox receipts | PASS; 1/1, no skips; WSL NEAR Sandbox 2.14.0 |
+| Vault Rust tests | PASS; 13/13 |
+| Work Rust tests | PASS; 17/17, no ignored tests |
+| Vault and Work WASM | PASS; both artifacts built and uploaded by CI; Work artifact is source-matched to the deployed hash |
+| Sandbox receipts | PASS; 2/2 in Linux/CI, no skips |
 | Next typecheck | PASS |
 | Next lint | PASS; zero warnings |
-| Next production build | PASS; 15 route entries generated, including Work & Trust and contributor routes |
-| Browser tests | PASS; 22/22 across desktop and mobile Chromium |
-| Hosted preview checks | PASS; routes, mobile navigation, live RPC accounting, preview separation and read-only proxy |
-| Work & Trust unit tests | PASS; 17/17; no ignored tests |
-| Work & Trust WASM | PASS; canonical follow-up CI artifact 216,158 bytes, SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`, no testnet account |
-| Work & Trust sandbox | PASS; 2/2 combined receipt tests, no skips, in WSL Linux Node 22 / NEAR Sandbox 2.14.0 |
-| near.social | PASS as read-only mainnet context boundary; no signed posting |
-| Trezu | NOT INTEGRATED; compatibility blocker documented |
+| Next production build | PASS; 15 route entries at the prior checkpoint; rerun after the final UI patch is required |
+| Browser suite | PASS; 22/22 desktop and mobile Chromium at the prior checkpoint; rerun after the final UI patch is required |
+| Vault read-only audit | PASS for accounting/source match; expected non-zero security signal because FullAccess remains |
+| Work read-only audit | PASS; code hash, DAO binding, reserve, solvency and balanced summary |
+| Live Work small reward | VERIFIED_LIVE; task 0 settled through verifier callback |
+| Live Work medium reward | VERIFIED_LIVE; task 1 unauthorized approval rejected, designated approver settled |
+| Live Work large reward | IN_PROGRESS; task 2 verified and Sputnik proposal 2 has first council approval; second council receipt and Work callback remain required before settlement claim |
+| Wallet-signed browser write | BLOCKED_EXTERNAL; production chooser opened, but the existing Chrome profile has no connected wallet controlling the required signer |
+| near.social | VERIFIED_LIVE read-only mainnet context; no signed posting |
+| Trezu | NOT_IMPLEMENTED by decision; incompatibility documented |
+| Professional security audit | NOT_IMPLEMENTED; no independent audit claimed |
 
-## Remaining limitations
+## Limitations
 
-1. The vault still has a FullAccess key capable of replacing code. No immutable-upgrade claim is permitted.
-2. The installed near-connect manifest exposes wallet options. Specific wallet testnet signing compatibility remains unverified. HERE is not claimed because it was not present in that manifest.
-3. A real wallet-to-frontend write walkthrough was not independently exercised in this migration. The historical testnet writes are preserved as receipt evidence.
-4. The public URL is a Vercel production deployment of the vault-only release; no custom domain is claimed.
-5. No professional security audit is claimed.
-6. Work & Trust is implemented as a separate, un-deployed auxiliary contract. Role hardening and DAO proposal UI are locally/CI verified; no live task records, reward settlements or reputation points are claimed.
-7. near.social is read-only mainnet context; signed posting and cross-network identity binding are not enabled.
-8. Work & Trust remains disabled in production because no auxiliary testnet account, real reward settlement or contributor record has been verified. The production app is verified for the honest unconfigured state.
+1. The vault retains FullAccess key `ed25519:6NDRm1atodNeiXTKk1qeRz9iaqCqX7QjR3zWKB4MhGAz`; COVAUNT does not claim upgrade immutability.
+2. Work verification is a named-account attestation model. It records contract outcomes, not independent proof of physical-world work or identity independence.
+3. A real wallet-signed browser write still needs an authorized wallet account in Chrome. CLI-signed testnet receipts are not represented as graphical wallet evidence.
+4. near.social remains optional public mainnet context and is not linked automatically to testnet identities or reputation.
+5. No professional security audit or mainnet-readiness claim is made.
 
 ## Release handling
 
-Do not upgrade, redeploy, remove keys, use mainnet or submit externally without explicit human authorization. The source and evidence are suitable for an authorized testnet hackathon handoff with these disclosures.
+Do not upgrade the original vault or DAO, remove keys, use mainnet funds or submit the hackathon form until the remaining human gates are explicitly verified. The Work account is isolated and must never be funded from restricted donor principal.

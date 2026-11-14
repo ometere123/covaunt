@@ -15,7 +15,7 @@ NEAR testnet
     ├── pending spend / refund reservations
     ├── native NEAR transfer
     └── private callback finality or restoration
-Auxiliary, opt-in boundary (not deployed in this release)
+Auxiliary, opt-in boundary (`covaunt-work.testnet`)
 └── COVAUNT Work & Trust contract artifact
     ├── task-specific attached budgets only
     ├── single claimant and bounded completion evidence
@@ -75,4 +75,4 @@ The Work & Trust module is an independent Next.js data, wallet and Sputnik adapt
 
 Live RPC failure is fail-closed: the application shows an unavailable state and does not display sample balances. A transaction result is shown as submitted or finalized only from the wallet response; settlement is then read from chain state. No automatic retry is performed after transaction uncertainty, avoiding duplicate proposals or deposits.
 
-The deployed code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The account still has a FullAccess key capable of code replacement, so this release makes no immutable-upgrade claim. That key must only be removed after explicit human authorization, a reviewed recovery procedure and a post-removal audit. Work & Trust is not included in that deployed hash; its un-deployed artifact is documented separately.
+The deployed vault code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The account still has a FullAccess key capable of code replacement, so this release makes no immutable-upgrade claim. That key must only be removed after explicit human authorization, a reviewed recovery procedure and a post-removal audit. Work & Trust is not included in that vault hash: it is separately deployed as `covaunt-work.testnet` with code hash `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh` and remains separately funded.

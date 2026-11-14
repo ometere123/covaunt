@@ -1,0 +1,69 @@
+{
+  "network": "testnet",
+  "work_account": "covaunt-work.testnet",
+  "dao_account": "covaunt26.sputnikv2.testnet",
+  "code_hash": "6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh",
+  "artifact": {
+    "path": "work-contract/artifacts/covaunt_work.wasm",
+    "bytes": 216158,
+    "sha256": "50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500"
+  },
+  "deployment": {
+    "account_creation": "5vWHG1WaX37FsKDxuWpaoSPDF3WS88xgzJv7tg51dY",
+    "contract_deploy_and_initialize": "8t8EgAxLMAUx94sEMpiXAa2mpq4R2P1QN6cycjuxfeZF"
+  },
+  "accounts": {
+    "creator": "creator.covaunt-work.testnet",
+    "worker": "worker.covaunt-work.testnet",
+    "verifier": "verifier.covaunt-work.testnet",
+    "approver": "approver.covaunt-work.testnet"
+  },
+  "evidence_reference": "https://github.com/ometere123/covaunt/blob/main/README.md",
+  "tasks": [
+    {
+      "task_id": 0,
+      "tier": "Small",
+      "budget_near": 0.12,
+      "reward_near": 0.0000001,
+      "create": "HYTv4njC1Bwj531MKU3uq8efSyxs39dSErN41Q8h9w3D",
+      "claim": "JhVyQnQX6JSephP7Gxu658AkE8YMed2qfKKmon2dcvb",
+      "submit": "8iUteTZSaxkiAGCeUrKdcbVPBczPr87w4TsDVqak4SMy2",
+      "verify_and_settle": "ByKsvV1RqoZuEqXQJ5xaD1vANYmGbzhutNhVQ7fzfqVD",
+      "final_state": "Settled",
+      "payout_status": "Settled",
+      "reputation_points_after_settlement": 10
+    },
+    {
+      "task_id": 1,
+      "tier": "Medium",
+      "budget_near": 0.15,
+      "reward_near": 0.0000001,
+      "create": "4c6e5p6yoAUAAMqDwWa2cXjLbkSnBsR2FQ7jGZHjczPV",
+      "claim": "FVfn7wDnCDcJpUgmxKn3dseMgLBcCsmPRsUHCUBQsnZg",
+      "submit": "EjJPKJUsygUMcxaX2YzBr11LHaYb1jaj9LjnsGirhEQP",
+      "verify": "BjZuSXqr388YF17zYtzmvxZHZu4hPAqpEFgotjX9UTBa",
+      "unauthorized_approver_rejection": "6porz54xLrizrXgiwxsCYUiNvt1F4mzdGoUthQrzUrz7",
+      "authorized_approval_and_settlement": "ExcSSgyaofEEyYCVZmAawSHQjdTnFUSc4otUx2EqmEWm",
+      "final_state": "Settled",
+      "payout_status": "Settled"
+    },
+    {
+      "task_id": 2,
+      "tier": "Large",
+      "budget_near": 0.15,
+      "reward_near": 0.0000001,
+      "create": "D92jyrL2JB5SWM9hBUGTWpaJ7iWXiaNLoEQeVgkwmc8d",
+      "claim": "HGcqZ4SbUMpy3cxWpT9y5Jch2KhB9Gy8MR6N1V3uCaRc",
+      "submit": "6jK6wzq4bEvUg74yR8AKvzjKqtQopvY2yTMHhHoTsVR1",
+      "verify": "7dhL3TY7RaNe7T8QpGHiCyX2MpJxwF1KPCR5Tzc8Yy5",
+      "direct_wallet_rejection": "AhgkNNSBpDkcsuf2tfRw5oEQcPtMiUQdwonTVRMidDWi",
+      "mandate_id": "cwt-large-live-20261114-1",
+      "dao_proposal_id": 2,
+      "dao_add_proposal": "2xS5TM68Rs8MPKpG2UMwzQYXg39nbSbNZuGQ2ubc8oxX",
+      "dao_first_council_vote": "GNumfeci5gMZw2n4Kw4yonh2GoWzrp1RCtLgkYBHZ1oE",
+      "dao_second_council_vote": null,
+      "final_state": "Verified; awaiting second council approval and callback settlement",
+      "payout_status": null
+    }
+  ]
+}
