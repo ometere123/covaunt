@@ -4,8 +4,8 @@
 **Network:** NEAR testnet for COVAUNT and Work & Trust; near.social reads public mainnet data only
 **Release branch:** `main`
 **Merged pull request:** [#8](https://github.com/ometere123/covaunt/pull/8)
-**Functional application commit:** `a7b17054e5c2e54908e027f8bfd11a6dff9b5a3d`
-**Production deployment:** `dpl_AhrY1wnrnefjSBEjj43dUd1WaTcV` at `https://covaunt.vercel.app`
+**Functional application commit:** `0b1f69a8f0a66553295103b575e2cac94659407f`
+**Production deployment:** `dpl_F84Mfc9xzKpQZBP7pcP5hrxMV47H` at `https://covaunt.vercel.app`
 **Release-record PR:** documentation-only follow-up after the functional application merge
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
@@ -71,7 +71,7 @@ Local checks passed:
 | `npm run test:browser` | PASS: 22/22 desktop/mobile Chromium |
 | `npm run test:sandbox` in WSL | PASS: 2/2, no skips |
 
-GitHub Actions run [43595365516](https://github.com/ometere123/covaunt/actions/runs/43595365516) passed both jobs:
+GitHub Actions run [43597112510](https://github.com/ometere123/covaunt/actions/runs/43597112510) passed both jobs:
 
 - `interface`: PASS, 22 browser tests.
 - `contract`: PASS, vault 13 tests, Work 17 tests, both WASM builds and uploads, sandbox receipt tests 2/2.
