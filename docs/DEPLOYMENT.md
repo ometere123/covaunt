@@ -102,8 +102,8 @@ Do not set `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` or publish task records until the
 
 - URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Project: `covaunt` in the `delealufejoel-4184s-projects` team
-- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`, commit `8daf67c0f95c8f84adef93b375f37ff667bc62b4`
-- Deployment: `dpl_6fxz5sTt4afwnYMqqajJFM22fwMP`; READY; alias `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`, application commit `18fdc7befd58862a0629530537d012da792ef61f`
+- Deployment: `dpl_Gb4C9KBS2gecg5FaZbDzRW6XEDjP`; READY; alias `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
 - Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
 - Verification: public HTTPS 200, all required routes, real final RPC reads, current live accounting, preview separation, mobile navigation, no mobile overflow and read-only proxy guard passed
