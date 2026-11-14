@@ -16,10 +16,10 @@
 | 01:40–02:05 | `/journal#valid` | Open the real 9 NEAR settlement receipt. Distinguish DAO approval from the vault’s `Settled` callback. |
 | 02:05–02:30 | `/journal#forbidden` | Open the real 2 NEAR unanimous override. The DAO approved the attempt; downstream COVAUNT execution failed because incompatible capital remained protected. |
 | 02:30–02:45 | `/journal#refund` | Open the 0.1 NEAR refund receipt. The donor, expiry and callback checks are separate from governance. |
-| 02:45–03:05 | `/work` and `/work/tasks/[id]` | Show the separately funded Work & Trust register: settled small and medium callbacks, the rejected medium approver attempt, and the live DAO-gated large proposal. Keep Work balances separate from vault principal. |
+| 02:45–03:05 | `/work` and `/work/tasks/[id]` | Show the separately funded Work & Trust register: settled small, medium and DAO-gated large callbacks, the rejected medium approver attempt, and callback-derived reputation. Keep Work balances separate from vault principal. |
 | 03:05–03:20 | `/about#limitations` | Disclose the FullAccess-key limitation, testnet scope, no professional audit and the boundary around off-chain beneficiary use. |
 
-The Work & Trust route may be shown as live evidence only for the task records and receipts in [live Work evidence](live-evidence/work-evidence.json). Do not present named-account attestations as independent proof of physical-world work, and do not call the large task settled until its second council approval and downstream callback are verified.
+The Work & Trust route may be shown as live evidence only for the task records and receipts in [live Work evidence](live-evidence/work-evidence.json). Do not present named-account attestations as independent proof of physical-world work. The large task is now settled through both council approvals and the Work callback, using isolated Work funds.
 
 ## Voiceover
 

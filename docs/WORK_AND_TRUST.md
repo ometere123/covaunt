@@ -37,7 +37,7 @@ The contract limits tasks, submissions, eligibility lists, field sizes, payout a
 | --- | --- | --- | --- |
 | Small | Configured verifier approval, then callback | Implemented and unit/sandbox tested | Live task 0 settled; verifier-triggered callback payment verified |
 | Medium | Configured verifier approval, then exact approver | Implemented and unit/sandbox tested | Live task 1 settled; unauthorized approver rejected before authorized settlement |
-| Large | Configured verifier approval, then exact Sputnik DAO predecessor and replay-protected mandate ID | Implemented, direct-wallet rejection and FunctionCall proposal/vote helpers tested | Live task 2 verified; Sputnik proposal 2 is the live DAO-gated path and must be marked settled only after the second council receipt and callback are observed |
+| Large | Configured verifier approval, then exact Sputnik DAO predecessor and replay-protected mandate ID | Implemented, direct-wallet rejection and FunctionCall proposal/vote helpers tested | Live task 2 settled after Sputnik proposal 2 received both council approvals and the Work callback completed |
 
 These are not permissions over COVAUNT donor principal. The tier is an explicit authorization policy, not an automatic minimum-amount classifier: a creator may intentionally choose the stricter Large path for a small reward, subject to the Large cap. The frontend exposes the write forms only when `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is set. With that variable absent, `/work` and contributor routes show an explicit unconfigured state and no sample work records.
 
