@@ -30,7 +30,7 @@ The preserved evidence snapshot records 18.1 NEAR deposited across four contribu
 | `npm run proof` | PASS at the preserved release checkpoint |
 | `npm run verify:static` | PASS after Work & Trust preflight additions |
 | `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 12/12, no ignored tests |
-| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS: 214,944-byte artifact |
+| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS: 214,979-byte artifact |
 | `npm --prefix web run typecheck` | PASS |
 | `npm --prefix web run lint` | PASS; zero warnings |
 | `npm --prefix web run build` | PASS; 15 route entries |
@@ -52,8 +52,8 @@ Preserved vault artifact:
 Auxiliary Work & Trust artifact:
 
 - `work-contract/artifacts/covaunt_work.wasm`
-- Size: 214,944 bytes
-- SHA-256: `4743f7dcf2fd61607e717c78d744340451f11c357a7596eeeca7919dc47f6107`
+- Size: 214,979 bytes
+- SHA-256: `f28f4c82f6ed52177ec8b46fba70d99b01f40d055f4744eb46ff2aea0ee42140`
 - Testnet account: none; deployment intentionally not performed
 
 ## Hosted preview verification

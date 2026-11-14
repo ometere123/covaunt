@@ -496,6 +496,7 @@ impl CovauntWork {
         task.claimant = Some(claimant.clone());
         task.status = TaskStatus::Claimed;
         self.tasks.replace(task_id, &task);
+        self.assert_solvency();
         event("task_claimed", near_sdk::serde_json::json!({"task_id": task_id, "worker": claimant}));
     }
 
@@ -525,6 +526,7 @@ impl CovauntWork {
         task.submission_id = Some(id);
         task.status = TaskStatus::Submitted;
         self.tasks.replace(task_id, &task);
+        self.assert_solvency();
         event("completion_submitted", near_sdk::serde_json::json!({"task_id": task_id, "submission_id": id}));
         id
     }
@@ -546,6 +548,7 @@ impl CovauntWork {
             task.status = TaskStatus::Rejected;
             self.submissions.replace(submission_id, &submission);
             self.tasks.replace(task_id, &task);
+            self.assert_solvency();
             event("completion_rejected", near_sdk::serde_json::json!({"task_id": task_id, "submission_id": submission_id}));
             return None;
         }
@@ -556,6 +559,7 @@ impl CovauntWork {
         self.tasks.replace(task_id, &task);
         event("completion_verified", near_sdk::serde_json::json!({"task_id": task_id, "submission_id": submission_id, "tier": tier_name(&task.tier)}));
         self.bump_verified(task.claimant.as_ref().expect("ERR_CLAIMANT").clone());
+        self.assert_solvency();
         if task.tier == RewardTier::Small {
             Some(self.reserve_reward(task_id, submission_id))
         } else {
@@ -622,6 +626,7 @@ impl CovauntWork {
             resolved_at_ns: None,
         });
         self.tasks.replace(task_id, &task);
+        self.assert_solvency();
         event("dispute_opened", near_sdk::serde_json::json!({"task_id": task_id, "raised_by": caller}));
     }
 
@@ -641,6 +646,7 @@ impl CovauntWork {
             task.status = TaskStatus::Rejected;
         }
         self.tasks.replace(task_id, &task);
+        self.assert_solvency();
         event("dispute_resolved", near_sdk::serde_json::json!({"task_id": task_id, "upheld": upheld}));
     }
 
@@ -656,6 +662,7 @@ impl CovauntWork {
         task.status = TaskStatus::Closed;
         task.closed_at_ns = Some(env::block_timestamp());
         self.tasks.replace(task_id, &task);
+        self.assert_solvency();
         event("task_closed", near_sdk::serde_json::json!({"task_id": task_id}));
     }
 
@@ -970,6 +977,19 @@ mod tests {
         assert_eq!(task.available.0, 2 * YOCTO);
         assert_eq!(task.reward_amount.0, YOCTO / 10);
         assert!(contract.get_summary().is_balanced);
+    }
+
+    #[test]
+    fn storage_growth_cannot_bypass_solvency_guard() {
+        let mut contract = setup();
+        let task_id = create(&mut contract, RewardTier::Small);
+        let mut low_balance = ctx("worker.testnet", 0, T + 1);
+        low_balance.account_balance(NearToken::from_yoctonear(0));
+        testing_env!(low_balance.build());
+
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            contract.claim_task(task_id);
+        })).is_err());
     }
 
     #[test]

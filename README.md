@@ -123,7 +123,7 @@ The sandbox gate requires the repository’s verified NEAR Sandbox preparation a
 - [near.social boundary](docs/NEAR_SOCIAL.md)
 - [Trezu compatibility](docs/TREZU_INTEGRATION.md)
 
-The source-matched vault WASM artifact is `contract/artifacts/covaunt.wasm`, 183,746 bytes, with SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888` and base58 code hash `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The separate Work & Trust artifact is `work-contract/artifacts/covaunt_work.wasm`, 214,944 bytes, with SHA-256 `4743f7dcf2fd61607e717c78d744340451f11c357a7596eeeca7919dc47f6107`; it has no testnet account. The deployed vault hash is recorded from live evidence; do not rebuild or redeploy this vault as part of frontend work.
+The source-matched vault WASM artifact is `contract/artifacts/covaunt.wasm`, 183,746 bytes, with SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888` and base58 code hash `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The separate Work & Trust artifact is `work-contract/artifacts/covaunt_work.wasm`, 214,979 bytes, with SHA-256 `f28f4c82f6ed52177ec8b46fba70d99b01f40d055f4744eb46ff2aea0ee42140`; it has no testnet account until a separately funded deployment is independently verified. The deployed vault hash is recorded from live evidence; do not rebuild or redeploy this vault as part of frontend work.
 
 ## Security disclosure
 

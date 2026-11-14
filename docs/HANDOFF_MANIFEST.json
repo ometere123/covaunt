@@ -21,8 +21,8 @@
   },
   "work_artifact": {
     "path": "work-contract/artifacts/covaunt_work.wasm",
-    "bytes": 214944,
-    "sha256": "4743f7dcf2fd61607e717c78d744340451f11c357a7596eeeca7919dc47f6107",
+    "bytes": 214979,
+    "sha256": "f28f4c82f6ed52177ec8b46fba70d99b01f40d055f4744eb46ff2aea0ee42140",
     "deployed": false
   },
   "live_evidence": {
