@@ -12,8 +12,8 @@
     "network": "testnet",
     "production_published": true,
     "last_observed_deployment": {
-      "id": "dpl_3EKPBxAHfmDsyU9uRK1r4igpgvFj",
-      "commit": "ae33077307d2d80e7fddb8ec0e159fff7db33fc5",
+      "id": "dpl_Bv9qg1Nh6EP1Bm1f36YCF96pFafq",
+      "commit": "df5123d7eff54ab930bb3eb6f7e78d597cafedf1",
       "status": "READY",
       "note": "Vercel deployment IDs rotate after each main push; the production alias is the public entry point."
     }

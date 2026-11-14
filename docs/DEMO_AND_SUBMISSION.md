@@ -42,7 +42,7 @@ The Work & Trust route may be shown only as a scope disclosure until a separatel
 - Forbidden execution: `https://explorer.testnet.near.org/transactions/BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw`
 - Refund: `https://explorer.testnet.near.org/transactions/DKJEShdGxtLai6xPdRC7JzJ8EwAggv4jqHkz2RLRzU7V`
 - Public testnet deployment: `https://covaunt.vercel.app`
-- Production source checkpoint: branch `main`, commit `ae33077307d2d80e7fddb8ec0e159fff7db33fc5`; deployment IDs rotate with main pushes
+- Production source checkpoint: branch `main`, commit `df5123d7eff54ab930bb3eb6f7e78d597cafedf1`; deployment inspected at `dpl_Bv9qg1Nh6EP1Bm1f36YCF96pFafq`; deployment IDs rotate with main pushes
 
 The public URL above is a verified read-only/live-testnet preview. A real HOT or Meteor wallet signature and browser-to-wallet write walkthrough still require an authorized human; do not describe that write path as independently verified until it is exercised. The Work & Trust module is intentionally unconfigured in this preview; local task/reward tests are not public evidence.
 
@@ -53,6 +53,8 @@ The public URL above is a verified read-only/live-testnet preview. A real HOT or
 > We verified a real testnet lifecycle: 9 NEAR healthcare settlement, a unanimous 2 NEAR override rejected by the vault, and a successful donor refund.
 >
 > Vote together. Keep promises specific.
+>
+> Built at NEAR HACKATHON. #NEARHackathon
 >
 > Testnet evidence and source: [repository URL]
 

@@ -66,8 +66,8 @@ Auxiliary Work & Trust artifact:
 ## Hosted preview verification
 
 - Production: `https://covaunt.vercel.app`
-- Source: `main` commit `ae33077307d2d80e7fddb8ec0e159fff7db33fc5`
-- Deployment inspected: `dpl_3EKPBxAHfmDsyU9uRK1r4igpgvFj`, READY; deployment IDs rotate with main pushes
+- Source: `main` commit `df5123d7eff54ab930bb3eb6f7e78d597cafedf1`
+- Deployment inspected: `dpl_Bv9qg1Nh6EP1Bm1f36YCF96pFafq`, READY; deployment IDs rotate with main pushes
 - Hosted checks: all required public routes returned HTTP 200; live treasury reads reached final RPC state; mobile layout kept the wallet control visible and had no horizontal overflow; Work & Trust remained explicitly unconfigured.
 
 ## Human and external gates remaining
