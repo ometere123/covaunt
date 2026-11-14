@@ -1,6 +1,6 @@
 # COVAUNT Work & Trust
 
-**Status:** locally implemented, unit tested and sandbox-tested when the Linux/CI receipt environment is available; not deployed to NEAR testnet in this release.
+**Status:** locally implemented, hardened for storage solvency, unit tested and sandbox-tested in Linux/CI; not deployed to NEAR testnet in this release.
 
 Work & Trust is an auxiliary financial record domain. It is deliberately not an extension of `vault.covauntops26.testnet`, does not read donor balances and has no method that can call the donor vault. A task creator funds a task with an attached native NEAR deposit. That deposit is the only capital available to the task’s reward path.
 
@@ -53,4 +53,4 @@ The sandbox test deploys the artifact only inside a local NEAR Sandbox, settles 
 
 ## Deployment gate
 
-No testnet account or deployment address is claimed for this contract. A future deployment requires a separately funded account, source-matched WASM hash, storage reserve, a reviewed access-key policy, real wallet flows for creator/worker/verifier/approver, a real Sputnik FunctionCall for the large path, and updated evidence. It must not use the deployed vault account, its FullAccess key or any existing donor capital.
+No testnet account or deployment address is claimed for this contract. The reproducible deployment boundary is `scripts/deploy-work-testnet.sh`, which pins the canonical CI artifact hash and refuses the original vault account. A future deployment requires a separately funded account, storage reserve, a reviewed access-key policy, real wallet flows for creator/worker/verifier/approver, a real Sputnik FunctionCall for the large path, and updated evidence. It must not use the deployed vault account, its FullAccess key or any existing donor capital.

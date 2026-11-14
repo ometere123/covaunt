@@ -1,9 +1,10 @@
 # COVAUNT final release verification
 
 **Artifact:** `COVAUNT_RELEASE_HANDOFF`
-**Verification date:** 13 November 2026 (Africa/Lagos)
+**Verification date:** 14 November 2026 (Africa/Lagos)
 **Network:** NEAR testnet for COVAUNT; near.social reads public mainnet data only
 **Branch:** `feature/covaunt-work-trust`
+**Release candidate:** `e8a6c26c134ecd56e798dced498856a300f1a622`
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
 ## Preserved live identity and evidence
@@ -16,7 +17,7 @@ The preserved evidence snapshot records 18.1 NEAR deposited across four contribu
 
 - Preserved the deployed vault and DAO configuration without redeploying or upgrading either account.
 - Corrected the wallet caption to `Select a testnet wallet`; the interface does not claim unverified HOT/Meteor testnet signing support. On mobile, Connect wallet remains visible in the header; the hamburger only opens navigation.
-- Added a separate Rust `work-contract/` for task funding, one claimant, evidence, verifier decisions, bounded reward tiers, disputes, callbacks and contract-derived contributor stats. It has no vault account, donor map or unrestricted withdrawal path.
+- Added a separate Rust `work-contract/` for task funding, one claimant, evidence, verifier decisions, bounded reward tiers, disputes, callbacks and contract-derived contributor stats. It has no vault account, donor map or unrestricted withdrawal path. Added post-mutation solvency guards and a regression test for unfunded storage growth.
 - Added real Next.js routes for `/work`, `/work/funding`, `/work/submit`, `/work/tasks/[id]` and `/contributors/[account]`. The public app shows no work records unless `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is explicitly configured.
 - Added a read-only near.social mainnet FastData KV boundary. Signed posting is disabled and social activity is not work evidence or reputation.
 - Investigated Trezu and documented the exact compatibility boundary; no provider-only label or duplicate treasury was added.
@@ -29,7 +30,7 @@ The preserved evidence snapshot records 18.1 NEAR deposited across four contribu
 | `npm test` | PASS at the preserved release checkpoint |
 | `npm run proof` | PASS at the preserved release checkpoint |
 | `npm run verify:static` | PASS after Work & Trust preflight additions |
-| `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 12/12, no ignored tests |
+| `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 13/13, no ignored tests |
 | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS locally; canonical CI artifact 214,474 bytes from run `43536663435` |
 | `npm --prefix web run typecheck` | PASS |
 | `npm --prefix web run lint` | PASS; zero warnings |

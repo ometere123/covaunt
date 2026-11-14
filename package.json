@@ -9,6 +9,7 @@
     "test:sandbox": "node scripts/ensure-sandbox.mjs && node --test tests/sandbox.test.mjs tests/work-sandbox.test.mjs",
     "verify:static": "node scripts/preflight.mjs",
     "verify:live": "node scripts/audit-testnet.mjs",
+    "verify:work-live": "node scripts/audit-work-testnet.mjs",
     "web:dev": "npm --prefix web run dev",
     "web:build": "npm --prefix web run build",
     "test:browser": "npm --prefix web run test:browser"

@@ -77,6 +77,27 @@ NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 
 `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` must remain unset for the preserved vault-only preview. Setting it enables the task funding, claim, evidence, verification, contributor and reward UI against that exact auxiliary account; it does not deploy or upgrade anything. Do not point it at the vault account. The source-matched local artifact and its no-deployment status are recorded in [Work & Trust](WORK_AND_TRUST.md).
 
+## Work & Trust deployment preparation
+
+The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43536663435](https://github.com/ometere123/covaunt/actions/runs/43536663435), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
+
+After a human has created/funded the dedicated account, run from WSL or another environment with the verified `near-cli-rs` command:
+
+```bash
+export COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet'
+export COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet'
+export COVAUNT_WORK_DEPLOY_CONFIRM=YES
+./scripts/deploy-work-testnet.sh
+```
+
+The script refuses the original vault account, verifies the artifact hash, uses testnet only, initializes `COVAUNT Work` with the existing DAO binding and signs through the configured keychain. It does not read or print private keys. Immediately after a successful receipt, run the read-only audit:
+
+```bash
+COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet' COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet' npm run verify:work-live
+```
+
+Do not set `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` or publish task records until the audit confirms the code hash, DAO binding, balanced summary, storage reserve and account solvency, and the three reward tiers have each been exercised with genuine receipts.
+
 ## Verified public preview
 
 - URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`

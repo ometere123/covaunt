@@ -1,6 +1,6 @@
 # Local check record
 
-**Recorded:** 13 November 2026
+**Recorded:** 14 November 2026
 **Environment:** Windows 11, Node.js 22.23.3, npm 10.9.9; WSL Ubuntu Node.js 22.23.5, npm 10.9.9, Rust 1.95.0, Cargo 1.95.0, cargo-near 0.23.0
 
 | Check | Result |
@@ -17,7 +17,7 @@
 | `cd web && npm run typecheck` | PASS |
 | `cd web && npm run lint` | PASS; zero warnings |
 | `cd web && npm run build` | PASS; all required routes generated |
-| `cd web && npm run test:browser` | PASS; 14/14 desktop/mobile Chromium |
+| `cd web && npm run test:browser` | PASS; 22/22 desktop/mobile Chromium |
 | `npm run verify:live` | Real values read; intentional non-zero FullAccess-key blocker |
 | `npm audit --omit=dev --audit-level=high` (web) | PASS threshold; 4 low transitive `elliptic` findings remain, no forced breaking fix applied |
 
@@ -34,3 +34,6 @@ The Rust and sandbox counts were rerun in WSL after the frontend migration. Brow
 - `contract/artifacts/covaunt.wasm`: 183,746 bytes
 - SHA-256: `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`
 - Base58 code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
+- `work-contract/artifacts/covaunt_work.wasm`: 214,474 bytes, canonical GitHub Actions artifact from run `43536663435`
+- Work artifact SHA-256: `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`
+- Work Rust tests: 13/13; Work sandbox receipt tests: 1/1 combined with the preserved vault test suite (2/2 total)

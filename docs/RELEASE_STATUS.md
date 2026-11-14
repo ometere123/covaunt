@@ -1,6 +1,6 @@
 # COVAUNT release status
 
-**Verification date:** 13 November 2026
+**Verification date:** 14 November 2026
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 **Network:** NEAR testnet only
 
@@ -17,7 +17,7 @@
 - URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Git branch: `feature/covaunt-work-trust`
-- Git commit: `a7dbb10f9245d8497dc75a5847ea096378497907`
+- Git commit: `e8a6c26c134ecd56e798dced498856a300f1a622`
 - Deployment: `dpl_9FNhHdDauu8snKeiMw15STYGVHoS`; READY; public HTTPS route checks, mobile checks and live testnet reads passed
 - GitHub Actions: [Verification run 43520699433](https://github.com/ometere123/covaunt/actions/runs/43520699433); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 - Production release: not published
@@ -41,7 +41,7 @@ At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR dep
 | Next production build | PASS; 15 route entries generated, including Work & Trust and contributor routes |
 | Browser tests | PASS; 22/22 across desktop and mobile Chromium |
 | Hosted preview checks | PASS; routes, mobile navigation, live RPC accounting, preview separation and read-only proxy |
-| Work & Trust unit tests | PASS; 12/12 |
+| Work & Trust unit tests | PASS; 13/13 |
 | Work & Trust WASM | PASS; canonical CI artifact 214,474 bytes, no testnet account |
 | Work & Trust sandbox | PASS; 2/2 combined receipt tests, no skips, in WSL Linux Node 22 / NEAR Sandbox 2.14.0 |
 | near.social | PASS as read-only mainnet context boundary; no signed posting |
