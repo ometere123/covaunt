@@ -20,7 +20,7 @@
 - URL: `https://covaunt.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Production configuration: `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet`
-- Production deployment: `dpl_9v8BmTRE87UgSgFhxdeAE4J6XXZZ`
+- Production deployment: `dpl_F84Mfc9xzKpQZBP7pcP5hrxMV47H`
 - Functional production release commit: `0b1f69a8f0a66553295103b575e2cac94659407f` (merged PR #11); the subsequent release-record PR changes documentation only; Vercel immutable deployment IDs rotate per reviewed push.
 
 ## Live financial evidence
