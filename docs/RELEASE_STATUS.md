@@ -12,15 +12,15 @@
 - Proposal bond: 1 NEAR
 - Display name: COVAUNT
 
-## Verified public preview
+## Verified public deployment
 
-- URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- URL: `https://covaunt.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
-- Git branch: `feature/covaunt-work-trust`
-- Branch alias: `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`; public HTTPS route checks, mobile checks and live testnet reads passed
-- Last inspected deployment during this release checkpoint: `dpl_65pqPhhRmU5z8vS1jtYmeTdrxxCK`; READY; deployment IDs rotate with branch pushes
-- GitHub Actions: [Verification run 43542680390](https://github.com/ometere123/covaunt/actions/runs/43542680390); interface and contract jobs passed, including both WASM uploads and sandbox receipts
-- Production release: not published
+- Git branch: `main`
+- Production commit: `9cc399b1921a012e61938edb378ba5bada5c5a4b`
+- Deployment: `dpl_75TThxTzXWXfos8v25Pzf1XQ8zUC`; READY; public route checks, mobile checks and live testnet reads passed
+- Follow-up branch: `feature/covaunt-work-trust-live`; PR [#3](https://github.com/ometere123/covaunt/pull/3)
+- Follow-up CI: [Verification run 43578729757](https://github.com/ometere123/covaunt/actions/runs/43578729757); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 
 ## Recorded live outcome
 
@@ -41,8 +41,8 @@ At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR dep
 | Next production build | PASS; 15 route entries generated, including Work & Trust and contributor routes |
 | Browser tests | PASS; 22/22 across desktop and mobile Chromium |
 | Hosted preview checks | PASS; routes, mobile navigation, live RPC accounting, preview separation and read-only proxy |
-| Work & Trust unit tests | PASS; 13/13 |
-| Work & Trust WASM | PASS; canonical CI artifact 214,474 bytes, no testnet account |
+| Work & Trust unit tests | PASS; 17/17; no ignored tests |
+| Work & Trust WASM | PASS; canonical follow-up CI artifact 216,158 bytes, SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`, no testnet account |
 | Work & Trust sandbox | PASS; 2/2 combined receipt tests, no skips, in WSL Linux Node 22 / NEAR Sandbox 2.14.0 |
 | near.social | PASS as read-only mainnet context boundary; no signed posting |
 | Trezu | NOT INTEGRATED; compatibility blocker documented |
@@ -52,11 +52,11 @@ At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR dep
 1. The vault still has a FullAccess key capable of replacing code. No immutable-upgrade claim is permitted.
 2. The installed near-connect manifest exposes wallet options. Specific wallet testnet signing compatibility remains unverified. HERE is not claimed because it was not present in that manifest.
 3. A real wallet-to-frontend write walkthrough was not independently exercised in this migration. The historical testnet writes are preserved as receipt evidence.
-4. The hosted URL is a testnet preview only. No production release or custom domain is claimed.
+4. The public URL is a Vercel production deployment of the vault-only release; no custom domain is claimed.
 5. No professional security audit is claimed.
-6. Work & Trust is implemented as a separate, un-deployed auxiliary contract. No live task records, reward settlements or reputation points are claimed.
+6. Work & Trust is implemented as a separate, un-deployed auxiliary contract. Role hardening and DAO proposal UI are locally/CI verified; no live task records, reward settlements or reputation points are claimed.
 7. near.social is read-only mainnet context; signed posting and cross-network identity binding are not enabled.
-8. Work & Trust remains disabled in the public preview because no auxiliary testnet account, real reward settlement or contributor record has been verified. The branch preview is verified for the honest unconfigured state.
+8. Work & Trust remains disabled in production because no auxiliary testnet account, real reward settlement or contributor record has been verified. The production app is verified for the honest unconfigured state.
 
 ## Release handling
 

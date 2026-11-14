@@ -5,7 +5,7 @@
 const contract = process.env.COVAUNT_WORK_ACCOUNT;
 const dao = process.env.COVAUNT_WORK_DAO;
 const rpc = process.env.NEAR_RPC || 'https://rpc.testnet.near.org';
-const expectedCodeHash = process.env.COVAUNT_WORK_CODE_HASH || '2SwRLmgBQ1JxaHARadZKwqKA9yYjjxLjvAMEGy21rPeS';
+const expectedCodeHash = process.env.COVAUNT_WORK_CODE_HASH || '6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh';
 if (!contract || !dao) {
   console.error('Set COVAUNT_WORK_ACCOUNT and COVAUNT_WORK_DAO to the deployed Work account and existing Sputnik DAO.');
   process.exit(2);

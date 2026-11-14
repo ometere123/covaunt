@@ -17,7 +17,7 @@
 
 The live audit retrieved `get_summary`, `get_policy`, account state, code metadata and access keys. It confirmed `dao_id` matches, the logical ledger is balanced, the estimated liquid balance backs outstanding donor principal and the storage reserve is above the contract’s minimum. The same audit exits non-zero because the vault still has FullAccess key `ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz`. That key can replace code; immutability is not claimed.
 
-The checked-in `contract/artifacts/covaunt.wasm` is the source-matched deployed binary: 183,746 bytes, SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`. The final CI upload from run `43541716644` is 183,335 bytes with SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; this difference is expected from the explicitly non-reproducible build mode and the CI file must not be used to claim a source match for the live vault.
+The checked-in `contract/artifacts/covaunt.wasm` is the source-matched deployed binary: 183,746 bytes, SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`. The follow-up CI upload from run `43578729757` is 183,335 bytes with SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; this difference is expected from the explicitly non-reproducible build mode and the CI file must not be used to claim a source match for the live vault.
 
 ## Read-only audit
 
@@ -81,7 +81,7 @@ NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 
 ## Work & Trust deployment preparation
 
-The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43541716644](https://github.com/ometere123/covaunt/actions/runs/43541716644), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
+The auxiliary deployment is intentionally separate from the preserved vault. The reviewed candidate artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43578729757](https://github.com/ometere123/covaunt/actions/runs/43578729757), SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`, 216,158 bytes, base58 code hash `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
 
 After a human has created/funded the dedicated account, run from WSL or another environment with the verified `near-cli-rs` command:
 
@@ -100,17 +100,16 @@ COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet' COVAUNT_WORK_DAO='covaunt26.spu
 
 Do not set `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` or publish task records until the audit confirms the code hash, DAO binding, balanced summary, storage reserve and account solvency, and the three reward tiers have each been exercised with genuine receipts.
 
-## Verified public preview
+## Verified public deployment
 
-- URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- URL: `https://covaunt.vercel.app`
 - Project: `covaunt` in the `delealufejoel-4184s-projects` team
-- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`
-- Branch alias: `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
-- Last inspected deployment during this release checkpoint: `dpl_65pqPhhRmU5z8vS1jtYmeTdrxxCK`; READY. Vercel deployment IDs rotate after every branch push; inspect the alias for the current immutable deployment.
+- Source: `ometere123/covaunt`, branch `main`, commit `9cc399b1921a012e61938edb378ba5bada5c5a4b`
+- Deployment: `dpl_75TThxTzXWXfos8v25Pzf1XQ8zUC`; READY. Vercel deployment IDs rotate after every main push; inspect the production alias for the current immutable deployment.
 - Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
 - Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
 - Verification: public HTTPS 200, all required routes, real final RPC reads, current live accounting, preview separation, mobile navigation, no mobile overflow and read-only proxy guard passed
-- Production: no production deployment or alias was retained; do not use `vercel deploy --prod`
+- Work status: production remains intentionally unconfigured; no auxiliary testnet contract is claimed
 
 Browser reads use the same-origin `/api/near-rpc` route. It accepts only JSON-RPC `query` requests and rejects transaction broadcast methods; the server route is pinned to `https://rpc.testnet.near.org` to prevent a mainnet configuration drift.
 

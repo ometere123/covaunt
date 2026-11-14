@@ -10,8 +10,8 @@ Updated 14 November 2026 from the repository gates and the recorded testnet evid
 | Rust contract | `cd contract && cargo test` | PASS; 13/13 in WSL |
 | Contract WASM | `cargo near build non-reproducible-wasm --no-abi`; artifact hash recorded | PASS; checked-in 183,746-byte artifact matches the deployed vault; final CI upload is separately disclosed as non-byte-identical |
 | Preserved vault sandbox receipts | `npm run test:sandbox` at the release checkpoint | PASS historically; the preserved test remains in the gate |
-| Work & Trust Rust contract | `cargo test --manifest-path work-contract/Cargo.toml` | PASS; 13/13, no ignored tests |
-| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; canonical CI artifact 214,474 bytes from run `43541716644`, not deployed |
+| Work & Trust Rust contract | `cargo test --manifest-path work-contract/Cargo.toml` | PASS; 17/17, no ignored tests, including role-conflict, callback-only reputation and pagination regressions |
+| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; canonical clean-checkout CI artifact 216,158 bytes from run `43578729757`, SHA-256 `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`, not deployed |
 | Work & Trust sandbox receipts | `npm run test:sandbox` with Linux NEAR Sandbox 2.14.0 | PASS; 2/2 total receipt tests, no skips, including small callback settlement and direct large-path rejection |
 | Next production build | `cd web && npm run build` | PASS |
 | TypeScript and lint | `npm run typecheck`, `npm run lint` | PASS; zero lint warnings |
@@ -25,7 +25,7 @@ Updated 14 November 2026 from the repository gates and the recorded testnet evid
 | Physical solvency | Liquid estimate backed outstanding donor principal | PASS with stated storage-price estimate |
 | Upgrade authority | FullAccess key remains on vault account | BLOCKED for immutability claim |
 | Wallet-to-contract browser writes | Multi-wallet connector installed and fixture-tested; real wallet signature in this migration | NOT RUN / external human flow |
-| Existing public HTTPS preview | Feature branch preview, live route evidence and honest unconfigured Work state | PASS; `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app` |
+| Existing public HTTPS deployment | `https://covaunt.vercel.app`, main merge commit `9cc399b1921a012e61938edb378ba5bada5c5a4b`, live route evidence and honest unconfigured Work state | PASS |
 | Hackathon submission | Requires explicit human authorization | BLOCKED |
 | Professional security audit | Not commissioned or claimed | NOT RUN |
 | near.social | Read-only mainnet FastData KV boundary | PASS as a labelled read-only integration; signed posting not enabled |

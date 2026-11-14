@@ -24,7 +24,7 @@ fi
 
 command -v near >/dev/null || { echo 'near-cli-rs missing' >&2; exit 2; }
 WASM="${COVAUNT_WORK_WASM_FILE:-$(cd "$(dirname "$0")/.." && pwd)/work-contract/artifacts/covaunt_work.wasm}"
-EXPECTED_SHA256="${COVAUNT_WORK_ARTIFACT_SHA256:-1580bd5b0a029c79aa953c122b755e8e8a060af4a6d8e893a73970f062689d5b}"
+EXPECTED_SHA256="${COVAUNT_WORK_ARTIFACT_SHA256:-50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500}"
 [[ -s "$WASM" ]] || { echo "Work WASM missing: $WASM" >&2; exit 3; }
 ACTUAL_SHA256="$(sha256sum "$WASM" | awk '{print tolower($1)}')"
 if [[ "$ACTUAL_SHA256" != "${EXPECTED_SHA256,,}" ]]; then

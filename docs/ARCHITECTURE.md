@@ -65,7 +65,7 @@ The frontend is a Next.js App Router application under `web/`:
 
 The installed wallet connector is `@hot-labs/near-connect` 0.12.0. It opens a multi-wallet chooser using the options exposed by its current manifest. Browser signing compatibility for a specific wallet remains an external verification step for this release. HERE is not claimed because it is not present in the verified manifest used by this release. The frontend never accepts keys, mnemonics or passwords. On mobile the wallet action remains in the header; the hamburger only controls navigation.
 
-The Work & Trust module is an independent Next.js data and wallet boundary in `web/lib/work.ts`. It is disabled unless `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is explicitly configured. Its Rust contract is source-matched in `work-contract/` and has no reference to the vault account, donor records or vault methods. The public app shows an unconfigured state rather than substituting tasks, payments or reputations.
+The Work & Trust module is an independent Next.js data, wallet and Sputnik adapter boundary in `web/lib/work.ts`. It is disabled unless `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is explicitly configured. Its Rust contract is source-matched in `work-contract/` and has no reference to the vault account, donor records or vault methods. The public app shows an unconfigured state rather than substituting tasks, payments or reputations. Work task/payout reads are paginated, and the DAO adapter keeps proposal status separate from Work callback settlement.
 
 ## Public audit routes
 
