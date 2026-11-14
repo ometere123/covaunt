@@ -11,7 +11,7 @@
 | `npm run verify:static` | PASS |
 | `cd contract && cargo test` | PASS; 13/13, 0 ignored; WSL |
 | Native Windows `cd contract && cargo test` | NOT RUN TO COMPLETION; environment lacks MSVC `link.exe`; WSL run is the reproducible Rust gate |
-| `cargo near build non-reproducible-wasm --no-abi` | PASS; 183,746 bytes |
+| `cargo near build non-reproducible-wasm --no-abi` | PASS; 183,746 bytes; checked-in artifact matches deployed vault |
 | `npm run test:sandbox` | PASS; 1/1 receipt/state-machine test, no skips; WSL NEAR Sandbox 2.14.0 |
 | `cd web && npm ci` | PASS after Next migration |
 | `cd web && npm run typecheck` | PASS |
@@ -33,7 +33,8 @@ The Rust and sandbox counts were rerun in WSL after the frontend migration. Brow
 - ESLint / eslint-config-next: 9.39.5 / 16.4.6
 - `contract/artifacts/covaunt.wasm`: 183,746 bytes
 - SHA-256: `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`
+- Final CI upload from run `43541716644`: 183,335 bytes, SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; non-byte-identical due to the explicitly non-reproducible build mode.
 - Base58 code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
-- `work-contract/artifacts/covaunt_work.wasm`: 214,474 bytes, canonical GitHub Actions artifact from run `43540098542`
+- `work-contract/artifacts/covaunt_work.wasm`: 214,474 bytes, canonical GitHub Actions artifact from run `43541716644`
 - Work artifact SHA-256: `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`
 - Work Rust tests: 13/13; Work sandbox receipt tests: 1/1 combined with the preserved vault test suite (2/2 total)

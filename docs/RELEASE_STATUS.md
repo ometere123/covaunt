@@ -19,7 +19,7 @@
 - Git branch: `feature/covaunt-work-trust`
 - Git commit: `18fdc7befd58862a0629530537d012da792ef61f`
 - Deployment: `dpl_Gb4C9KBS2gecg5FaZbDzRW6XEDjP`; READY; public HTTPS route checks, mobile checks and live testnet reads passed
-- GitHub Actions: [Verification run 43540098542](https://github.com/ometere123/covaunt/actions/runs/43540098542); interface and contract jobs passed, including both WASM uploads and sandbox receipts
+- GitHub Actions: [Verification run 43541716644](https://github.com/ometere123/covaunt/actions/runs/43541716644); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 - Production release: not published
 
 ## Recorded live outcome
@@ -34,7 +34,7 @@ At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR dep
 | Deterministic proof | PASS |
 | Static preflight | PASS |
 | Rust contract tests | PASS; 13/13, no ignored tests; WSL |
-| Contract WASM | PASS; source-matched 183,746-byte artifact |
+| Contract WASM | PASS; source-matched 183,746-byte checked-in artifact; final CI upload separately disclosed as non-byte-identical |
 | Sandbox receipts | PASS; 1/1, no skips; WSL NEAR Sandbox 2.14.0 |
 | Next typecheck | PASS |
 | Next lint | PASS; zero warnings |

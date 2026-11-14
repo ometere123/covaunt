@@ -17,6 +17,8 @@
 
 The live audit retrieved `get_summary`, `get_policy`, account state, code metadata and access keys. It confirmed `dao_id` matches, the logical ledger is balanced, the estimated liquid balance backs outstanding donor principal and the storage reserve is above the contract’s minimum. The same audit exits non-zero because the vault still has FullAccess key `ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz`. That key can replace code; immutability is not claimed.
 
+The checked-in `contract/artifacts/covaunt.wasm` is the source-matched deployed binary: 183,746 bytes, SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`. The final CI upload from run `43541716644` is 183,335 bytes with SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; this difference is expected from the explicitly non-reproducible build mode and the CI file must not be used to claim a source match for the live vault.
+
 ## Read-only audit
 
 PowerShell:
@@ -79,7 +81,7 @@ NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 
 ## Work & Trust deployment preparation
 
-The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43540098542](https://github.com/ometere123/covaunt/actions/runs/43540098542), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
+The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43541716644](https://github.com/ometere123/covaunt/actions/runs/43541716644), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
 
 After a human has created/funded the dedicated account, run from WSL or another environment with the verified `near-cli-rs` command:
 

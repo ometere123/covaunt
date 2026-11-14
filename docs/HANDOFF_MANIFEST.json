@@ -17,7 +17,14 @@
   "wasm_artifact": {
     "path": "contract/artifacts/covaunt.wasm",
     "bytes": 183746,
-    "sha256": "96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888"
+    "sha256": "96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888",
+    "deployed_source_match": true,
+    "final_ci_upload": {
+      "run_id": 43541716644,
+      "bytes": 183335,
+      "sha256": "c67cf6b0f4b32e66471963c8273c5e76dd0843ab7f78482e176e6ee12b07e679",
+      "byte_identical_to_deployed": false
+    }
   },
   "work_artifact": {
     "path": "work-contract/artifacts/covaunt_work.wasm",
@@ -66,8 +73,8 @@
     "sandbox_tests": "PASS_2_OF_2_WSL_NO_SKIPS"
   },
   "github_actions": {
-    "run_url": "https://github.com/ometere123/covaunt/actions/runs/43540098542",
-    "run_id": 43540098542,
+    "run_url": "https://github.com/ometere123/covaunt/actions/runs/43541716644",
+    "run_id": 43541716644,
     "interface": "success",
     "contract": "success",
     "artifacts": ["covaunt-wasm", "covaunt-work-wasm"]
