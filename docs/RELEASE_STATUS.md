@@ -42,7 +42,7 @@ At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR dep
 | Browser tests | PASS; 22/22 across desktop and mobile Chromium |
 | Hosted preview checks | PASS; routes, mobile navigation, live RPC accounting, preview separation and read-only proxy |
 | Work & Trust unit tests | PASS; 12/12 |
-| Work & Trust WASM | PASS; 214,979-byte artifact, no testnet account |
+| Work & Trust WASM | PASS; canonical CI artifact 214,474 bytes, no testnet account |
 | Work & Trust sandbox | PASS; 2/2 combined receipt tests, no skips, in WSL Linux Node 22 / NEAR Sandbox 2.14.0 |
 | near.social | PASS as read-only mainnet context boundary; no signed posting |
 | Trezu | NOT INTEGRATED; compatibility blocker documented |
