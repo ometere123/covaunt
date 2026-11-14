@@ -1,123 +1,140 @@
-# COVAUNT — deployment, integration, and recovery runbook
+# COVAUNT deployment and recovery runbook
 
-**Environment:** testnet only. **Current status (13 Nov 2026):** the contract WASM and local receipt tests are complete. Final NEAR testnet RPC checks confirmed the intended signer account `covauntops26.testnet` with approximately 2.9928850104625 NEAR and the proposed target account `vault.covauntops26.testnet` with 7 NEAR. `view_code` returned `NO_CONTRACT_CODE` for the target. No Sputnik DAO, deployment transaction, contract code hash or web deployment exists yet. No private keys were read or committed.
+**Network:** NEAR testnet only
+**Current posture:** deployed evidence exists; do not redeploy or upgrade this instance as part of frontend work.
 
-## 0. Required software and real accounts
+## Verified deployment identity
 
-- Rust stable, `wasm32-unknown-unknown` target, `cargo-near` (the local verification used `cargo-near-near 0.23.0`), `near-cli-rs` (verify installed command syntax against `near --help` and `cargo near --help`)
-- Node.js 22+, npm, Git; an accessible public NEAR testnet RPC
-- The intended testnet signer is `covauntops26.testnet`; verify the active near-cli keychain identity and retain gas/account-storage headroom before any live command.
-- The proposed COVAUNT target is `vault.covauntops26.testnet`; its existence and 7 NEAR balance were confirmed by final RPC, but it has no contract code yet. Recheck existence and balance immediately before deployment.
-- A **real Sputnik DAO on testnet** with council roles that can add and approve `FunctionCall` proposals. Verify actual proposal permissions, `get_policy`, `get_last_proposal_id`, voting threshold and current `proposal_bond` before integrating. The DAO must have a real testnet contract code hash and be able to transfer to COVAUNT by a function-call proposal.
-- At least three donor accounts, a school account, a clinic account, and two council voters (if policy requires two). Fund donors and DAO bond payer from testnet funding only.
+| Item | Value |
+| --- | --- |
+| Operator / deployer account | `covauntops26.testnet` |
+| Vault account | `vault.covauntops26.testnet` |
+| Sputnik DAO | `covaunt26.sputnikv2.testnet` |
+| Contract display name | `COVAUNT` |
+| Code hash | `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u` |
+| Proposal bond | `1 NEAR` |
+| RPC | `https://rpc.testnet.near.org` |
 
-NEAR documentation: https://docs.near.org/ ; Sputnik implementation: https://github.com/near-daos/sputnik-dao-contract ; wallet selector: https://github.com/near/wallet-selector/blob/main/MIGRATION-v10.md
+The live audit retrieved `get_summary`, `get_policy`, account state, code metadata and access keys. It confirmed `dao_id` matches, the logical ledger is balanced, the estimated liquid balance backs outstanding donor principal and the storage reserve is above the contract’s minimum. The same audit exits non-zero because the vault still has FullAccess key `ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz`. That key can replace code; immutability is not claimed.
 
-## 1. Install and run gates BEFORE deploying
+The checked-in `contract/artifacts/covaunt.wasm` is the source-matched deployed binary: 183,746 bytes, SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`. The final CI upload from run `43541716644` is 183,335 bytes with SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; this difference is expected from the explicitly non-reproducible build mode and the CI file must not be used to claim a source match for the live vault.
 
-```bash
-node --version
-cargo --version
-near --version
-cargo near --help
-npm install
-npm run test
-npm run verify:static
-cd contract
-cargo test
-cargo near build non-reproducible-wasm --no-abi
-cd ..
-npm run test:sandbox
-cd web
-npm install
-npm run build
-npm run test:browser
-cd ..
+## Read-only audit
+
+PowerShell:
+
+```powershell
+$env:COVAUNT_ACCOUNT = 'vault.covauntops26.testnet'
+$env:DAO_ACCOUNT = 'covaunt26.sputnikv2.testnet'
+npm run verify:live
 ```
 
-No part of the above is optional for release confidence. The root `.npmrc` disables the legacy `near-sandbox` postinstall; `scripts/ensure-sandbox.mjs` downloads and version-checks NEAR Sandbox `2.14.0` and requires Linux x64. Run `npm run test:sandbox` in WSL or Linux/CI. Missing WASM or sandbox binaries fail the test; a skipped receipt test is not a passing integration suite. The web bundle must complete and load in at least one real browser. Validate signing and return redirects with MyNearWallet on an HTTPS testnet app.
-
-The `non-reproducible-wasm` build instruction is a build convenience, **not** proof of deterministic reproducibility. For a serious submission, record compiler versions and the WASM SHA-256, then perform a reproducible build wherever the current cargo-near toolchain supports it.
-
-## 2. Deploy the real DAO first
-
-A Sputnik DAO is a separate real contract; COVAUNT does not install or create it. Use the official testnet DAO factory or audited contract deployment instructions that match your intended testnet network and policy. Record:
+Expected recorded values:
 
 ```text
-DAO_ACCOUNT                 actual account ID
-DAO_CONTRACT_CODE_HASH      from view_code
-COUNCIL_MEMBER_A/B          actual account IDs
-PROPOSAL_BOND               live get_policy result
-THRESHOLD                   actual policy for FunctionCall proposals
-DAO_CREATION_TRANSACTION    explorer URL
+ledger_balanced true
+dao_match true
+code_hash B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u
+totals contributed 18200000000000000000000000
+        paid        9000000000000000000000000
+        refunded    100000000000000000000000
+        available   9100000000000000000000000
+        pending_spend 0
+        pending_refund 0
 ```
 
-Confirm your DAO account accepts `add_proposal` with `FunctionCall` and that `act_proposal` executes the proposal. Never configure the web app to a normal user account masquerading as DAO for the final demo.
+The command’s non-zero exit is expected until the FullAccess key is deliberately handled. Do not silence or weaken that check.
 
-## 3. Deploy COVAUNT contract
+The preserved evidence snapshot at `2026-11-13T10:15:56.256Z` records 18.1 NEAR across four contributions. The current read-only audit at `2026-11-14T01:12:24.4618119Z` includes a fifth 0.1 NEAR available entry, COV-004 from `elpadree.testnet`, and therefore reports 18.2 NEAR deposited across five contributions. The audit does not broadcast a transaction. The complete current read is recorded in [live-evidence/current-audit.json](live-evidence/current-audit.json).
+
+## Do not redeploy this instance
+
+The existing COVAUNT contract and Sputnik DAO are part of the preserved evidence. Do not run `scripts/deploy-testnet.sh`, `near contract deploy`, `near contract call ... new`, `near contract deploy use-file` or any upgrade command against these accounts without explicit human authorization and a reviewed recovery plan. Do not remove access keys in an automated release step.
+
+The script remains available for a separately authorized fresh testnet deployment. It requires `COVAUNT_DEPLOY_CONFIRM=YES`, a verified real Sputnik DAO and an explicit operator decision. Its initializer uses `name: "COVAUNT"`; it must never be used to replace the live vault accidentally.
+
+## Frontend deployment preparation
+
+The web app is Next.js, not the retired Vite bundle. The authorized Vercel preview uses:
+
+```text
+Root directory: web
+Install command: npm ci
+Build command: npm run build
+Framework: Next.js
+```
+
+Set only public configuration values:
+
+```text
+NEXT_PUBLIC_NEAR_RPC=https://rpc.testnet.near.org
+NEXT_PUBLIC_COVAUNT_CONTRACT=vault.covauntops26.testnet
+NEXT_PUBLIC_COVAUNT_DAO=covaunt26.sputnikv2.testnet
+NEXT_PUBLIC_NEAR_EXPLORER=https://explorer.testnet.near.org
+# Leave empty until a separately funded Work & Trust account is independently verified.
+NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=
+# Optional public read endpoint; this is near.social mainnet context, not COVAUNT testnet.
+NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
+```
+
+`NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` must remain unset for the preserved vault-only preview. Setting it enables the task funding, claim, evidence, verification, contributor and reward UI against that exact auxiliary account; it does not deploy or upgrade anything. Do not point it at the vault account. The source-matched local artifact and its no-deployment status are recorded in [Work & Trust](WORK_AND_TRUST.md).
+
+## Work & Trust deployment preparation
+
+The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43541716644](https://github.com/ometere123/covaunt/actions/runs/43541716644), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
+
+After a human has created/funded the dedicated account, run from WSL or another environment with the verified `near-cli-rs` command:
 
 ```bash
-# Do not replace DAO_ACCOUNT until a real Sputnik DAO is created and verified.
-export DAO_ACCOUNT='REPLACE_WITH_VERIFIED_SPUTNIK_DAO'
-export COVAUNT_ACCOUNT='vault.covauntops26.testnet'
-export COVAUNT_DEPLOY_CONFIRM=YES
-bash scripts/deploy-testnet.sh
+export COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet'
+export COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet'
+export COVAUNT_WORK_DEPLOY_CONFIRM=YES
+./scripts/deploy-work-testnet.sh
 ```
 
-The script runs unit tests and builds WASM first. It then calls the actual `near contract deploy ... with-init-call new` with `dao_id`, `name: "COVAUNT"`, and a **5 NEAR attached init deposit** paid by the deployer, not donors. Do not rerun the init transaction on an initialized contract. Confirm the precise CLI syntax for the installed CLI revision; if syntax differs, adjust the command with explicit provenance and rerun all checks.
-
-After deployment, inspect:
+The script refuses the original vault account, verifies the artifact hash, uses testnet only, initializes `COVAUNT Work` with the existing DAO binding and signs through the configured keychain. It does not read or print private keys. Immediately after a successful receipt, run the read-only audit:
 
 ```bash
-COVAUNT_ACCOUNT="$COVAUNT_ACCOUNT" DAO_ACCOUNT="$DAO_ACCOUNT" node scripts/audit-testnet.mjs
+COVAUNT_WORK_ACCOUNT='work.covauntops26.testnet' COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet' npm run verify:work-live
 ```
 
-This script fetches the real on-chain code metadata, `get_summary`, DAO `get_policy`, and checks for FullAccess keys. It never signs transactions or claims a security audit. If the contract has the wrong `dao_id` or `is_balanced` false, **do not deposit**.
+Do not set `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` or publish task records until the audit confirms the code hash, DAO binding, balanced summary, storage reserve and account solvency, and the three reward tiers have each been exercised with genuine receipts.
 
-## 4. Configure and deploy the web app
+## Verified public preview
 
-```bash
-node scripts/set-config.mjs "$COVAUNT_ACCOUNT" "$DAO_ACCOUNT"
-cd web
-npm run build
-npm run dev
-```
+- URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Project: `covaunt` in the `delealufejoel-4184s-projects` team
+- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`
+- Branch alias: `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Last inspected deployment during this release checkpoint: `dpl_65pqPhhRmU5z8vS1jtYmeTdrxxCK`; READY. Vercel deployment IDs rotate after every branch push; inspect the alias for the current immutable deployment.
+- Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
+- Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
+- Verification: public HTTPS 200, all required routes, real final RPC reads, current live accounting, preview separation, mobile navigation, no mobile overflow and read-only proxy guard passed
+- Production: no production deployment or alias was retained; do not use `vercel deploy --prod`
 
-Deploy `web/dist/` to any static HTTPS hosting provider (e.g. Vercel or Cloudflare Pages), with framework set to Vite/static, build `npm run build`, output `dist`. Do not request a domain by default; the deployment platform may issue a generic preview hostname. Before publishing, verify the live page identifies the configured contract/DAO and displays the **NEAR TESTNET / LIVE DATA** ribbon with `is_balanced: true`. Remove all demo-only misleading claims. Do not publish private keys, `.env` files or CLI keychains.
+Browser reads use the same-origin `/api/near-rpc` route. It accepts only JSON-RPC `query` requests and rejects transaction broadcast methods; the server route is pinned to `https://rpc.testnet.near.org` to prevent a mainnet configuration drift.
 
-Note: in preview mode the UI uses clearly labeled sample data and **blocks all transaction controls**. In live mode a failed RPC call does not revert to sample data.
+No wallet key, seed phrase, mnemonic, private RPC credential or deploy key is needed by the frontend. The app reads public RPC state in the browser and uses near-connect to hand transaction approval to the selected wallet.
 
-## 5. Full testnet demonstration sequence
+Before treating the preview as a complete public write surface, exercise a real testnet wallet flow with an authorized human: select one wallet from the chooser, verify account persistence and disconnect, contribute a small authorized covenant, create a real proposal with the live bond, vote only from an actual council account, inspect the DAO outcome separately from `get_spend`, and request a refund only after on-chain eligibility. This repository does not claim that browser-to-wallet write sequence was independently exercised during the migration.
 
-Choose small scaled amounts if funding is limited; 8/6/4 NEAR is a readable illustrative template, not a required minimum. Use current future expiry timestamps for actual contributions.
+The Work & Trust forms are a separate gate. They must not be enabled in a public deployment until a separately funded auxiliary account is confirmed, its WASM hash is recorded, the small/medium/large authorization paths are tested, and a real graphical wallet flow is exercised. A task budget is not donor principal. Large rewards must be invoked by the configured Sputnik DAO, not by a connected visitor.
 
-1. Donor A contributes **8** NEAR, allowed mask `1` Education, recipients `[school.testnet]`.
-2. Donor B contributes **6** NEAR, mask `2` Healthcare, recipients `[clinic.testnet]`.
-3. Donor C contributes **4** NEAR, mask `3`, recipients `[school.testnet, clinic.testnet]`.
-4. Check `get_summary.total_deposited=18 NEAR` and `is_balanced=true`.
-5. DAO council member previews a **9 NEAR** healthcare payment to `clinic.testnet` and confirms allocation donor B `6`, donor C `3`, donor A `0`.
-6. Sign `add_proposal` with the exact `FunctionCall` payload; use the current `proposal_bond`. Council voter(s) call `act_proposal VoteApprove` until Sputnik policy resolves the proposal.
-7. Inspect resulting `get_spend.status` as **Settled** and cross-check recipient account balance / actual transfer receipt. `get_summary.total_paid=9`.
-8. Propose a separate **2 NEAR** healthcare diversion to the clinic when the only available capital is donor A Education plus donor C remaining 1 Healthcare. A DAO vote may succeed, but the target COVAUNT call must fail `ERR_NOT_ENOUGH_ELIGIBLE_CAPITAL`; verify donor A's 8 NEAR unchanged.
-9. Attempt direct `execute_spend` from a non-DAO signer, wrong recipient, expired grant, and replay, confirming each rejection.
-10. Once expiry is reached on a separate short-duration test grant, donor calls `request_refund`; confirm actual NEAR transfer, `refunded` increases, `is_balanced=true`.
-11. Record all hashes using `node scripts/collect-evidence.mjs ...`, attach raw receipts and public explorer URLs.
-12. Audit deployment keys and decide whether removing FullAccess keys is appropriate after code is independently reviewed and recoverability policy determined. Do not perform irreversible key removal without full understanding.
+## Evidence sequence
 
-## 6. Failure recovery
+The preserved evidence records:
 
-- **Quote now rejects:** a donor's grant expired, capital was spent or another proposal reserved funds; re-quote and re-propose. Do not force or bypass the permission rules.
-- **DAO proposal approved, COVAUNT execution failed:** no COVAUNT `Spend` is created if permission check panicked. Inspect DAO action receipt and contract summary. A new correctly authorized mandate can be proposed with a new unique ID.
-- **Transfer `Failed`:** callback should restore all allocations; check final `get_spend.status=Failed`, `pending_spend=0`, balances restored. Never reuse its mandate ID.
-- **Refund `Failed`:** verify `pending_refund=0` and `available` restored, then retry after correcting destination account availability. A donor account deleted or inaccessible remains an external recovery challenge.
-- **Callback stuck / no terminal status:** do **not** redeploy or manually alter funds. Gather transaction receipts and state. This package provides no unilateral state-rewriting emergency recovery function by design. Independent analysis is required before real-value use.
-- **Storage reserve exhausted:** deposits and spend record creation fail closed; do not divert donor funds to patch storage. The current ABI does not expose an admin top-up or reserve-withdraw method. Capacity planning must be validated before external adoption.
-- **Wrong `dao_id`:** the initialized DAO is intentionally immutable; deploy a new instance with the correct DAO and conduct transparent donor opt-in migration, not forced transfer.
+1. Four donor contributions totaling 18.1 NEAR.
+2. A 9 NEAR healthcare proposal approved by both council members and settled to the authorized clinic.
+3. A 2 NEAR healthcare override approved by both members but rejected during downstream COVAUNT execution; Sputnik ended `Failed`.
+4. Early refund rejection with `ERR_STILL_LOCKED`.
+5. A successful 0.1 NEAR donor refund.
+6. A balanced final ledger with zero pending obligations.
 
-## 7. Public release and key security
+The current live ledger also shows a fifth 0.1 NEAR available contribution, so the public preview should be narrated from its current read rather than from the older 18.1 NEAR snapshot.
 
-Use `node scripts/audit-testnet.mjs` and an explorer to list FullAccess keys on the contract account. Such keys can redeploy contract code or otherwise undermine donor guarantees. If a key remains, do **not** advertise upgrade immutability. Before removing it, assess upgrade/recovery tradeoffs and obtain a competent review. A public testnet hackathon demo can disclose remaining key controls, but should not misrepresent them as safe for production deposits.
+Explorer links are collected in `docs/live-evidence/evidence.json` and surfaced by `/journal`.
 
-## 8. Repository release gates
+## Key-custody recommendation
 
-The GitHub Actions workflow runs Rust unit tests, builds WASM, uploads the artifact, runs the sandbox and builds the web app. The local WSL gates are green, but no GitHub Actions run was available in this workspace. Examine completed CI logs and exact artifacts before treating CI as independent evidence. The status file `docs/RELEASE_STATUS.md` distinguishes local PASS results from external BLOCKED gates.
+Do not delete the FullAccess key casually. First export no secrets, confirm the source-matched WASM and code hash, test a recovery deployment on a separate account, record the DAO and vault evidence, obtain human approval and understand that key deletion is irreversible unless another authorized key exists. Then remove or downgrade only through an explicit, reviewed NEAR transaction and rerun the access-key, code-hash, ledger and solvency audit. Until then, describe the vault as upgrade-authority-exposed testnet infrastructure.

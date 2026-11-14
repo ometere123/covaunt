@@ -1,0 +1,22 @@
+[package]
+name = "covaunt-work"
+version = "0.1.0"
+edition = "2021"
+description = "Separate, consent-free community work and reward registry for COVAUNT"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+near-sdk = { version = "=5.30.1", features = ["legacy"] }
+
+[dev-dependencies]
+near-sdk = { version = "=5.30.1", features = ["legacy", "unit-testing"] }
+
+[profile.release]
+codegen-units = 1
+lto = true
+opt-level = "z"
+panic = "abort"
+overflow-checks = true

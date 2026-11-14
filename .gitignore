@@ -1,7 +1,11 @@
 node_modules/
 web/node_modules/
 web/dist/
+web/.next/
+web/tsconfig.tsbuildinfo
+web/AGENTS.md
 contract/target/
+work-contract/target/
 .DS_Store
 .env
 .env.*
@@ -16,3 +20,6 @@ contract/target/
 coverage/
 playwright-report/
 test-results/
+
+.vercel
+.env*

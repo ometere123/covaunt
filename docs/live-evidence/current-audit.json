@@ -1,0 +1,37 @@
+{
+  "network": "testnet",
+  "retrieved_at": "2026-11-14T01:12:24.4618119Z",
+  "rpc": "https://rpc.testnet.near.org",
+  "source": "scripts/audit-testnet.mjs plus final get_contributions read",
+  "contract": "vault.covauntops26.testnet",
+  "dao": "covaunt26.sputnikv2.testnet",
+  "contract_name": "COVAUNT",
+  "code_hash": "B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u",
+  "proposal_bond_yocto": "1000000000000000000000000",
+  "ledger": {
+    "total_deposited": "18200000000000000000000000",
+    "total_paid": "9000000000000000000000000",
+    "total_refunded": "100000000000000000000000",
+    "available": "9100000000000000000000000",
+    "pending_spend": "0",
+    "pending_refund": "0",
+    "contributions": 5,
+    "spends": 1,
+    "is_balanced": true
+  },
+  "account": {
+    "balance_yocto": "16098490659423300600000000",
+    "storage_usage_bytes": 185775,
+    "estimated_storage_staked_yocto": "1857750000000000000000000",
+    "estimated_liquid_yocto": "14240740659423300600000000",
+    "outstanding_donor_principal_yocto": "9100000000000000000000000",
+    "estimated_donor_principal_backed": true
+  },
+  "access_keys": {
+    "full_access": [
+      "ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz"
+    ],
+    "immutability_claim": false
+  },
+  "reconciliation_note": "The preserved evidence snapshot was retrieved at 2026-11-13T10:15:56.256Z with 18.1 NEAR across four contributions. The later final read includes COV-004, a 0.1 NEAR available contribution from elpadree.testnet, and therefore reports 18.2 NEAR across five contributions. No transaction was initiated by this audit."
+}

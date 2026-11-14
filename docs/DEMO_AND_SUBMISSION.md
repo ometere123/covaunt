@@ -1,73 +1,59 @@
-# COVAUNT — demo, presentation and submission kit
+# COVAUNT demo and submission kit
 
-## Opening pitch (20 seconds)
+## Opening line
 
-“Communities vote on how to spend pooled money. But what if a majority approves a payment that violates one donor's promise? COVAUNT keeps donor permissions binding **inside** a shared treasury. You can govern collectively without converting each contribution into a blank cheque.”
+“COVAUNT lets a community vote on pooled money without turning every donor contribution into a blank cheque.”
 
-## Demonstration storyboard (90–150 seconds if event allows)
+## Two-minute storyboard
 
-| Time | Show | Independent evidence |
-|---|---|---|
-| 00:00–00:12 | Distinct parchment-and-ink interface; show donor-level permission idea | None beyond product walkthrough |
-| 00:12–00:30 | Three contributor accounts, 8/6/4 testnet grant deposits | Three NEAR tx links / `get_contributions` |
-| 00:30–00:42 | Quote medical 9 NEAR; show B6 + C3 while A8 intact | Live `quote` RPC |
-| 00:42–01:05 | Real Sputnik council proposal and votes | DAO `add_proposal`, `act_proposal` receipts |
-| 01:05–01:20 | Contract transfer becomes `Settled` and clinic is credited | NEAR receipt and `get_spend` |
-| 01:20–01:42 | Council approves deliberate diversion; target rejects incompatible funding | Real failed cross-contract receipt / unchanged donor A |
-| 01:42–02:00 | Show donor refund, accounting and source tests | Testnet refund receipt / public README |
+| Time | Screen | Proof to say |
+| --- | --- | --- |
+| 00:00–00:15 | `/` | A DAO can govern. It cannot rewrite a donor’s consent. The ribbon says NEAR testnet and identifies the real vault. |
+| 00:15–00:35 | `/treasury` | Read the live reconciliation: the current chain read is 18.2 NEAR deposited, 9 paid, 0.1 refunded, 9.1 available, zero pending. Explain that the preserved receipt snapshot was 18.1 NEAR before the later 0.1 NEAR entry. |
+| 00:35–00:55 | `/covenants` | Open donor restrictions. Purpose and recipients are data in the vault, not decoration in the browser. |
+| 00:55–01:20 | `/mandates` | Ask the contract for the allocation quote. Show the compatible healthcare path and explain that the quote is re-read before a DAO proposal. |
+| 01:20–01:40 | `/governance` | Show the genuine Sputnik account, council role, 2-of-2 threshold evidence and 1 NEAR proposal bond. A connected visitor does not gain council permissions. |
+| 01:40–02:05 | `/journal#valid` | Open the real 9 NEAR settlement receipt. Distinguish DAO approval from the vault’s `Settled` callback. |
+| 02:05–02:30 | `/journal#forbidden` | Open the real 2 NEAR unanimous override. The DAO approved the attempt; downstream COVAUNT execution failed because incompatible capital remained protected. |
+| 02:30–02:45 | `/journal#refund` | Open the 0.1 NEAR refund receipt. The donor, expiry and callback checks are separate from governance. |
+| 02:45–03:00 | `/about#limitations` | Disclose the FullAccess-key limitation, testnet scope, no professional audit and the boundary around off-chain beneficiary use. |
 
-If the hackathon demo demands 60 seconds, cut to the three highlights: real DAO vote, successful compatible payout and blocked incompatible payout, with the rest in an extended public technical video. Do not accelerate timestamps in a way that misrepresents real execution.
+The Work & Trust route may be shown only as a scope disclosure until a separately funded auxiliary contract is deployed and independently verified. Do not present local task fixtures, reward-tier unit tests or contributor examples as public testnet evidence.
 
-## Project title
+## Voiceover
 
-**COVAUNT — A Community Treasury That Cannot Outvote Donor Consent**
+“This is COVAUNT, a Social Money treasury on NEAR. The community can pool capital and govern through Sputnik DAO, but the vault records each donor’s original purpose, recipient allowlist and expiry. Here, a contract quote allocates compatible money before a proposal is opened. The DAO vote is real governance, not a shortcut around donor consent. In the verified 9 NEAR healthcare payment, six came from healthcare-only capital and three from a broader covenant; education-only capital stayed untouched. In the adversarial case, both council members approved a 2 NEAR healthcare proposal, but the downstream call failed because the vault could not find compatible capital. That is the product: a majority can decide what to ask for, but the contract decides whether donor conditions allow it. The public journal links the receipts. The release is testnet-only and the vault still has a FullAccess upgrade key, so we make no immutability or production-security claim.”
 
-## Recommended submission positioning
+## Submission copy
 
-- **Primary track:** Social Money — COVAUNT is a shared native-NEAR treasury where collective governance cannot erase individual contribution conditions.
-- **Secondary track:** DAO / governance infrastructure, if the event offers a separate governance category.
-- **Submission title:** COVAUNT — A Community Treasury That Cannot Outvote Donor Consent.
+**Title:** COVAUNT — A community treasury that cannot outvote donor consent
 
-## Submission description (draft)
+**Primary track:** Social Money (social)
+**Secondary track:** Open track / governance infrastructure, if the portal permits a secondary selection
 
-COVAUNT is a consent-bound treasury for NEAR communities governed by Sputnik DAO. Contributors lock native NEAR with immutable purpose, beneficiary and expiry conditions. Council members can propose and vote on spending, but even a unanimously approved proposal cannot redirect a contributor's money outside those constraints. A bounded deterministic allocator combines compatible donations, reserves exact contributions, and settles payments through callback-verified native NEAR transfers. Expired unspent deposits are recoverable by the donor without governance approval. The web interface includes a public capital register, deposit desk, allocation preview, Sputnik FunctionCall integration and settlement journal. Built entirely on NEAR; no GenLayer required.
+**Description:** COVAUNT is a NEAR-native Social Money treasury governed by a genuine Sputnik DAO. Contributors attach immutable purpose and recipient restrictions to native NEAR. The council can propose and approve spending, but the vault independently checks every downstream FunctionCall, deterministically allocates only compatible capital and settles native payouts through callback-verified state. A real testnet evidence set includes a valid 9 NEAR healthcare settlement, a unanimous but forbidden 2 NEAR proposal that failed downstream enforcement, and a successful donor refund. The app is a multi-route Next.js experience with live finality reads, explicit preview separation, multi-wallet selection through near-connect, allocation quotes and a public receipt journal. The repository also contains an un-deployed, separately funded Work & Trust contract design; no live task, reward or reputation evidence is claimed. It does not claim mainnet readiness, off-chain work verification or an independent security audit.
 
-The local release proves the contract behavior in NEAR Sandbox, including successful compatible settlement, failed-transfer recovery, replay rejection and expiry refund. Replace that sentence with the exact live DAO vote, transfer, rejection and refund evidence only after the testnet sequence is actually executed. The current artifact contains no live addresses or transaction claims.
+## Required evidence links
 
-## Public X post draft
+- Repository: `https://github.com/ometere123/covaunt`
+- Vault: `vault.covauntops26.testnet`
+- DAO: `covaunt26.sputnikv2.testnet`
+- Valid settlement: `https://explorer.testnet.near.org/transactions/Gv7yUyZ24JkPSW4p12pM8cLG48e83ZkMkzagZAENioG1`
+- Forbidden execution: `https://explorer.testnet.near.org/transactions/BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw`
+- Refund: `https://explorer.testnet.near.org/transactions/DKJEShdGxtLai6xPdRC7JzJ8EwAggv4jqHkz2RLRzU7V`
+- Public testnet preview: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Preview source: branch `feature/covaunt-work-trust`; deployment IDs rotate with branch pushes
 
-“An approved vote is not the same as donor consent.
+The public URL above is a verified read-only/live-testnet preview. A real HOT or Meteor wallet signature and browser-to-wallet write walkthrough still require an authorized human; do not describe that write path as independently verified until it is exercised. The Work & Trust module is intentionally unconfigured in this preview; local task/reward tests are not public evidence.
 
-Meet COVAUNT: a NEAR-native treasury where communities govern together, but each contribution stays bound to the contributor's original purpose and beneficiaries.
+## Public X draft
 
-The contract settles compatible capital, restores failed transfers, and refuses a majority-approved diversion that violates a donor's conditions.
+> COVAUNT is a Social Money treasury on @NEARProtocol where collective governance cannot rewrite individual donor consent.
+>
+> We verified a real testnet lifecycle: 9 NEAR healthcare settlement, a unanimous 2 NEAR override rejected by the vault, and a successful donor refund.
+>
+> Vote together. Keep promises specific.
+>
+> Testnet evidence and source: [repository URL]
 
-[REAL HTTPS DEMO URL] [REAL REPOSITORY URL] #NEARHackathon”
-
-Do not publish with placeholder links. Confirm current official contest hashtag and submission instructions on the actual hackathon portal immediately before posting. Public hackathon participation rules, timing and host requirements can change.
-
-## Current release evidence
-
-The local evidence package is complete for source, Rust, WASM, sandbox and browser gates. The two screenshots in `docs/screenshots/` are real Chromium captures of the explicitly labeled design preview. The following remain external prerequisites and must not be implied by this draft: a real Sputnik DAO code hash and policy, testnet account addresses, proposal/vote/settlement/refund receipts, recipient balance checks, FullAccess-key review, public HTTPS URL, public repository URL and submission-portal acceptance.
-
-## Source and video prerequisites
-
-- Public GitHub repository containing root README, code, test outputs, release-status disclosure and demo instructions.
-- Real deployed contract account and real Sputnik DAO account with proof they are the contracts claimed.
-- Public hosted UI with real connected testnet data; normal wallet transaction confirmation.
-- True transaction hashes for deposits, proposal approval, successful transfer, unauthorized failure and refund.
-- Video screen capture of genuine behavior; if any step uses preview, label it unequivocally.
-- Short description of limitations: off-chain use, DAO administration, FullAccess keys, cap, gas and asynchronous callbacks.
-
-## Suggested headings for project portal
-
-- Problem: votes should not erase personal donor restrictions
-- Breakthrough: simultaneous collective governance and individual contribution boundaries
-- Architecture: immutable grant permissions + real Sputnik `FunctionCall` votes + NEAR settlement callbacks
-- Proof: real successful, failed and recovery transactions
-- Security: direct-call rejection, recipient/purpose checks, expiry, replay, accounting, storage reserve
-- Status: testnet/hackathon demo, experimental financial contract, not audited
-
-## Recording checklist
-
-Hide personal account secrets and seed phrases, show entire browser URL and explorer link for credibility, avoid cuts that obscure the transaction outcome, capture an adverse test with the error visible, use readable typography, and end by showing the **actual repo URL**.
+Publish only after human review of the actual URL, evidence timestamp and FullAccess disclosure.

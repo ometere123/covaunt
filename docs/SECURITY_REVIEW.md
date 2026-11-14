@@ -1,50 +1,60 @@
-# COVAUNT — adversarial security review
+# COVAUNT adversarial security review
 
-**Review date:** 12 November 2026  
-**Reviewer posture:** malicious donor, compromised council member, direct RPC caller and failed asynchronous transfer  
-**Scope:** source review plus Rust unit tests and NEAR Sandbox receipt execution  
-**Conclusion:** no critical local contract failure was reproduced in the exercised paths; this is not an independent audit and does not authorize real-value use.
+**Review date:** 13 November 2026
+**Scope:** contract source and tests, sandbox receipt behavior, live read-only audit, Next.js boundary and browser workflows
+**Conclusion:** no critical failure was reproduced in the exercised contract paths; this is not a professional or independent audit.
 
-## Properties checked
+## Contract properties
 
-| Attack / property | Result | Evidence |
-|---|---|---|
-| Direct non-DAO `execute_spend` | **PASS** — `ERR_DAO_ONLY` | Rust unit + sandbox receipt |
-| Wrong purpose or recipient | **PASS** — allocation returns no compatible capital | Rust unit + sandbox incompatible request |
-| DAO-approved diversion of education-only capital | **PASS locally** — `ERR_NOT_ENOUGH_ELIGIBLE_CAPITAL` | 8/6/4 unit and sandbox scenario |
-| Recipient substitution / DAO or treasury recipient | **PASS** — unsafe recipients rejected | Rust unit tests |
-| Duplicate recipient allowlist | **PASS** — `ERR_DUP_RECIPIENT` | Rust unit test |
-| Concurrent spend reservation | **PASS in model** — availability moves to pending before transfer | Rust state transition and callback tests |
-| Mandate replay | **PASS** — single-use `spend_indices` rejects reuse, including after settlement | Rust + sandbox |
-| Failed payout | **PASS** — `spend_failed` restores each reservation | Rust + real sandbox transfer failure |
-| Failed refund | **PASS** — callback restores `available` | Rust unit test |
-| Early / wrong-donor refund | **PASS** — lock and donor checks panic | Rust unit tests |
-| Expiry | **PASS locally** — expired grants are excluded and donor refund settles | Rust + sandbox |
-| Arithmetic | **PASS for exercised paths** — integer yoctoNEAR and checked additions | Source review + tests |
-| Ledger conservation | **PASS locally** — summary invariant remains balanced through transitions | Rust, Node, sandbox |
-| Pagination / capacity | **PASS bounded behavior** — caps are explicit and quote fails closed at spend capacity | Node tests + source review |
-| Callback spoofing | **PASS by access control** — callbacks are `#[private]`; result count is required to be one | Source review |
-| Upgrade authority | **BLOCKED live review** — account FullAccess keys require deployment audit | No deployed account available |
-| Physical solvency | **BLOCKED live review** — logical accounting is not account-balance proof | Requires `audit-testnet.mjs` after deployment |
+| Property | Result |
+| --- | --- |
+| Direct non-DAO `execute_spend` | PASS locally: `ERR_DAO_ONLY` |
+| Wrong purpose / recipient | PASS: no eligible allocation |
+| DAO-approved donor diversion | PASS in local and recorded live case: downstream fails |
+| Duplicate recipient allowlist | PASS: `ERR_DUP_RECIPIENT` |
+| Unsafe DAO/vault recipient | PASS: rejected |
+| Concurrent reservation | PASS: availability moves to pending before transfer |
+| Mandate replay | PASS: `ERR_REPLAY` |
+| Failed payout callback | PASS: restores available balances and marks `Failed` |
+| Failed refund callback | PASS: restores available balance |
+| Early or wrong-donor refund | PASS: lock and donor checks |
+| Callback spoofing | PASS by `#[private]`, one-result guard and state check |
+| Integer arithmetic | PASS in exercised paths; yoctoNEAR and checked additions |
+| Conservation invariant | PASS in Rust, Node and sandbox paths |
+| Pagination and capacities | PASS bounded by contract caps |
+| Gas/storage reserve | PASS fail-closed checks locally; live reserve and solvency are separately audited |
+| Upgrade authority | BLOCKER: live vault retains FullAccess key |
 
-## Changes made during this review
+## Frontend review
 
-1. Added an explicit `env::promise_results_count() == 1` guard before reading either asynchronous result. This makes callback assumptions fail closed instead of accepting an unexpected callback shape.
-2. Pinned the receipt test runtime to NEAR Sandbox `2.14.0`, compatible with the current near-sdk protocol target, and made missing WASM/binary a test failure rather than a skipped pass.
-3. Added a root `.npmrc` so the legacy Windows-incompatible `near-sandbox` postinstall cannot make dependency installation appear successful without the explicit runtime preparation step.
-4. Disabled preview transaction controls and placed explanatory status text beside them. Preview wallet and proposal actions cannot be mistaken for successful writes.
-5. Aligned illustrative recipients with the documented `school.testnet` / `clinic.testnet` scenario and corrected the browser regression test.
+- Live RPC failure clears ledger data rather than showing preview numbers.
+- `?mode=preview` is explicit, deterministic and disables writes.
+- Wallet code is client-only and uses `@hot-labs/near-connect`; the site never receives private keys, phrases or passwords.
+- Contribution, proposal and refund controls use a busy guard and do not auto-retry after uncertainty.
+- DAO status and vault settlement are displayed as separate state machines.
+- Recipient, amount and proposal inputs are bounded before wallet calls; the contract remains authoritative.
+- The app has visible keyboard focus, semantic labels, mobile navigation and reduced-motion CSS.
+- Public work/reputation claims are not fabricated; `/work` is contract-backed only when an auxiliary account is configured and otherwise shows the deployment boundary.
+- The auxiliary Work & Trust contract is isolated from the vault, has bounded task/submission/payout storage, private callbacks, one-claim/one-submission guards, tier-specific authorization and an eight-attempt payout cap.
+- The near.social surface is read-only mainnet context. Posts and profile data are not used as work evidence or reputation input.
+- Trezu is documented as not integrated; no duplicate treasury or provider-only label was added.
+- `npm audit --omit=dev --audit-level=high` has no high/critical findings. The audit still reports four low-severity transitive `elliptic` findings through `@near-js/transactions` → `@near-js/crypto` → `secp256k1`; `npm audit fix --force` proposes a breaking downgrade, so it was not applied without an upstream-compatible fix.
+
+## Live evidence
+
+The supplied evidence records a valid 9 NEAR settlement, a unanimous 2 NEAR override whose downstream vault execution failed, an early refund failure and a successful 0.1 NEAR refund. The read-only audit also reported a balanced ledger and estimated principal backing. It fails intentionally on the FullAccess-key check.
 
 ## Residual risks
 
-- COVAUNT validates a declared purpose and exact recipient account; it cannot prove the beneficiary's off-chain use of funds.
-- Sputnik DAO policy, council identity, proposal bond, action ABI and code hash still require live verification. A controlled sandbox predecessor is not a DAO vote.
-- Contract upgrade keys can replace code if deployment account access is retained. The contract exposes no unilateral admin withdrawal, but key custody remains a deployment risk.
-- A callback that never executes could leave capital pending. The contract intentionally has no emergency state-rewriting withdrawal path; live gas, receipt and operational monitoring must be validated before use.
-- Storage reserve protection is conservative but logical; live account liquid balance and storage staking must be reconciled separately.
-- The frontend quote is advisory. The contract recomputes allocation after DAO approval, and the UI must never treat a DAO status as a settled payment.
-- The web wallet dependency graph reports 10 low production advisories through `elliptic`. The available force fix is a breaking downgrade, so it was not applied without compatibility review.
+1. FullAccess can replace the deployed code. Until key custody is reviewed and the key is removed through an authorized irreversible operation, donor guarantees are upgrade-authority exposed.
+2. A callback that never executes could leave capital pending. The contract intentionally has no emergency state-rewriting withdrawal path.
+3. The contract validates declared purpose and account recipient, not off-chain use of funds or work completion.
+4. Sputnik policy and council membership remain governance dependencies. A connected wallet is not automatically a council member.
+5. Testnet RPC, wallet manifests, explorer indexing and account solvency can change after the evidence timestamp.
+6. The browser wallet flow has not been independently signed through a specific testnet wallet in this migration; it is wired and fixture-tested, not claimed as end-to-end wallet evidence.
+7. Work & Trust has no testnet deployment or live task/reward evidence in this release. Its unit tests and sandbox test do not prove a public account or real Sputnik execution.
+8. near.social reads mainnet public data only; signed posting and cross-network identity attribution remain disabled.
 
-## Release implication
+## Key recommendation
 
-Local contract, receipt and browser evidence supports a testnet-only hackathon handoff. The release remains blocked from live advertising until the exact DAO, deployment, key, solvency, wallet-return and explorer evidence gates in `docs/ACCEPTANCE.md` are completed.
+Do not delete `ed25519:6NDRm1atodNeiXTkK1qeRz9iaqCqX7QjR3zWKB4MhGAz` automatically. Confirm the source-matched WASM, test recovery on a separate account, obtain human authorization and understand the irreversible key-loss risk first. Then perform the removal manually and rerun code-hash, access-key, ledger, storage and solvency checks.

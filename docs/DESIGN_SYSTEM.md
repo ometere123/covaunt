@@ -1,51 +1,54 @@
-# COVAUNT — visual direction and UX system
+# COVAUNT visual direction and UX system
 
 ## Design position
 
-**Civic ledger × luxury print editorial.** Imagine a 19th-century community charter reinterpreted by an exceptional contemporary financial editorial studio. The app is serious, expressive, unmistakable and easy to understand. It avoids crypto clichés: no violet/blue gradients, synthetic glass cards, rows of indistinguishable dashboard widgets, giant rounded buttons, dancing AI mascots, stock 3D objects or animated price graphs.
+**Civic ledger × luxury print editorial.** COVAUNT should feel like a public register and a carefully typeset community charter: calm enough for financial inspection, distinctive enough to remember. It avoids violet/blue gradients, glass surfaces, repetitive SaaS cards, neon crypto styling, decorative mascots and controls that do not work.
 
-## Palette
+## Material and palette
 
-- **Archive parchment `#efece4`:** warm reading surface, not bright sterile white.
-- **Ink charcoal `#202924`:** text, structural outlines, dark contribution panel.
-- **Oxblood rust `#b94732`:** intentional premium accent for calls-to-action and consequences.
-- **Antique brass:** small editorial ornaments and line separators.
-- **Paper / secondary warm neutrals:** quiet hierarchy and data backgrounds.
+- Archive parchment `#efece4` for the reading surface
+- Ink charcoal `#202924` for structure and primary type
+- Oxblood `#9d352e` for consequence, selection and the one bright action
+- Antique brass `#ae8b55` / `#d5bc8d` for evidence lines and live marks
+- Quiet paper neutrals for grouping
 
-Color is not the only signifier of outcome: rejection states also have explicit words and icons. Typography should be legible on narrow phones. Hard structural rules and rhythm replace indiscriminate card shadows.
+Chrome stays quiet. Rich color appears only in the consent mark, settlement evidence and selected states. Borders are hairlines; depth comes from paper steps and ink blocks, not glow or shadow.
 
 ## Type and voice
 
-Use a large, expressive literary serif for promises/headlines (Playfair Display or licensed system fallbacks), a precise modern sans for interface labels (DM Sans or fallback), and a restrained mono for indices, financial amounts and technical metadata (DM Mono or fallback). Remote Google Font CSS is used as optional web font delivery; no font files are included in the handoff.
+System serif headlines carry promises and consequences. Arial is used for interface text, and Cascadia Mono/Consolas for accounts, amounts and receipt metadata. Amounts use tabular, integer-derived yoctoNEAR formatting. Copy is sentence case, specific and sober: “A vote is not a blank cheque.” “The record begins with a promise.” “DAO approval is not settlement.”
 
-Voice: decisive, donor-respecting, never overselling. Examples: “Your word. On the record.” “A vote is not a blank cheque.” “The governing body proposes. The ledger decides.” “The record begins with a promise.” No ambiguous “trustless proof of physical-world good” marketing.
+## Route language
 
-## Information architecture
-
-1. **Manifesto:** explains majority vs donor rights in one sentence and distinct seal.
-2. **Capital Register:** principal, allowed uses, beneficiaries, available balance, verified summary.
-3. **Deposit Desk:** contract-bound financial consent form with preview of expiry semantics.
-4. **Mandate Chamber:** council spending proposal and allocation quote; clear distinction between preview, proposed, approved and **settled**.
-5. **Council Docket:** actual proposals, status, council voting controls.
-6. **Public Journal:** settled/failed payments, ledger conservation and explorer reference.
-7. **Covenant Detail:** grant metadata, available amount, original donor, expiry and refund action when eligible.
+1. `/` — the rule and verified live overview
+2. `/treasury` — capital register and conservation check
+3. `/covenants` — donor permissions and deposit desk
+4. `/covenants/[id]` — one donor record and refund eligibility
+5. `/mandates` — allocation proof and council docket
+6. `/mandates/[id]` — DAO outcome versus vault settlement
+7. `/journal` — receipt-backed public evidence
+8. `/governance` — policy and council role without automatic privileges
+9. `/work` — task register when an auxiliary contract is configured, otherwise an explicit deployment boundary
+10. `/work/funding`, `/work/submit`, `/work/tasks/[id]` — task funding, evidence submission and accountable task detail
+11. `/contributors/[account]` — contract-derived settled-work record plus separately labelled near.social context
+12. `/about` — architecture, limitations and deployment identity
 
 ## Interaction rules
 
-- **No simulated transfers.** Design preview explicitly disables wallet and submit actions.
-- **No sample fallback after a live RPC failure.** The user sees an error and no authenticated ledger.
-- **Wallet authorization happens in actual MyNearWallet testnet flow.** Signing starts a transaction; it does not imply on-chain completion.
-- **Preview then submit:** mandate quote is advisory, execution rechecks latest balances at transaction time.
-- **Disable impossible actions:** a refund only appears for the original donor after expiry; DAO votes require connected account and still may be rejected by real governance policy.
-- **Touch friendly:** spacious click/tap targets, clear forms, labeled actions and short feedback messages.
-- **Accessible where practical:** semantic landmarks, native form labels, contrast-aware text, keyboard-dialog close and screen-reader status messages. WCAG compliance has **not been audited**.
+- Live RPC errors fail closed; sample values are never shown after a live failure.
+- `?mode=preview` is visibly illustrative and disables every write.
+- Wallet connection uses a real multi-wallet chooser through near-connect; the site never accepts a key, phrase or password. Connect wallet remains visible on mobile without requiring the navigation menu.
+- Contribution, proposal and refund actions have a busy guard and do not retry after uncertain signing.
+- Quotes are advisory and re-read from the contract before proposal creation.
+- A Sputnik status is never shown as paid; only a COVAUNT `Settled` spend and receipt count as settlement.
+- Refund eligibility is donor-only and expiry-bound by contract state.
+- Every control has a semantic label, visible focus ring, keyboard path and explicit status copy. Work actions display the configured contract authority and never imply DAO council rights from connection alone.
+- Reduced-motion preferences remove nonessential transitions.
 
-## Layout implementation
+## Implementation
 
-The delivered implementation uses a responsive handcrafted CSS layout (`web/src/style.css`), authored HTML landmarks (`web/index.html`), original vector seal (`web/assets/covaunt-mark.svg`) and a network-aware plain-JavaScript renderer (`web/src/app.js`). No React/Next.js/Tailwind or generic starter UI. This deliberate choice is to make the visual identity genuinely different from the user's prior repositories.
+The implementation is a handcrafted CSS system in `web/app/globals.css` with Next.js App Router route components under `web/app/` and typed client workflows under `web/components/`. The original seal is available at `web/public/covaunt-mark.svg`. There is no Tailwind, shadcn or generic design-system dependency.
 
-## Verification record and remaining publication checks
+## Verification
 
-The local browser verification exercised desktop Chromium and a 390px mobile Chromium viewport, confirmed no horizontal overflow, checked preview controls are disabled, inspected contribution details and captured [desktop](screenshots/covaunt-desktop-preview.png) and [mobile](screenshots/covaunt-mobile-preview.png) screenshots. These captures are real browser output from design preview, not an AI mockup and not live-chain evidence.
-
-Before publication, still check 360px / 768px / 1280px widths, tab through every live-mode control, test wallet-return flow and transaction/hash feedback after redirect, and perform an accessibility review. Live RPC outages are already fail-closed in the renderer; testnet wallet behavior remains externally blocked until accounts and a host are supplied.
+The browser suite covers 22 desktop/mobile tests for preview safety, live-mode RPC interpretation, route navigation, responsive menus, Work & Trust no-fabrication behavior, near.social separation, preview-mode write isolation, allocation preview and wallet-gated writes. The current Work & Trust desktop/mobile captures are `docs/screenshots/covaunt-work-desktop.png` and `docs/screenshots/covaunt-work-mobile.png`; they show the unconfigured release boundary. Screenshots are generated from the actual production Next app; any screenshot labeled preview or unconfigured is not live-chain evidence. A full WCAG audit has not been commissioned, although keyboard focus, labels, contrast-oriented palette, landmarks and reduced motion are implemented.

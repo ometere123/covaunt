@@ -1,67 +1,77 @@
-# COVAUNT — final release verification report
+# COVAUNT final release verification
 
-**Date:** 13 November 2026
-**Artifact:** `COVAUNT_RELEASE_HANDOFF`  
-**Engineering verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
+**Artifact:** `COVAUNT_RELEASE_HANDOFF`
+**Verification date:** 14 November 2026 (Africa/Lagos)
+**Network:** NEAR testnet for COVAUNT; near.social reads public mainnet data only
+**Branch:** `feature/covaunt-work-trust`
+**Release candidate:** `e8a6c26c134ecd56e798dced498856a300f1a622`
+**Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
-## A. Contract
+## Preserved live identity and evidence
 
-The Rust contract compiles against `near-sdk 5.30.1`. `cargo test` passes 13/13 unit tests with no ignored tests. The contract builds with `cargo-near-near 0.23.0`; the distributable `contract/artifacts/covaunt.wasm` is 183,746 bytes and has SHA-256 `96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888`.
+The deployed vault is `vault.covauntops26.testnet`; its stored Sputnik DAO is `covaunt26.sputnikv2.testnet`; its recorded code hash is `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. `docs/live-evidence/evidence.json` preserves the valid settlement, failed override, early refund and successful refund receipts.
 
-The tests cover immutable purpose/recipient permissions, exact narrow-before-flexible allocation, DAO caller enforcement, replay protection, early and wrong-donor refunds, failed payout/refund restoration, expiry, capacity bounds and conservation. The asynchronous callback handlers now require exactly one promise result before finalizing.
+The preserved evidence snapshot records 18.1 NEAR deposited across four contributions, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending obligations and balanced. A later read-only audit at `2026-11-14T01:12:24.4618119Z` reports the current chain at 18.2 NEAR deposited across five contributions, 9 NEAR paid, 0.1 NEAR refunded, 9.1 NEAR available, zero pending obligations and balanced; the fifth entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`. The audit initiated no transaction. The vault still has a FullAccess key capable of replacing code. This release makes no immutable-upgrade claim and did not remove or change that key. See [current-audit.json](live-evidence/current-audit.json).
 
-Remaining contract risks are documented in `docs/SECURITY_REVIEW.md`: upgrade-key custody, physical account solvency, callback operational monitoring and the fact that declared purpose cannot prove off-chain recipient behavior.
+## Product changes
 
-## B. DAO
+- Preserved the deployed vault and DAO configuration without redeploying or upgrading either account.
+- Corrected the wallet caption to `Select a testnet wallet`; the interface does not claim unverified HOT/Meteor testnet signing support. On mobile, Connect wallet remains visible in the header; the hamburger only opens navigation.
+- Added a separate Rust `work-contract/` for task funding, one claimant, evidence, verifier decisions, bounded reward tiers, disputes, callbacks and contract-derived contributor stats. It has no vault account, donor map or unrestricted withdrawal path. Added post-mutation solvency guards and a regression test for unfunded storage growth.
+- Added real Next.js routes for `/work`, `/work/funding`, `/work/submit`, `/work/tasks/[id]` and `/contributors/[account]`. The public app shows no work records unless `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` is explicitly configured.
+- Added a read-only near.social mainnet FastData KV boundary. Signed posting is disabled and social activity is not work evidence or reputation.
+- Investigated Trezu and documented the exact compatibility boundary; no provider-only label or duplicate treasury was added.
 
-The frontend and ABI documentation implement the current Sputnik FunctionCall shape: read the live proposal bond, add a proposal containing `execute_spend`, and use `act_proposal` with the voted proposal kind. The local Sandbox test verifies the COVAUNT DAO-predecessor boundary but intentionally uses a controlled account.
-
-No real Sputnik DAO was created or connected in this workspace. No council policy, DAO code hash, proposal, vote or testnet execution receipt is claimed. This is the main external acceptance blocker.
-
-## C. Frontend
-
-The Vite production build passes. Playwright passes 10/10 across desktop Chromium and a 390px mobile viewport. The tests cover the editorial identity, explicit design-preview labeling, disabled preview transaction buttons, illustrative allocation math, contribution inspection, premature-refund suppression and mobile overflow.
-
-The UI preserves the civic-ledger/luxury-editorial direction: parchment, ink, oxblood, brass, serif headlines, mono audit metadata and hard rules. Browser-captured screenshots are included at:
-
-- `docs/screenshots/covaunt-desktop-preview.png`
-- `docs/screenshots/covaunt-mobile-preview.png`
-
-These are design-preview screenshots only. `web/src/config.js` has empty account IDs, so the wallet and transaction controls remain disabled rather than implying live execution.
-
-## D. Deployment
-
-The intended signer `covauntops26.testnet` and target `vault.covauntops26.testnet` were confirmed by final NEAR testnet RPC. The target had 7 NEAR and `view_code` returned `NO_CONTRACT_CODE`. No Sputnik DAO account, deployment transaction, on-chain code hash, recipient balance, explorer URL or HTTPS hosting destination exists yet. Nothing has been deployed. The exact remaining sequence is in `docs/DEPLOYMENT.md`.
-
-## E. Testing record
+## Executed local gates
 
 | Command | Result |
-|---|---|
-| `npm install` | PASS on Windows after `.npmrc` platform fix; advisories disclosed |
-| `npm test` | 12 passed, 0 failed, 0 skipped |
-| `npm run proof` | PASS; illustrated 8/6/4 allocation |
-| `npm run verify:static` | PASS; 13 required files |
-| `cd contract && cargo test` | 13 passed, 0 failed, 0 ignored; doc tests 0 |
-| `cargo near build non-reproducible-wasm --no-abi` | PASS; hash recorded above |
-| `npm run test:sandbox` | 1 passed, 0 failed, 0 skipped under WSL/Linux; Sandbox 2.14.0 |
-| `cd web && npm install` | PASS; 10 low production advisories in wallet dependency graph |
-| `cd web && npm run build` | PASS with third-party bundle warnings |
-| `cd web && npm run test:browser` | 10 passed, 0 failed, 0 skipped |
+| --- | --- |
+| `npm ci` | PASS at the preserved root checkout |
+| `npm test` | PASS at the preserved release checkpoint |
+| `npm run proof` | PASS at the preserved release checkpoint |
+| `npm run verify:static` | PASS after Work & Trust preflight additions |
+| `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 13/13, no ignored tests |
+| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS locally; canonical CI artifact 214,474 bytes from run `43541716644` |
+| `npm --prefix web run typecheck` | PASS |
+| `npm --prefix web run lint` | PASS; zero warnings |
+| `npm --prefix web run build` | PASS; 15 route entries |
+| `npm run test:browser` | PASS: 22/22 desktop/mobile Chromium |
+| `npm run test:sandbox` on Windows | Expected environment block: Windows cannot execute the Linux sandbox binary |
+| `npm run test:sandbox` in WSL Linux Node 22 | PASS: 2/2 receipt/state-machine tests, no skips; preserved vault plus Work & Trust callback and DAO-only rejection |
 
-The receipt test produced actual local Sandbox logs for `spend_settled`, `spend_failed`, restored availability, `refund_settled`, `ERR_DAO_ONLY`, `ERR_NOT_ENOUGH_ELIGIBLE_CAPITAL` and `ERR_REPLAY`.
+The preserved vault sandbox receipt test and the new Work sandbox test both passed in the Linux WSL run. The Work test remains a local sandbox result, not public testnet evidence.
 
-## F. Submission materials
+## Artifact records
 
-The README, contract API, architecture, threat model, acceptance matrix, deployment runbook, demo storyboard, track recommendation, public X draft, screenshots, evidence template and security review are included. The recommended category is **Social Money**, with DAO/governance infrastructure as a secondary category where available.
+Preserved vault artifact:
 
-The submission is not yet ready to advertise as a live deployment. Replace placeholders only after collecting real testnet evidence and an authorized public repository/HTTPS URL.
+- `contract/artifacts/covaunt.wasm`
+- Size: 183,746 bytes
+- SHA-256: `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`
+- Final CI upload from run `43541716644`: 183,335 bytes, SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`. This is not byte-identical because the workflow uses `non-reproducible-wasm`; it is not used as source-match evidence for the deployed vault.
+- Deployed code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
 
-## G. Blocking issues
+Auxiliary Work & Trust artifact:
 
-1. Provide or authorize a funded NEAR testnet deployer and donor/council accounts.
-2. Create and verify the genuine Sputnik DAO: account, code hash, council policy, threshold and proposal bond.
-3. Run `bash scripts/deploy-testnet.sh`, `node scripts/audit-testnet.mjs`, the full donor/DAO/refund workflow and the live browser wallet flow.
-4. Record code hash, all transaction receipts, final recipient balances, logical and physical solvency, and FullAccess-key review in `docs/EVIDENCE_TEMPLATE.json`.
-5. Authorize a public HTTPS host and repository push if publication is required; then run the production browser-to-wallet verification.
+- `work-contract/artifacts/covaunt_work.wasm`
+- Size: 214,474 bytes (canonical CI artifact from run `43541716644`)
+- SHA-256: `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`
+- SHA-256 base58: `ijgcCx1XmC4gJg1RsVE2UFJoyzgt29k5R3G8b799Dk9`
+- Local WSL verification build before selecting the CI artifact: 214,979 bytes, SHA-256 `f28f4c82f6ed52177ec8b46fba70d99b01f40d055f4744eb46ff2aea0ee42140`.
+- Testnet account: none; deployment intentionally not performed
 
-Until those external steps are complete, the correct release statement is local engineering complete, testnet verification blocked, not audited and not approved for real-value funds.
+## Hosted preview verification
+
+- Preview: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Source: branch `feature/covaunt-work-trust`
+- Last inspected deployment during this release checkpoint: `dpl_65pqPhhRmU5z8vS1jtYmeTdrxxCK`, READY; deployment IDs rotate with branch pushes
+- Hosted checks: all required public routes returned HTTP 200; live treasury reads reached final RPC state; mobile layout kept the wallet control visible and had no horizontal overflow; Work & Trust remained explicitly unconfigured; no production alias was created.
+
+## Human and external gates remaining
+
+1. Exercise one real supported testnet wallet through the public preview. Verify connection, persistence, explicit approval and returned state; no wallet compatibility is claimed until that happens.
+2. Do not enable `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` publicly until a separately funded auxiliary account, source-matched hash and real small/medium/large authorization evidence exist.
+3. Review the vault FullAccess key. Lockdown is irreversible unless another recovery key exists; perform it only with explicit human authorization and a tested recovery plan.
+4. Do not redeploy, upgrade, remove keys, move donor funds, use mainnet for COVAUNT or submit the hackathon application from this release work.
+
+No mainnet COVAUNT transaction, contract upgrade, key deletion, auxiliary testnet deployment or hackathon submission was performed.

@@ -1,66 +1,63 @@
-# COVAUNT — release verification status
+# COVAUNT release status
 
-**Verification date:** 13 November 2026 (Africa/Lagos)
-**Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS` for local engineering review; **not a live testnet release**.  
-**Network target:** NEAR testnet only.  
-**Account preparation:** `covauntops26.testnet` and `vault.covauntops26.testnet` were confirmed by final testnet RPC. The target had 7 NEAR and `view_code` returned `NO_CONTRACT_CODE`; no DAO or deployment transaction is claimed.
+**Verification date:** 14 November 2026
+**Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
+**Network:** NEAR testnet only
 
-## Executed gates
+## Verified live identity
 
-| Gate | Result | Evidence |
-|---|---|---|
-| Node allocator and invariant tests | **PASS — 12/12** | `npm test` |
-| Deterministic 8/6/4 proof | **PASS** | `npm run proof` |
-| Static preflight | **PASS — 13 required files** | `npm run verify:static` |
-| Rust contract tests | **PASS — 13/13; 0 failed; 0 ignored** | `cd contract && cargo test` under WSL/Linux |
-| Contract WASM | **PASS** | `cargo near build non-reproducible-wasm --no-abi` |
-| NEAR Sandbox receipts | **PASS — 1/1; 0 failed; 0 skipped** | `npm run test:sandbox` under WSL/Linux |
-| Web production bundle | **PASS** | `cd web && npm run build` |
-| Browser UI | **PASS — 10/10** | `cd web && npm run test:browser` on desktop/mobile Chromium |
-| Real Sputnik DAO lifecycle | **BLOCKED** | No Sputnik DAO account, policy or code hash exists yet |
-| NEAR testnet deployment and evidence | **BLOCKED** | Target account exists and is funded, but DAO verification and deployment are intentionally pending |
-| Public HTTPS deployment | **BLOCKED** | No authorized HTTPS hosting target supplied |
-| Independent professional audit | **NOT_RUN** | Outside this workspace's available access |
+- Vault: `vault.covauntops26.testnet`
+- Sputnik DAO: `covaunt26.sputnikv2.testnet`
+- Code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
+- Proposal bond: 1 NEAR
+- Display name: COVAUNT
 
-## Toolchain record
+## Verified public preview
 
-- Windows: Node.js `v22.23.3`, npm `10.9.9`.
-- WSL/Linux: Node.js `v22.23.5`, npm `10.9.9`, Rust `1.95.0`, cargo `1.95.0`.
-- Contract dependency: `near-sdk = 5.30.1`.
-- WASM builder: `cargo-near-near 0.23.0`.
-- Receipt runtime: NEAR Sandbox `2.14.0`.
-- Browser: Playwright Chromium `158.0.8127.18`.
+- URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Vercel project: `covaunt` in `delealufejoel-4184s-projects`
+- Git branch: `feature/covaunt-work-trust`
+- Branch alias: `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`; public HTTPS route checks, mobile checks and live testnet reads passed
+- Last inspected deployment during this release checkpoint: `dpl_65pqPhhRmU5z8vS1jtYmeTdrxxCK`; READY; deployment IDs rotate with branch pushes
+- GitHub Actions: [Verification run 43542680390](https://github.com/ometere123/covaunt/actions/runs/43542680390); interface and contract jobs passed, including both WASM uploads and sandbox receipts
+- Production release: not published
 
-## WASM artifact
+## Recorded live outcome
 
-`contract/target/near/covaunt.wasm` is generated and intentionally ignored by source packaging rules. The verified local artifact is 183,746 bytes with:
+At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR deposited across four contributions, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending spend, zero pending refund and a balanced ledger. It includes the valid 9 NEAR settlement, the failed 2 NEAR override, an early locked refund rejection and the successful 0.1 NEAR refund. A separate read-only audit at `2026-11-14T01:12:24.4618119Z` reports the current chain at 18.2 NEAR deposited across five contributions, 9 NEAR paid, 0.1 NEAR refunded, 9.1 NEAR available and zero pending obligations. The fifth entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; see [current-audit.json](live-evidence/current-audit.json).
 
-```text
-SHA-256: 96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888
-SHA-256 (base58): B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u
-```
+## Local engineering gates
 
-This is a local build hash, not an on-chain code hash. A testnet deployment must record the hash returned by NEAR RPC after deployment and compare it with the artifact.
+| Gate | Result |
+| --- | --- |
+| Node allocator tests | PASS; 12/12 |
+| Deterministic proof | PASS |
+| Static preflight | PASS |
+| Rust contract tests | PASS; 13/13, no ignored tests; WSL |
+| Contract WASM | PASS; source-matched 183,746-byte checked-in artifact; final CI upload separately disclosed as non-byte-identical |
+| Sandbox receipts | PASS; 1/1, no skips; WSL NEAR Sandbox 2.14.0 |
+| Next typecheck | PASS |
+| Next lint | PASS; zero warnings |
+| Next production build | PASS; 15 route entries generated, including Work & Trust and contributor routes |
+| Browser tests | PASS; 22/22 across desktop and mobile Chromium |
+| Hosted preview checks | PASS; routes, mobile navigation, live RPC accounting, preview separation and read-only proxy |
+| Work & Trust unit tests | PASS; 13/13 |
+| Work & Trust WASM | PASS; canonical CI artifact 214,474 bytes, no testnet account |
+| Work & Trust sandbox | PASS; 2/2 combined receipt tests, no skips, in WSL Linux Node 22 / NEAR Sandbox 2.14.0 |
+| near.social | PASS as read-only mainnet context boundary; no signed posting |
+| Trezu | NOT INTEGRATED; compatibility blocker documented |
 
-## Receipt-level security behavior verified locally
+## Remaining limitations
 
-- Non-DAO direct `execute_spend` call fails with `ERR_DAO_ONLY`.
-- The 8/6/4 scenario pays 6 NEAR from the healthcare-only contribution and 3 NEAR from the flexible contribution; the education-only balance remains 8 NEAR.
-- A DAO-identity call that requests incompatible capital fails with `ERR_NOT_ENOUGH_ELIGIBLE_CAPITAL`.
-- Reusing a mandate ID fails with `ERR_REPLAY`.
-- A native transfer to a nonexistent recipient records `spend_failed` and restores the reserved donor availability.
-- An expired contribution refund records `refund_settled` and updates donor accounting through the asynchronous callback.
-- Final sandbox summary reports `is_balanced: true`, `total_paid: 9 NEAR`, and `total_refunded: 1 NEAR`.
+1. The vault still has a FullAccess key capable of replacing code. No immutable-upgrade claim is permitted.
+2. The installed near-connect manifest exposes wallet options. Specific wallet testnet signing compatibility remains unverified. HERE is not claimed because it was not present in that manifest.
+3. A real wallet-to-frontend write walkthrough was not independently exercised in this migration. The historical testnet writes are preserved as receipt evidence.
+4. The hosted URL is a testnet preview only. No production release or custom domain is claimed.
+5. No professional security audit is claimed.
+6. Work & Trust is implemented as a separate, un-deployed auxiliary contract. No live task records, reward settlements or reputation points are claimed.
+7. near.social is read-only mainnet context; signed posting and cross-network identity binding are not enabled.
+8. Work & Trust remains disabled in the public preview because no auxiliary testnet account, real reward settlement or contributor record has been verified. The branch preview is verified for the honest unconfigured state.
 
-The sandbox uses a controlled account as the DAO predecessor. It does **not** prove a real Sputnik vote or testnet DAO execution. This distinction is intentional.
+## Release handling
 
-## Known limitations and blockers
-
-- `web/src/config.js` still contains empty `contractId` and `daoId`, so the UI remains in explicit design preview and transaction controls are disabled.
-- No testnet DAO code hash, policy, proposal bond, council membership, receipt, recipient balance or deployed contract code exists in this artifact. The proposed target account is `vault.covauntops26.testnet`.
-- The contract's logical conservation invariant is tested; physical liquid balance, storage staking, account keys and pending obligations require the live audit script after deployment.
-- Contract upgrade authority is a deployment-account concern. Until live FullAccess keys are reviewed and deliberately handled, no immutable-upgrade claim is permitted.
-- `npm audit` reports 10 low-severity production dependency findings in the web wallet dependency graph through `elliptic`; `npm audit fix --force` proposes a breaking wallet-selector downgrade and was not applied. This is a release-review item, not evidence of a contract exploit.
-- The build emits two known third-party warnings (`util` externalization and `js-sha256` eval). The bundle still builds and browser tests pass.
-
-The required next step for a live submission is the testnet sequence in `docs/DEPLOYMENT.md`, followed by filling `docs/EVIDENCE_TEMPLATE.json` only from actual RPC and explorer results.
+Do not upgrade, redeploy, remove keys, use mainnet or submit externally without explicit human authorization. The source and evidence are suitable for an authorized testnet hackathon handoff with these disclosures.

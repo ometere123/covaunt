@@ -7,9 +7,9 @@ You are inheriting **COVAUNT**, a complete source tree for a NEAR hackathon trea
 1. Read `README.md`, `docs/THREAT_MODEL.md`, `docs/ACCEPTANCE.md` and `docs/DEPLOYMENT.md` fully.
 2. Verify real NEAR SDK and Sputnik DAO ABI against deployed testnet contract, correct compilation/API mismatches, and **run** Rust unit tests. Do not treat unexecuted test source as evidence.
 3. Build WASM and run real near-workspaces sandbox tests, including success/failure Promise callbacks and ledger/account solvency checks; repair contract until all pass.
-4. `npm install` in root and `web/`; run Node tests, `npm run verify:static`, Vite production build, browser functionality and mobile responsiveness.
-5. Create/verify a genuine Sputnik DAO testnet with supported `FunctionCall` proposal kind and voting policy. `dao_id` must point to real contract, not a personal council account.
-6. Deploy COVAUNT with separately funded storage reserve and verify code hash/account keys; connect web config and host static app.
+4. `npm install` in root and `web/`; run Node tests, `npm run verify:static`, the Next.js production build, browser functionality and mobile responsiveness.
+5. Verify the recorded genuine Sputnik DAO testnet identity, supported `FunctionCall` proposal kind and voting policy. `dao_id` must point to the real contract, not a personal council account.
+6. Treat the recorded vault and DAO as immutable release inputs for frontend work. Do not redeploy or upgrade them without explicit human authorization; connect web config and prepare, but do not claim, an authorized HTTPS host.
 7. Reproduce all transactions in acceptance matrix, including compatible payout and **majority-approved incompatible call rejected**. Cross-check NEAR receipts, callback terminal status, treasury account balance, and donor allocations.
 8. Audit own contract FullAccess keys and clearly disclose upgrade authority. Never delete keys irreversibly without an explicit reviewed safety plan.
 9. Capture independent screenshots and narrated live demo, then write honest evidence-backed public README / submission and share exact links.

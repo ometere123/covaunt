@@ -1,32 +1,40 @@
-# Local verification results — 13 November 2026
+# Local check record
 
-These are executed local or WSL checks from the extracted release tree. They are not NEAR testnet evidence and do not prove Sputnik governance.
+**Recorded:** 14 November 2026
+**Environment:** Windows 11, Node.js 22.23.3, npm 10.9.9; WSL Ubuntu Node.js 22.23.5, npm 10.9.9, Rust 1.95.0, Cargo 1.95.0, cargo-near 0.23.0
 
-| Command | Observed result | Classification |
-|---|---|---|
-| `npm install` | Exit 0 after the platform-neutral root `.npmrc` was added; npm reported 15 dev-tree advisories and cleanup warnings from mixed Windows/WSL node processes | PASS with dependency disclosure |
-| `npm test` | 12 passed / 0 failed / 0 skipped | PASS |
-| `npm run proof` | 18.00 NEAR illustrative allocation: B 6.00 + C 3.00; education-only diversion denied | PASS; dry-run only |
-| `npm run verify:static` | 13 required files and contract/UI hooks passed | PASS; static only |
-| `cd contract && cargo test` | 13 passed / 0 failed / 0 ignored; doc tests 0 | PASS under WSL/Linux |
-| `cargo near build non-reproducible-wasm --no-abi` | 183,746-byte WASM built; SHA-256 `96762824a7226f90981b9685890146d94f4a06dc8a3e66e1f9893254f9896888` | PASS under WSL/Linux |
-| `npm run test:sandbox` | 1 passed / 0 failed / 0 skipped; NEAR Sandbox 2.14.0; duration about 60 seconds | PASS under WSL/Linux |
-| `cd web && npm install` | Exit 0; web dependency tree reports 10 low production advisories through the wallet cryptography graph | PASS with dependency disclosure |
-| `cd web && npm run build` | Vite 7.3.8 bundle built; third-party `util` externalization and `js-sha256` eval warnings | PASS with warnings |
-| `cd web && npm run test:browser` | 10 passed / 0 failed on desktop and mobile Chromium | PASS |
-| Browser screenshots | Full-page desktop 1440px and mobile 390px captures visually inspected | PASS; design preview only |
-| `npm audit --omit=dev` in root | 0 production vulnerabilities | PASS |
-| `npm audit --omit=dev` in web | 10 low findings through `elliptic`; force-fix would be breaking | REVIEW REQUIRED |
-| Testnet account preparation | Final RPC confirmed `covauntops26.testnet` and `vault.covauntops26.testnet` with 2.9928850104625 NEAR and 7 NEAR; target returned `NO_CONTRACT_CODE` | PASS for account-readiness check; no deployment |
-| Real Sputnik DAO / testnet deployment | No Sputnik DAO account, policy or deployment transaction available | BLOCKED, not attempted |
-| Public HTTPS hosting / GitHub push | GitHub repository is public; no HTTPS hosting target supplied | BLOCKED for hosting |
+| Check | Result |
+| --- | --- |
+| `npm ci` (root) | PASS in the verified checkout |
+| `npm test` | PASS; 12/12 |
+| `npm run proof` | PASS |
+| `npm run verify:static` | PASS |
+| `cd contract && cargo test` | PASS; 13/13, 0 ignored; WSL |
+| Native Windows `cd contract && cargo test` | NOT RUN TO COMPLETION; environment lacks MSVC `link.exe`; WSL run is the reproducible Rust gate |
+| `cargo near build non-reproducible-wasm --no-abi` | PASS; 183,746 bytes; checked-in artifact matches deployed vault |
+| `npm run test:sandbox` | PASS; 1/1 receipt/state-machine test, no skips; WSL NEAR Sandbox 2.14.0 |
+| `cd web && npm ci` | PASS after Next migration |
+| `cd web && npm run typecheck` | PASS |
+| `cd web && npm run lint` | PASS; zero warnings |
+| `cd web && npm run build` | PASS; all required routes generated |
+| `cd web && npm run test:browser` | PASS; 22/22 desktop/mobile Chromium |
+| `npm run verify:live` | Real values read; intentional non-zero FullAccess-key blocker |
+| `npm audit --omit=dev --audit-level=high` (web) | PASS threshold; 4 low transitive `elliptic` findings remain, no forced breaking fix applied |
 
-## Sandbox behavior observed
+The Rust and sandbox counts were rerun in WSL after the frontend migration. Browser output is split between deterministic preview tests and labeled RPC fixtures; fixture tests do not count as live wallet evidence.
 
-The receipt test created the 8/6/4 contributions, rejected a non-DAO call, settled the valid 9 NEAR clinic payment, rejected an incompatible DAO-identity request, rejected mandate replay, restored a failed transfer to `ghost.test.near`, and settled an expired 1 NEAR refund. Final logical totals were `total_paid=9 NEAR`, `total_refunded=1 NEAR`, `is_balanced=true`.
+## Toolchain and artifact
 
-The sandbox DAO caller is a controlled account. It is deliberately not described as a Sputnik DAO vote.
-
-## Platform note
-
-The legacy `near-sandbox` npm postinstall rejects native Windows. The root `.npmrc` disables package scripts and `scripts/ensure-sandbox.mjs` downloads NEAR Sandbox `2.14.0` from the official build archive, checks its version and requires Linux x64. This keeps `npm install` reproducible on Windows while making the receipt gate explicit about its Linux/WSL requirement.
+- `@hot-labs/near-connect`: 0.12.0
+- Next.js: 16.4.6
+- React / React DOM: 19.3.1
+- TypeScript: 5.9.3
+- Playwright: 1.65.0
+- ESLint / eslint-config-next: 9.39.5 / 16.4.6
+- `contract/artifacts/covaunt.wasm`: 183,746 bytes
+- SHA-256: `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`
+- Final CI upload from run `43541716644`: 183,335 bytes, SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; non-byte-identical due to the explicitly non-reproducible build mode.
+- Base58 code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
+- `work-contract/artifacts/covaunt_work.wasm`: 214,474 bytes, canonical GitHub Actions artifact from run `43541716644`
+- Work artifact SHA-256: `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`
+- Work Rust tests: 13/13; Work sandbox receipt tests: 1/1 combined with the preserved vault test suite (2/2 total)
