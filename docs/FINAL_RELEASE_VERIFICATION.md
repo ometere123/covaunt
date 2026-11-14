@@ -31,7 +31,7 @@ The preserved evidence snapshot records 18.1 NEAR deposited across four contribu
 | `npm run proof` | PASS at the preserved release checkpoint |
 | `npm run verify:static` | PASS after Work & Trust preflight additions |
 | `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 13/13, no ignored tests |
-| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS locally; canonical CI artifact 214,474 bytes from run `43536663435` |
+| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS locally; canonical CI artifact 214,474 bytes from run `43538394361` |
 | `npm --prefix web run typecheck` | PASS |
 | `npm --prefix web run lint` | PASS; zero warnings |
 | `npm --prefix web run build` | PASS; 15 route entries |
@@ -62,8 +62,8 @@ Auxiliary Work & Trust artifact:
 ## Hosted preview verification
 
 - Preview: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
-- Source: `feature/covaunt-work-trust` at `a7dbb10f9245d8497dc75a5847ea096378497907`
-- Deployment: `dpl_9FNhHdDauu8snKeiMw15STYGVHoS`, READY
+- Source: `feature/covaunt-work-trust` at `8daf67c0f95c8f84adef93b375f37ff667bc62b4`
+- Deployment: `dpl_6fxz5sTt4afwnYMqqajJFM22fwMP`, READY
 - Hosted checks: all required public routes returned HTTP 200; live treasury reads reached final RPC state; mobile layout kept the wallet control visible and had no horizontal overflow; Work & Trust remained explicitly unconfigured; no production alias was created.
 
 ## Human and external gates remaining

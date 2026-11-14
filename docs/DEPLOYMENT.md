@@ -79,7 +79,7 @@ NEXT_PUBLIC_NEAR_SOCIAL_API=https://kv.main.fastnear.com
 
 ## Work & Trust deployment preparation
 
-The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43536663435](https://github.com/ometere123/covaunt/actions/runs/43536663435), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
+The auxiliary deployment is intentionally separate from the preserved vault. The canonical artifact is `work-contract/artifacts/covaunt_work.wasm` from GitHub Actions run [43538394361](https://github.com/ometere123/covaunt/actions/runs/43538394361), SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`, 214,474 bytes. The deployment account must already exist and be separately funded for code storage, the one-NEAR initializer reserve, gas and task budgets.
 
 After a human has created/funded the dedicated account, run from WSL or another environment with the verified `near-cli-rs` command:
 
@@ -102,8 +102,8 @@ Do not set `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT` or publish task records until the
 
 - URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Project: `covaunt` in the `delealufejoel-4184s-projects` team
-- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`, commit `a7dbb10f9245d8497dc75a5847ea096378497907`
-- Deployment: `dpl_9FNhHdDauu8snKeiMw15STYGVHoS`; READY; alias `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
+- Source: `ometere123/covaunt`, branch `feature/covaunt-work-trust`, commit `8daf67c0f95c8f84adef93b375f37ff667bc62b4`
+- Deployment: `dpl_6fxz5sTt4afwnYMqqajJFM22fwMP`; READY; alias `covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Framework settings: Next.js, root `web`, `npm ci`, `npm run build`, Node `22.x`
 - Environment: NEAR testnet only; only the four public `NEXT_PUBLIC_*` values above were configured for Preview
 - Verification: public HTTPS 200, all required routes, real final RPC reads, current live accounting, preview separation, mobile navigation, no mobile overflow and read-only proxy guard passed

@@ -17,9 +17,9 @@
 - URL: `https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Git branch: `feature/covaunt-work-trust`
-- Git commit: `e8a6c26c134ecd56e798dced498856a300f1a622`
-- Deployment: `dpl_9FNhHdDauu8snKeiMw15STYGVHoS`; READY; public HTTPS route checks, mobile checks and live testnet reads passed
-- GitHub Actions: [Verification run 43520699433](https://github.com/ometere123/covaunt/actions/runs/43520699433); interface and contract jobs passed, including both WASM uploads and sandbox receipts
+- Git commit: `8daf67c0f95c8f84adef93b375f37ff667bc62b4`
+- Deployment: `dpl_6fxz5sTt4afwnYMqqajJFM22fwMP`; READY; public HTTPS route checks, mobile checks and live testnet reads passed
+- GitHub Actions: [Verification run 43538394361](https://github.com/ometere123/covaunt/actions/runs/43538394361); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 - Production release: not published
 
 ## Recorded live outcome

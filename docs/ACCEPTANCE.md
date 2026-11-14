@@ -11,7 +11,7 @@ Updated 14 November 2026 from the repository gates and the recorded testnet evid
 | Contract WASM | `cargo near build non-reproducible-wasm --no-abi`; artifact hash recorded | PASS; 183,746-byte artifact |
 | Preserved vault sandbox receipts | `npm run test:sandbox` at the release checkpoint | PASS historically; the preserved test remains in the gate |
 | Work & Trust Rust contract | `cargo test --manifest-path work-contract/Cargo.toml` | PASS; 13/13, no ignored tests |
-| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; canonical CI artifact 214,474 bytes from run `43536663435`, not deployed |
+| Work & Trust WASM | `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS; canonical CI artifact 214,474 bytes from run `43538394361`, not deployed |
 | Work & Trust sandbox receipts | `npm run test:sandbox` with Linux NEAR Sandbox 2.14.0 | PASS; 2/2 total receipt tests, no skips, including small callback settlement and direct large-path rejection |
 | Next production build | `cd web && npm run build` | PASS |
 | TypeScript and lint | `npm run typecheck`, `npm run lint` | PASS; zero lint warnings |

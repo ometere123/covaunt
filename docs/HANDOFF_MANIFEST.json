@@ -1,16 +1,16 @@
 {
   "name": "COVAUNT",
   "artifact_type": "NEAR testnet release handoff with live evidence and disclosed upgrade-authority limitation",
-  "updated_date": "2026-11-13",
+  "updated_date": "2026-11-14",
   "network": "testnet",
   "contract_account": "vault.covauntops26.testnet",
   "dao_account": "covaunt26.sputnikv2.testnet",
   "contract_code_hash": "B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u",
   "hosted_preview": {
     "url": "https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app",
-    "deployment_id": "dpl_9FNhHdDauu8snKeiMw15STYGVHoS",
+    "deployment_id": "dpl_6fxz5sTt4afwnYMqqajJFM22fwMP",
     "branch": "feature/covaunt-work-trust",
-    "commit": "a7dbb10f9245d8497dc75a5847ea096378497907",
+    "commit": "8daf67c0f95c8f84adef93b375f37ff667bc62b4",
     "network": "testnet",
     "production_published": false
   },
@@ -35,7 +35,7 @@
   },
   "current_read_only_audit": {
     "path": "docs/live-evidence/current-audit.json",
-    "retrieved_at": "2026-11-13T22:31:39.251Z",
+    "retrieved_at": "2026-11-14T01:12:24.4618119Z",
     "total_deposited_yocto": "18200000000000000000000000",
     "total_paid_yocto": "9000000000000000000000000",
     "total_refunded_yocto": "100000000000000000000000",
@@ -62,12 +62,12 @@
     "next_build": "PASS",
     "browser_tests": "PASS_22_OF_22_DESKTOP_MOBILE",
     "rust_tests": "PASS_13_OF_13_WSL",
-    "work_rust_tests": "PASS_12_OF_12",
+    "work_rust_tests": "PASS_13_OF_13",
     "sandbox_tests": "PASS_2_OF_2_WSL_NO_SKIPS"
   },
   "github_actions": {
-    "run_url": "https://github.com/ometere123/covaunt/actions/runs/43520699433",
-    "run_id": 43520699433,
+    "run_url": "https://github.com/ometere123/covaunt/actions/runs/43538394361",
+    "run_id": 43538394361,
     "interface": "success",
     "contract": "success",
     "artifacts": ["covaunt-wasm", "covaunt-work-wasm"]
