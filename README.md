@@ -123,7 +123,7 @@ The sandbox gate requires the repository’s verified NEAR Sandbox preparation a
 - [near.social boundary](docs/NEAR_SOCIAL.md)
 - [Trezu compatibility](docs/TREZU_INTEGRATION.md)
 
-The source-matched vault WASM artifact is `contract/artifacts/covaunt.wasm`, 183,746 bytes, with SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888` and base58 code hash `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The canonical Work & Trust artifact is the fresh-checkout GitHub Actions output from run `43538394361`: `work-contract/artifacts/covaunt_work.wasm`, 214,474 bytes, with SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6` and SHA-256 base58 `ijgcCx1XmC4gJg1RsVE2UFJoyzgt29k5R3G8b799Dk9`; it has no testnet account until a separately funded deployment is independently verified. The deployed vault hash is recorded from live evidence; do not rebuild or redeploy this vault as part of frontend work.
+The source-matched vault WASM artifact is `contract/artifacts/covaunt.wasm`, 183,746 bytes, with SHA-256 `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888` and base58 code hash `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`. The canonical Work & Trust artifact is the fresh-checkout GitHub Actions output from run `43540098542`: `work-contract/artifacts/covaunt_work.wasm`, 214,474 bytes, with SHA-256 `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6` and SHA-256 base58 `ijgcCx1XmC4gJg1RsVE2UFJoyzgt29k5R3G8b799Dk9`; it has no testnet account until a separately funded deployment is independently verified. The deployed vault hash is recorded from live evidence; do not rebuild or redeploy this vault as part of frontend work.
 
 ## Security disclosure
 

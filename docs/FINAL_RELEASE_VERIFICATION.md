@@ -31,7 +31,7 @@ The preserved evidence snapshot records 18.1 NEAR deposited across four contribu
 | `npm run proof` | PASS at the preserved release checkpoint |
 | `npm run verify:static` | PASS after Work & Trust preflight additions |
 | `cargo test --manifest-path work-contract/Cargo.toml` | PASS: 13/13, no ignored tests |
-| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS locally; canonical CI artifact 214,474 bytes from run `43538394361` |
+| `cargo near build non-reproducible-wasm --manifest-path work-contract/Cargo.toml --no-abi` | PASS locally; canonical CI artifact 214,474 bytes from run `43540098542` |
 | `npm --prefix web run typecheck` | PASS |
 | `npm --prefix web run lint` | PASS; zero warnings |
 | `npm --prefix web run build` | PASS; 15 route entries |

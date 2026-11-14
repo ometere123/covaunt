@@ -19,7 +19,7 @@
 - Git branch: `feature/covaunt-work-trust`
 - Git commit: `18fdc7befd58862a0629530537d012da792ef61f`
 - Deployment: `dpl_Gb4C9KBS2gecg5FaZbDzRW6XEDjP`; READY; public HTTPS route checks, mobile checks and live testnet reads passed
-- GitHub Actions: [Verification run 43538394361](https://github.com/ometere123/covaunt/actions/runs/43538394361); interface and contract jobs passed, including both WASM uploads and sandbox receipts
+- GitHub Actions: [Verification run 43540098542](https://github.com/ometere123/covaunt/actions/runs/43540098542); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 - Production release: not published
 
 ## Recorded live outcome
