@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CONFIG } from '../lib/config';
-import { formatNear, humanDate, shortAccount, statusLabel } from '../lib/format';
+import { formatNear, formatWorkNear, humanDate, shortAccount, statusLabel } from '../lib/format';
 import { loadWorkSnapshot } from '../lib/work';
 import type { WorkSnapshot } from '../lib/work';
 
@@ -40,14 +40,14 @@ export function WorkDirectory() {
         <div><span>State</span><strong className={snapshot.summary.is_balanced ? 'work-good' : 'work-bad'}>{snapshot.summary.is_balanced ? 'Balanced' : 'Review'}</strong></div>
       </div>
       <div className="section-heading work-list-heading"><div><p className="kicker">On-chain task register</p><h2>Open work and <em>accountable outcomes</em></h2></div><span className="table-meta">{snapshot.summary.tasks} task record{snapshot.summary.tasks === 1 ? '' : 's'} · {CONFIG.workContractId}</span></div>
-      {snapshot.tasks.length === 0 ? <div className="empty-journal"><strong>No task records yet</strong><span>Fund the first task through the graphical flow. This register does not invent tasks while the contract is empty.</span></div> : <div className="work-task-list">{snapshot.tasks.map((task) => <Link className="work-task-row" key={task.id} href={`/work/tasks/${task.id}`}><span className="work-task-id">WRK-{String(task.id).padStart(3, '0')}</span><span className="work-task-main"><strong>{task.title}</strong><small>{task.purpose}</small></span><span className="work-task-meta"><small>{task.tier} reward</small><strong>{formatNear(task.reward_amount)} Ⓝ</strong></span><span className={`status status-${task.status.toLowerCase()}`}>{statusLabel(task.status)}</span><span className="work-task-deadline">Due {humanDate(task.deadline_ns)}<small>{task.claimant ? shortAccount(task.claimant) : 'Unclaimed'}</small></span></Link>)}</div>}
+      {snapshot.tasks.length === 0 ? <div className="empty-journal"><strong>No task records yet</strong><span>Fund the first task through the graphical flow. This register does not invent tasks while the contract is empty.</span></div> : <div className="work-task-list">{snapshot.tasks.map((task) => <Link className="work-task-row" key={task.id} href={`/work/tasks/${task.id}`}><span className="work-task-id">WRK-{String(task.id).padStart(3, '0')}</span><span className="work-task-main"><strong>{task.title}</strong><small>{task.purpose}</small></span><span className="work-task-meta"><small>{task.tier} reward</small><strong>{formatWorkNear(task.reward_amount)} Ⓝ</strong></span><span className={`status status-${task.status.toLowerCase()}`}>{statusLabel(task.status)}</span><span className="work-task-deadline">Due {humanDate(task.deadline_ns)}<small>{task.claimant ? shortAccount(task.claimant) : 'Unclaimed'}</small></span></Link>)}</div>}
     </>}
   </section>;
 }
 
 function UnconfiguredWork({ preview }: { preview: boolean }) {
   return <div className="work-unconfigured">
-    <div className="data-state data-state-preview"><span className="state-rule" /><strong>{preview ? 'Preview mode · Work & Trust reads disabled' : 'Work & Trust is not deployed for this release'}</strong><span>No task, work, reward or reputation data is shown as live. The verified COVAUNT vault and Sputnik DAO remain fully independent.</span></div>
+    <div className="data-state data-state-preview"><span className="state-rule" /><strong>{preview ? 'Preview mode · Work & Trust reads disabled' : 'Work & Trust is not configured in this release'}</strong><span>No task, work, reward or reputation data is shown as live. The verified COVAUNT vault and Sputnik DAO remain fully independent.</span></div>
     <div className="work-scope work-scope-expanded">
       <div><span className="scope-state">Contract ready locally</span><h2>Bounded task records</h2><p>The auxiliary Rust contract records funded tasks, a single claimant, evidence, an authorized verifier and a settlement callback. Its budget is isolated from vault capital.</p><Link className="text-link" href="/about#work-trust">Read the trust boundary ↗</Link></div>
       <div><span className="scope-state scope-state-live">Live now</span><h2>Consent-bound treasury</h2><p>The deployed release already shows the valid 9 NEAR settlement, the blocked 2 NEAR diversion and the 0.1 NEAR refund from real testnet receipts.</p><Link className="text-link" href="/journal">Open the verified journal ↗</Link></div>

@@ -8,7 +8,7 @@ No supported Trezu adapter was found that can represent this existing arbitrary 
 
 ## Boundary prepared in the application
 
-`web/lib/treasury-integration.ts` defines a descriptive adapter boundary with an explicit `not-integrated` status. It has no RPC, signing, proposal or custody behavior. The About route discloses that Trezu is not connected, and no duplicate treasury is launched.
+The active application contains no Trezu adapter, RPC, signing, proposal or custody behavior. The About route does not present Trezu as a product capability. This document retains the technical compatibility decision for future maintainers; no duplicate treasury is launched.
 
 ## Future adapter requirements
 

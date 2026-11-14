@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# Execute from a POSIX shell with near-cli-rs and sha256sum available.
 set -euo pipefail
 
 : "${COVAUNT_WORK_ACCOUNT:?Export COVAUNT_WORK_ACCOUNT to the separately funded Work & Trust account}"

@@ -1,0 +1,12 @@
+node_modules
+web/node_modules
+.git
+.vercel
+contract
+work-contract
+docs
+scripts
+tests
+*.zip
+*.wasm
+*.log

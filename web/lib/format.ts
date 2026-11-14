@@ -17,6 +17,11 @@ export function formatNear(value: string | number | bigint | undefined, decimals
   return `${negative ? '-' : ''}${whole.toLocaleString('en-US')}${decimals ? `.${fraction}` : ''}`;
 }
 
+export function formatWorkNear(value: string | number | bigint | undefined) {
+  const amount = BigInt(value || 0);
+  return amount > BigInt(0) && amount < YOCTO / BigInt(100) ? formatNear(amount, 7) : formatNear(amount);
+}
+
 export function parseNear(value: string) {
   const cleaned = value.trim();
   if (!/^(?:0|[1-9]\d*)(?:\.\d{1,24})?$/.test(cleaned)) {
