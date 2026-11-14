@@ -12,8 +12,8 @@
     "network": "testnet",
     "production_published": true,
     "last_observed_deployment": {
-      "id": "dpl_EQ2tpkMkf47WrxqrEnxWThK9yyXM",
-      "commit": "82804be2c5b47d1aa1de89dd97377ccd5a8a9ab2",
+      "id": "dpl_3EKPBxAHfmDsyU9uRK1r4igpgvFj",
+      "commit": "ae33077307d2d80e7fddb8ec0e159fff7db33fc5",
       "status": "READY",
       "note": "Vercel deployment IDs rotate after each main push; the production alias is the public entry point."
     }
@@ -79,8 +79,8 @@
     "sandbox_tests": "PASS_2_OF_2_WSL_NO_SKIPS"
   },
   "github_actions": {
-    "run_url": "https://github.com/ometere123/covaunt/actions/runs/43578729757",
-    "run_id": 43578729757,
+    "run_url": "https://github.com/ometere123/covaunt/actions/runs/43580869712",
+    "run_id": 43580869712,
     "interface": "success",
     "contract": "success",
     "artifacts": ["covaunt-wasm", "covaunt-work-wasm"]
