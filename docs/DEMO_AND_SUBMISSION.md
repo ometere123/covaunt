@@ -42,7 +42,7 @@ The Work & Trust route may be shown only as a scope disclosure until a separatel
 - Forbidden execution: `https://explorer.testnet.near.org/transactions/BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw`
 - Refund: `https://explorer.testnet.near.org/transactions/DKJEShdGxtLai6xPdRC7JzJ8EwAggv4jqHkz2RLRzU7V`
 - Public testnet deployment: `https://covaunt.vercel.app`
-- Preview source: branch `feature/covaunt-work-trust`; deployment IDs rotate with branch pushes
+- Production source checkpoint: branch `main`, commit `ae33077307d2d80e7fddb8ec0e159fff7db33fc5`; deployment IDs rotate with main pushes
 
 The public URL above is a verified read-only/live-testnet preview. A real HOT or Meteor wallet signature and browser-to-wallet write walkthrough still require an authorized human; do not describe that write path as independently verified until it is exercised. The Work & Trust module is intentionally unconfigured in this preview; local task/reward tests are not public evidence.
 

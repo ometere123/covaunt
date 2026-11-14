@@ -3,8 +3,8 @@
 **Artifact:** `COVAUNT_RELEASE_HANDOFF`
 **Verification date:** 14 November 2026 (Africa/Lagos)
 **Network:** NEAR testnet for COVAUNT; near.social reads public mainnet data only
-**Branch:** `feature/covaunt-work-trust-live`
-**Release candidate:** `8b085b7b734123c2fe45f81d393a861c6b843c73`
+**Branch:** `main`
+**Release candidate:** `ae33077307d2d80e7fddb8ec0e159fff7db33fc5`
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
 ## Preserved live identity and evidence
@@ -66,8 +66,8 @@ Auxiliary Work & Trust artifact:
 ## Hosted preview verification
 
 - Production: `https://covaunt.vercel.app`
-- Source: `main` commit `82804be2c5b47d1aa1de89dd97377ccd5a8a9ab2`
-- Deployment: `dpl_EQ2tpkMkf47WrxqrEnxWThK9yyXM`, READY; deployment IDs rotate with main pushes
+- Source: `main` commit `ae33077307d2d80e7fddb8ec0e159fff7db33fc5`
+- Deployment inspected: `dpl_3EKPBxAHfmDsyU9uRK1r4igpgvFj`, READY; deployment IDs rotate with main pushes
 - Hosted checks: all required public routes returned HTTP 200; live treasury reads reached final RPC state; mobile layout kept the wallet control visible and had no horizontal overflow; Work & Trust remained explicitly unconfigured.
 
 ## Human and external gates remaining

@@ -17,10 +17,10 @@
 - URL: `https://covaunt.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Git branch: `main`
-- Production commit: `82804be2c5b47d1aa1de89dd97377ccd5a8a9ab2`
-- Deployment: `dpl_EQ2tpkMkf47WrxqrEnxWThK9yyXM`; READY; public route checks, mobile checks and live testnet reads passed
+- Production verification commit: `ae33077307d2d80e7fddb8ec0e159fff7db33fc5`
+- Deployment inspected: `dpl_3EKPBxAHfmDsyU9uRK1r4igpgvFj`; READY; public route checks, mobile checks and live testnet reads passed
 - Follow-up branch: `feature/covaunt-work-trust-live`; PR [#3](https://github.com/ometere123/covaunt/pull/3)
-- Follow-up CI: [Verification run 43578729757](https://github.com/ometere123/covaunt/actions/runs/43578729757); interface and contract jobs passed, including both WASM uploads and sandbox receipts
+- Follow-up CI: [Verification run 43580869712](https://github.com/ometere123/covaunt/actions/runs/43580869712); interface and contract jobs passed, including both WASM uploads and sandbox receipts
 
 ## Recorded live outcome
 
