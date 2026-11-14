@@ -43,7 +43,7 @@ test.describe('deterministic preview mode', () => {
   test('work route is honest when no auxiliary contract is configured', async ({ page }) => {
     await page.goto('/work');
     await expect(page.getByRole('heading', { name: /Make the work legible/ })).toBeVisible();
-    await expect(page.getByText('Work & Trust is not deployed for this release')).toBeVisible();
+    await expect(page.getByText('Work & Trust is not configured in this release')).toBeVisible();
     await expect(page.getByText(/No task, work, reward or reputation data is shown as live/)).toBeVisible();
     await expect(page.getByText(/WRK-001/)).toHaveCount(0);
   });
