@@ -48,7 +48,7 @@ The Work account was separately funded and initialized with a 1 NEAR reserve. It
 | Work read-only audit | PASS; code hash, DAO binding, reserve, solvency and balanced summary |
 | Live Work small reward | VERIFIED_LIVE; task 0 settled through verifier callback |
 | Live Work medium reward | VERIFIED_LIVE; task 1 unauthorized approval rejected, designated approver settled |
-| Live Work large reward | IN_PROGRESS; task 2 verified and Sputnik proposal 2 has first council approval; second council receipt and Work callback remain required before settlement claim |
+| Live Work large reward | VERIFIED_LIVE; task 2 settled after Sputnik proposal 2 received both council approvals and the Work callback completed |
 | Wallet-signed browser write | BLOCKED_EXTERNAL; production chooser opened, but the existing Chrome profile has no connected wallet controlling the required signer |
 | near.social | VERIFIED_LIVE read-only mainnet context; no signed posting |
 | Trezu | NOT_IMPLEMENTED by decision; incompatibility documented |
@@ -64,4 +64,4 @@ The Work account was separately funded and initialized with a 1 NEAR reserve. It
 
 ## Release handling
 
-Do not upgrade the original vault or DAO, remove keys, use mainnet funds or submit the hackathon form until the remaining human gates are explicitly verified. The Work account is isolated and must never be funded from restricted donor principal.
+Do not upgrade the original vault or DAO, remove keys or use mainnet funds. The Work account is isolated and must never be funded from restricted donor principal.

@@ -30,7 +30,7 @@ Updated 14 November 2026 from the repository gates and the recorded testnet evid
 | Professional security audit | Not commissioned or claimed | NOT RUN |
 | near.social | Read-only mainnet FastData KV boundary | PASS as a labelled read-only integration; signed posting not enabled |
 | Trezu | Compatibility investigation and adapter boundary | NOT INTEGRATED; existing DAO compatibility unverified |
-| Public Work & Trust deployment | `covaunt-work.testnet`, `npm run verify:work-live`, live task receipts | PASS for deployment, small and medium settlement; large DAO callback pending second council receipt until observed |
+| Public Work & Trust deployment | `covaunt-work.testnet`, `npm run verify:work-live`, live task receipts | PASS; small, medium and large reward callbacks settled on isolated Work funds |
 
 ## Critical acceptance scenario
 

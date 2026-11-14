@@ -97,7 +97,7 @@ The script refuses the original vault account, verifies the artifact hash, uses 
 COVAUNT_WORK_ACCOUNT='covaunt-work.testnet' COVAUNT_WORK_DAO='covaunt26.sputnikv2.testnet' npm run verify:work-live
 ```
 
-The verified audit confirmed the code hash, DAO binding, balanced summary, storage reserve and account solvency before the production variable was enabled. Live task receipts are recorded in `docs/live-evidence/work-evidence.json`; task 2 must remain labelled DAO-gated and not settled until the second council vote and Work callback are verified.
+The verified audit confirmed the code hash, DAO binding, balanced summary, storage reserve and account solvency before the production variable was enabled. Live task receipts are recorded in `docs/live-evidence/work-evidence.json`; task 2 is labelled DAO-gated and settled only after both council votes and the Work callback were verified.
 
 ## Verified public deployment
 

@@ -89,7 +89,6 @@
     "artifacts": ["covaunt-wasm", "covaunt-work-wasm"]
   },
   "required_human_actions": [
-    "Sign the second council approval for Sputnik proposal 2, then verify the Work callback settlement",
     "Exercise one real supported testnet wallet-to-contract flow",
     "Review the FullAccess key and authorize any irreversible key-custody action",
     "Supply the genuine team and NEAR mainnet payout details and authorize the single hackathon submission"

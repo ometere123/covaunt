@@ -61,9 +61,12 @@
       "dao_proposal_id": 2,
       "dao_add_proposal": "2xS5TM68Rs8MPKpG2UMwzQYXg39nbSbNZuGQ2ubc8oxX",
       "dao_first_council_vote": "GNumfeci5gMZw2n4Kw4yonh2GoWzrp1RCtLgkYBHZ1oE",
-      "dao_second_council_vote": null,
-      "final_state": "Verified; awaiting second council approval and callback settlement",
-      "payout_status": null
+      "dao_second_council_vote": "DLyPnfXwWZ7An7XeeiTWYQTVLN68Sh5ey9rfWtgF22aK",
+      "dao_final_status": "Approved",
+      "work_large_reward_settlement": "DLyPnfXwWZ7An7XeeiTWYQTVLN68Sh5ey9rfWtgF22aK",
+      "final_state": "Settled",
+      "payout_status": "Settled",
+      "reputation_points_after_settlement": 85
     }
   ]
 }

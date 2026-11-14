@@ -1,0 +1,9 @@
+# External rendering tool sources and generated media stay out of app history.
+huashu-motion/
+huashu-motion-src/
+project/materials/
+project/out/
+project/assets/sound.wav
+output/
+project/.om/
+skills-lock.json

@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en" data-om-signature="off" data-composition-variables='[
+  {"id":"filmTitle","type":"string","label":"Film title","default":"COVAUNT — The Vote Was Unanimous. The Payment Was Denied."},
+  {"id":"tagline","type":"string","label":"Tagline","default":"Collective decisions. Individual consent."},
+  {"id":"duration","type":"number","label":"Duration","default":84,"min":80,"max":88,"step":1}
+]'>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>COVAUNT — The Vote Was Unanimous. The Payment Was Denied.</title>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/om.js"></script>
+<style>
+  @font-face { font-family: "Noto Sans SC"; src: url("assets/fonts/NotoSansSC-500.woff") format("woff"); font-weight: 500; }
+  @font-face { font-family: "Noto Sans SC"; src: url("assets/fonts/NotoSansSC-900.woff") format("woff"); font-weight: 900; }
+  @font-face { font-family: "Inter"; src: url("assets/fonts/Inter-var.woff") format("woff"); font-weight: 100 900; }
+  @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-500.woff") format("woff"); font-weight: 500; }
+  @font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-700.woff") format("woff"); font-weight: 700; }
+  @font-face { font-family: "Cascadia Mono"; src: url("assets/fonts/Inter-var.woff") format("woff"); font-weight: 100 900; }
+  :root { --paper:#efece4; --paper2:#e4dfd4; --ink:#202924; --muted:#59615b; --red:#9d352e; --red2:#722b27; --brass:#b28a58; --green:#3d6b4d; --white:#f8f4eb; }
+  * { box-sizing: border-box; }
+  html, body { margin:0; width:100%; height:100%; overflow:hidden; background:var(--paper); }
+  #film { position:relative; width:100%; height:100%; overflow:hidden; background:var(--paper); color:var(--ink); font-family:"Inter","Noto Sans SC",sans-serif; }
+  .stage { position:absolute; inset:0; width:1920px; height:1080px; overflow:hidden; }
+  .paper { position:absolute; inset:0; background:radial-gradient(1000px 680px at 14% 8%, #fff7 0, transparent 62%),radial-gradient(1100px 740px at 92% 92%, #d1c6b220 0, transparent 66%),linear-gradient(116deg,var(--paper),var(--paper2)); }
+  .paper::after { content:""; position:absolute; inset:0; opacity:.18; background-image:linear-gradient(90deg,#20292408 1px,transparent 1px),linear-gradient(#20292406 1px,transparent 1px); background-size:80px 80px; mask-image:linear-gradient(to bottom,black,transparent 86%); }
+  .grain { position:absolute; inset:0; opacity:.28; background:radial-gradient(circle at 30% 40%,#fff8 0 1px,transparent 1px); background-size:11px 11px; mix-blend-mode:multiply; }
+  .scene { position:absolute; inset:0; opacity:0; visibility:hidden; }
+  #hook { opacity:1; visibility:visible; }
+  .scene.visible { visibility:visible; }
+  .mono { font-family:"Cascadia Mono","Courier New",monospace; letter-spacing:.08em; text-transform:uppercase; }
+  .serif { font-family:"Cormorant Garamond","Noto Sans SC",serif; }
+  .eyebrow { position:absolute; font:700 20px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.22em; text-transform:uppercase; color:var(--red); }
+  .rule { height:2px; background:var(--ink); transform-origin:left center; }
+  .consent-spine { position:absolute; left:112px; top:0; width:3px; height:1080px; background:linear-gradient(180deg,transparent 0 6%,var(--brass) 12%,var(--red) 51%,var(--brass) 87%,transparent 96%); transform-origin:top; opacity:.6; }
+  .consent-spine::before, .consent-spine::after { content:""; position:absolute; left:-8px; width:19px; height:19px; border:2px solid var(--brass); border-radius:50%; background:var(--paper); }
+  .consent-spine::before { top:92px; } .consent-spine::after { bottom:88px; }
+  .brand-lockup { position:absolute; left:146px; top:72px; display:flex; align-items:center; gap:18px; }
+  .brand-lockup img { width:48px; height:48px; }
+  .brand-lockup b { font:900 25px/1 Arial,sans-serif; letter-spacing:.18em; }
+  .brand-lockup span { color:var(--muted); font:500 18px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.1em; }
+  .corner { position:absolute; right:128px; top:78px; color:var(--muted); font:500 18px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.12em; text-transform:uppercase; }
+  .hook-wrap { position:absolute; left:170px; top:260px; width:1540px; }
+  .hook-line { display:block; overflow:visible; height:128px; }
+  .hook-line span { display:inline-block; transform:translateY(115%); }
+  .hook-line.one { font:700 26px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.22em; color:var(--red); height:52px; }
+  .hook-line.two, .hook-line.three { font:900 120px/.95 Georgia,"Times New Roman",serif; letter-spacing:-.06em; }
+  .hook-line.three { color:var(--red); }
+  .hook-meta { position:absolute; right:164px; bottom:140px; width:410px; border-left:2px solid var(--brass); padding-left:22px; color:var(--muted); font:18px/1.45 "Cascadia Mono","Courier New",monospace; }
+  .hook-meta b { color:var(--ink); }
+  .problem-copy { position:absolute; left:172px; top:226px; width:660px; }
+  .problem-copy h2 { margin:60px 0 28px; font:900 100px/.93 "Cormorant Garamond","Noto Sans SC",serif; letter-spacing:-.06em; }
+  .problem-copy p { margin:0; width:520px; color:var(--muted); font-size:27px; line-height:1.35; }
+  .pool { position:absolute; right:190px; top:216px; width:740px; height:620px; }
+  .pool-card { position:absolute; width:340px; height:118px; padding:22px 24px; background:#f8f4ebcc; border:1px solid #20292433; box-shadow:12px 14px 0 #2029240b; }
+  .pool-card:nth-child(1){left:0;top:0}.pool-card:nth-child(2){right:0;top:118px}.pool-card:nth-child(3){left:0;top:236px}
+  .pool-card b { display:block; font:700 21px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.12em; text-transform:uppercase; }
+  .pool-card span { display:block; margin-top:16px; font:500 20px/1 Arial,sans-serif; color:var(--muted); }
+  .pool-arrow { position:absolute; left:340px; top:240px; width:220px; height:140px; border-right:2px solid var(--brass); border-bottom:2px solid var(--brass); transform:skewY(-18deg); }
+  .pool-arrow::after { content:""; position:absolute; right:-1px; bottom:-7px; border:7px solid transparent; border-right:0; border-left:12px solid var(--brass); transform:rotate(18deg); }
+  .pool-vault { position:absolute; right:30px; bottom:0; width:560px; height:180px; padding:26px 32px; background:var(--ink); color:var(--white); }
+  .pool-vault .vault-label { color:#e7d9bd; font:700 18px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.18em; text-transform:uppercase; }
+  .pool-vault strong { display:block; margin-top:18px; font:900 43px/.95 Georgia,"Times New Roman",serif; }
+  .pool-vault small { display:block; margin-top:14px; color:#c4c4b9; font:16px/1.2 "Cascadia Mono","Courier New",monospace; }
+  .consent-left { position:absolute; left:170px; top:222px; width:570px; }
+  .consent-left h2 { margin:60px 0 18px; font:900 96px/.94 "Cormorant Garamond","Noto Sans SC",serif; letter-spacing:-.06em; }
+  .consent-left p { width:480px; margin:0; color:var(--muted); font-size:24px; line-height:1.4; }
+  .capture { position:absolute; right:160px; top:165px; width:795px; height:652px; background:#202924; padding:18px; box-shadow:20px 24px 0 #20292416; transform:rotate(-1.1deg); }
+  .capture img { width:100%; height:100%; object-fit:cover; object-position:top center; display:block; filter:saturate(.72) contrast(1.04); }
+  .capture-label { position:absolute; left:25px; bottom:25px; padding:9px 13px; background:var(--ink); color:var(--white); font:700 16px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.13em; }
+  .covenant-card { position:absolute; left:170px; bottom:116px; width:520px; height:180px; background:var(--white); border:1px solid #20292433; padding:22px 24px; box-shadow:10px 10px 0 #20292414; }
+  .covenant-card .row { display:flex; justify-content:space-between; padding:7px 0; border-bottom:1px solid #20292420; font:18px/1.1 "Cascadia Mono","Courier New",monospace; }
+  .covenant-card .row:last-child{border-bottom:0}.covenant-card b{color:var(--red)}
+  .settle-heading { position:absolute; left:170px; top:178px; width:760px; }
+  .settle-heading h2 { margin:24px 0 18px; font:900 88px/.94 Georgia,"Times New Roman",serif; letter-spacing:-.06em; }
+  .settle-heading p { margin:0; color:var(--muted); font-size:24px; line-height:1.35; }
+  .settle-card { position:absolute; right:170px; top:166px; width:700px; height:620px; background:var(--ink); color:var(--white); padding:36px 40px; overflow:hidden; }
+  .settle-card::after { content:""; position:absolute; width:600px; height:600px; right:-260px; bottom:-285px; border:1px solid #e7d9bd66; border-radius:50%; box-shadow:0 0 0 34px #e7d9bd12,0 0 0 68px #e7d9bd0a; }
+  .settle-card .status { color:#e7d9bd; font:700 18px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.18em; }
+  .settle-card .amount { margin-top:30px; font:900 142px/.82 Georgia,"Times New Roman",serif; letter-spacing:-.08em; }
+  .settle-card .amount span { font:700 25px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.1em; }
+  .alloc { margin-top:55px; width:540px; }
+  .alloc-row { display:grid; grid-template-columns:180px 1fr 105px; gap:12px; align-items:center; margin:20px 0; font:17px/1.1 "Cascadia Mono","Courier New",monospace; }
+  .alloc-bar { height:9px; background:#e7d9bd33; position:relative; }.alloc-bar i{display:block;height:100%;background:#d75e46}.alloc-row:nth-child(2) .alloc-bar i{background:#e7d9bd}
+  .receipt { position:absolute; left:170px; bottom:110px; width:690px; padding:20px 24px; border-top:2px solid var(--brass); border-bottom:1px solid #20292433; display:flex; gap:28px; align-items:center; }
+  .receipt strong { font:700 17px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.1em; text-transform:uppercase; color:var(--green); white-space:nowrap; }
+  .receipt span { color:var(--muted); font:16px/1.35 "Cascadia Mono","Courier New",monospace; }
+  .deny-wrap { position:absolute; left:170px; top:206px; width:1550px; }
+  .deny-wrap h2 { margin:24px 0 24px; font:900 94px/.92 Georgia,"Times New Roman",serif; letter-spacing:-.065em; max-width:950px; }
+  .deny-sub { color:var(--muted); font-size:24px; }
+  .vote-row { position:absolute; right:160px; top:168px; width:560px; }
+  .vote { display:flex; align-items:center; justify-content:space-between; border-top:1px solid #20292444; padding:24px 0; font:700 18px/1 "Cascadia Mono","Courier New",monospace; letter-spacing:.1em; }
+  .vote b { color:var(--green); }
+  .deny-card { position:absolute; left:170px; bottom:110px; width:1250px; height:190px; background:var(--red2); color:var(--white); padding:30px 34px; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center; box-shadow:18px 18px 0 #722b2726; }
+  .deny-card strong { font:900 66px/.85 Georgia,"Times New Roman",serif; letter-spacing:-.06em; }.deny-card small{font:18px/1.45 "Cascadia Mono","Courier New",monospace;color:#f1ddd1}
+  .protected { position:absolute; right:160px; bottom:120px; color:var(--ink); font:700 17px/1.4 "Cascadia Mono","Courier New",monospace; text-align:right; }
+  .work-head { position:absolute; left:170px; top:170px; width:650px; }.work-head h2{margin:24px 0 17px;font:900 87px/.92 Georgia,"Times New Roman",serif;letter-spacing:-.06em}.work-head p{margin:0;color:var(--muted);font-size:23px;line-height:1.35}
+  .task-stack { position:absolute; right:150px; top:164px; width:830px; height:670px; }
+  .task { position:absolute; width:590px; height:146px; padding:23px 25px; background:#f8f4eb; border:1px solid #20292435; box-shadow:10px 12px 0 #2029240d; }.task:nth-child(1){left:0;top:0}.task:nth-child(2){left:168px;top:174px}.task:nth-child(3){left:40px;top:348px}.task .task-top{display:flex;justify-content:space-between;font:700 15px/1 "Cascadia Mono","Courier New",monospace;letter-spacing:.13em;text-transform:uppercase;color:var(--red)}.task h3{margin:16px 0 0;font:700 25px/1 Georgia,"Times New Roman",serif}.task p{margin:9px 0 0;color:var(--muted);font:15px/1.2 "Cascadia Mono","Courier New",monospace}.task .settled{color:var(--green)}
+  .work-foot { position:absolute; left:170px; bottom:108px; width:610px; display:flex; justify-content:space-between; gap:25px; padding-top:20px; border-top:2px solid var(--brass); font:16px/1.35 "Cascadia Mono","Courier New",monospace; }.work-foot b{font-size:27px;color:var(--red)}
+  .large-left { position:absolute; left:170px; top:188px; width:650px; }.large-left h2{margin:25px 0 18px;font:900 87px/.92 Georgia,"Times New Roman",serif;letter-spacing:-.06em}.large-left p{margin:0;color:var(--muted);font-size:23px;line-height:1.35}.large-proof{margin-top:44px;width:545px;border-top:2px solid var(--brass);padding-top:18px;font:17px/1.45 "Cascadia Mono","Courier New",monospace}.large-proof b{color:var(--green)}
+  .large-card { position:absolute; right:170px; top:168px; width:700px; height:615px; background:var(--ink); color:var(--white); padding:36px 40px; }.large-card .dao{color:#e7d9bd;font:700 18px/1 "Cascadia Mono","Courier New",monospace;letter-spacing:.17em}.large-card h3{margin:28px 0 36px;font:900 64px/.88 Georgia,"Times New Roman",serif;letter-spacing:-.06em}.large-card .timeline-row{display:flex;gap:22px;align-items:flex-start;margin:24px 0;font:16px/1.3 "Cascadia Mono","Courier New",monospace}.timeline-row i{display:block;width:15px;height:15px;border:2px solid #e7d9bd;border-radius:50%;margin-top:2px;flex:none}.timeline-row.done i{background:#d75e46;border-color:#d75e46}.timeline-row b{display:block;color:#e7d9bd}.timeline-row span{display:block;color:#c8c9bf;margin-top:5px}
+  .large-stamp { position:absolute; right:248px; bottom:130px; width:260px; height:78px; border:2px solid var(--green); color:var(--green); display:flex;align-items:center;justify-content:center;font:900 25px/1 "Cascadia Mono","Courier New",monospace;letter-spacing:.12em;transform:rotate(-4deg); }
+  .end-wrap { position:absolute; left:170px; top:220px; width:1580px; }.end-wrap .end-mark{display:flex;align-items:center;gap:28px}.end-mark img{width:94px;height:94px}.end-mark strong{font:900 76px/1 Arial,sans-serif;letter-spacing:.18em}.end-rule{width:1120px;margin:48px 0 38px}.end-tag{font:900 64px/.95 Georgia,"Times New Roman",serif;letter-spacing:-.05em}.end-meta{position:absolute;left:0;top:420px;display:flex;gap:40px;color:var(--muted);font:700 18px/1 "Cascadia Mono","Courier New",monospace;letter-spacing:.13em;text-transform:uppercase}.end-meta b{color:var(--red)}
+</style>
+<style id="om-fonts">
+@font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-500i.woff") format("woff"); font-weight: 500; font-style: italic; }
+@font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-500.woff") format("woff"); font-weight: 500; font-style: normal; }
+@font-face { font-family: "Cormorant Garamond"; src: url("assets/fonts/CormorantGaramond-700.woff") format("woff"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Inter"; src: url("assets/fonts/Inter-var.woff") format("woff"); font-weight: 100 900; font-style: normal; }
+</style>
+</head>
+<body>
+<div id="film" data-composition-id="covaunt-launch-film" data-width="1920" data-height="1080" data-fps="30">
+  <audio id="om-sound" src="assets/sound.wav" data-start="0" data-duration="84" data-track-index="8" data-volume="1"></audio>
+  <div class="stage">
+    <div class="paper"></div><div class="grain"></div><div class="consent-spine" id="spine"></div>
+    <div class="brand-lockup"><img src="assets/covaunt-mark.svg" alt="COVAUNT mark"><b>COVAUNT</b><span>NEAR TESTNET / PROOF FILM</span></div>
+    <div class="corner">01 — CONSENT IS A STATE</div>
+
+    <section id="hook" class="scene">
+      <div class="hook-wrap"><div class="hook-line one"><span>AN ON-CHAIN TEST</span></div><div class="hook-line two"><span>TWO VOTES.</span></div><div class="hook-line two"><span>UNANIMOUS APPROVAL.</span></div><div class="hook-line three"><span>PAYMENT DENIED.</span></div></div>
+      <div class="hook-meta"><b>Sputnik DAO</b><br>both council members approved the request.<br><br><b>COVAUNT vault</b><br>downstream execution could not find compatible donor consent.</div>
+    </section>
+
+    <section id="problem" class="scene">
+      <div class="problem-copy"><div class="eyebrow">THE GOVERNANCE GAP</div><h2>A pool can agree.<br>It cannot<br>rewrite the deed.</h2><p>Most treasuries stop at the vote. COVAUNT carries each contributor's purpose and beneficiary restrictions into the payment itself.</p></div>
+      <div class="pool"><div class="pool-card"><b>Donor A</b><span>education only · 8 Ⓝ</span></div><div class="pool-card"><b>Donor B</b><span>healthcare only · 6 Ⓝ</span></div><div class="pool-card"><b>Donor C</b><span>education or healthcare · 4 Ⓝ</span></div><div class="pool-arrow"></div><div class="pool-vault"><div class="vault-label">COVAUNT guarded vault</div><strong>Collective capital, individual terms.</strong><small>Every allocation is recomputed on-chain after governance.</small></div></div>
+    </section>
+
+    <section id="consent" class="scene">
+      <div class="consent-left"><div class="eyebrow">THE CONSENT LAYER</div><h2>Purpose.<br>Beneficiary.<br>Expiry.</h2><p>Restrictions are recorded with the contribution. They are not a promise in the interface; they are inputs to the vault's allocation state.</p></div>
+      <div class="capture"><img src="materials/web-covaunt-vercel-app/screen-01.png" alt="Captured COVAUNT production interface"><div class="capture-label">LIVE UI CAPTURE / COVAUNT.VERCEL.APP</div></div>
+      <div class="covenant-card"><div class="row"><span>PURPOSE</span><b>HEALTHCARE</b></div><div class="row"><span>RECIPIENT</span><b>CLINIC-COVAUNT26.TESTNET</b></div><div class="row"><span>EXPIRY</span><b>ON-CHAIN CONDITION</b></div></div>
+    </section>
+
+    <section id="settle" class="scene">
+      <div class="settle-heading"><div class="eyebrow">VERIFIED SETTLEMENT / 01</div><h2>When consent<br>matches, money moves.</h2><p>A genuine 9 NEAR healthcare payment. The allocator chose 6 from healthcare-only capital and 3 from a broader covenant. The 8 NEAR education-only balance stayed untouched.</p></div>
+      <div class="settle-card"><div class="status">VAULT CALLBACK / SETTLED</div><div class="amount">9<span> Ⓝ HEALTHCARE</span></div><div class="alloc"><div class="alloc-row"><span>HEALTHCARE ONLY</span><div class="alloc-bar"><i style="width:78%"></i></div><b>6 Ⓝ</b></div><div class="alloc-row"><span>FLEXIBLE COVENANT</span><div class="alloc-bar"><i style="width:42%"></i></div><b>3 Ⓝ</b></div></div></div>
+      <div class="receipt"><strong>RECIPIENT PAID</strong><span>clinic-covaunt26.testnet · Gv7yUyZ24JkPSW4p12pM8cLG48e83ZkMkzagZAENioG1</span></div>
+    </section>
+
+    <section id="denied" class="scene">
+      <div class="deny-wrap"><div class="eyebrow">VERIFIED OVERRIDE ATTEMPT / 02</div><h2>The vote was unanimous.<br>The vault still said no.</h2><div class="deny-sub">A 2 NEAR healthcare request followed. Both council votes were recorded. The downstream COVAUNT execution ended <b>Failed</b>.</div></div>
+      <div class="vote-row"><div class="vote"><span>COUNCIL 01 / APPROVE</span><b>RECORDED</b></div><div class="vote"><span>COUNCIL 02 / APPROVE</span><b>RECORDED</b></div><div class="vote"><span>BENEFICIARY TRANSFER</span><b style="color:var(--red)">NOT SETTLED</b></div></div>
+      <div class="deny-card"><strong>VAULT REJECTED</strong><small>Insufficient compatible capital.<br>Education-only donor consent remained protected.<br>BdP4EaxEdfGXda1k1LnCow5JJZBC5Z7k5rdBWGoskArw</small></div><div class="protected">NO REDIRECT<br><b>8 Ⓝ EDUCATION-ONLY REMAINED PROTECTED</b></div>
+    </section>
+
+    <section id="work" class="scene">
+      <div class="work-head"><div class="eyebrow">A SEPARATE OPT-IN RECORD SYSTEM</div><h2>Make the work<br>legible.</h2><p>Work &amp; Trust keeps task purpose, named claimant, evidence, verifier decisions and callback-settled rewards separate from the donor vault.</p></div>
+      <div class="task-stack"><div class="task"><div class="task-top"><span>WRK-000 / SMALL</span><span class="settled">SETTLED</span></div><h3>COVAUNT live small verification</h3><p>claim → evidence → verifier → callback · 0.0000001 Ⓝ</p></div><div class="task"><div class="task-top"><span>WRK-001 / MEDIUM</span><span class="settled">SETTLED</span></div><h3>COVAUNT live medium approval</h3><p>unauthorized approver rejected · designated approval → callback</p></div><div class="task"><div class="task-top"><span>WRK-002 / LARGE</span><span class="settled">SETTLED</span></div><h3>COVAUNT live DAO-gated reward</h3><p>Sputnik FunctionCall → Work callback · 0.0000001 Ⓝ</p></div></div>
+      <div class="work-foot"><span>worker.covaunt-work.testnet<br><b>85</b> reputation points</span><span>basis<br><b>CALLBACK</b><br>settled rewards only</span></div>
+    </section>
+
+    <section id="large" class="scene">
+      <div class="large-left"><div class="eyebrow">VERIFIED GOVERNANCE / WORK &amp; TRUST</div><h2>Large means<br>the DAO must<br>show its work.</h2><p>Task 2 was eligible for a stricter, DAO-gated reward. A direct wallet attempt was rejected. The real proposal then passed through both council approvals before Work settled the callback.</p><div class="large-proof"><b>PROPOSAL 2 / APPROVED</b><br>covaunt26.sputnikv2.testnet<br>second vote: DLyPnfXwWZ7An7XeeiTWYQTVLN68Sh5ey9rfWtgF22aK</div></div>
+      <div class="large-card"><div class="dao">SPUTNIK → COVAUNT WORK</div><h3>Authorization is not<br>settlement.</h3><div class="timeline-row done"><i></i><div><b>DIRECT EXECUTION</b><span>Rejected — ERR_DAO_ONLY</span></div></div><div class="timeline-row done"><i></i><div><b>COUNCIL 01 + COUNCIL 02</b><span>Proposal 2 · both approvals recorded</span></div></div><div class="timeline-row done"><i></i><div><b>WORK CALLBACK</b><span>Task 2 · payout 2 · Settled</span></div></div></div><div class="large-stamp">SETTLED / FINAL</div>
+    </section>
+
+    <section id="end" class="scene"><div class="end-wrap"><div class="end-mark"><img src="assets/covaunt-mark.svg" alt="COVAUNT mark"><strong>COVAUNT</strong></div><div class="rule end-rule"></div><div class="end-tag serif">Collective decisions.<br><span style="color:var(--red)">Individual consent.</span></div><div class="end-meta"><span>BUILT FOR NEAR HACKATHON</span><b>covaunt.vercel.app</b><span>TESTNET EVIDENCE</span></div></div></section>
+  </div>
+</div>
+<script>
+  const V = Object.assign({ filmTitle: 'COVAUNT — The Vote Was Unanimous. The Payment Was Denied.', tagline: 'Collective decisions. Individual consent.', duration: 84 }, OM.vars());
+  const tl = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+  const setScene = (id, at, out) => { tl.set('#' + id, { autoAlpha: 1, visibility:'visible' }, at).to('#' + id, { autoAlpha: 0, duration: .38, ease: 'power2.in' }, out - .38); };
+  OM.music({ product: 'data', brand: 'COVAUNT', seed: 26, drop: 'denied', ending: 'button' });
+  setScene('hook', 0, 5); tl.addLabel('scene:hook', 0).to('#spine',{scaleY:.16,duration:0},0).fromTo('#hook .one span',{yPercent:120,opacity:0},{yPercent:0,opacity:1,duration:.45},.18).fromTo('#hook .two:nth-of-type(2) span',{yPercent:120},{yPercent:0,duration:.52,ease:'expo.out'},.68).fromTo('#hook .two:nth-of-type(3) span',{yPercent:120},{yPercent:0,duration:.52,ease:'expo.out'},1.55).fromTo('#hook .three span',{yPercent:120,opacity:0},{yPercent:0,opacity:1,duration:.6,ease:'expo.out'},2.65).fromTo('#hook .hook-meta',{opacity:0,x:30},{opacity:1,x:0,duration:.6},3.15).to('#hook .three span',{scale:1.035,duration:.15,yoyo:true,repeat:1,ease:'power2.inOut'},OM.sfx('thud',3.42,{gain:.95,note:2})).to('#hook .hook-meta',{y:-4,duration:.7,yoyo:true,repeat:1},3.7);
+  setScene('problem',5,15); tl.addLabel('scene:problem',5).fromTo('#problem .problem-copy',{x:-50,opacity:0},{x:0,opacity:1,duration:.7},5.25).fromTo('#problem .pool-card',{x:80,opacity:0},{x:0,opacity:1,duration:.65,stagger:.18},OM.sfx('tick',6.25,{gain:.5})).fromTo('#problem .pool-arrow',{scaleX:0,opacity:0},{scaleX:1,opacity:1,duration:.7,ease:'expo.out'},7.1).fromTo('#problem .pool-vault',{y:45,opacity:0},{y:0,opacity:1,duration:.7},OM.sfx('thud',8.0,{gain:.7})).fromTo('#problem .pool-vault strong',{y:14,opacity:0},{y:0,opacity:1,duration:.55},8.45).to('#problem .pool-card',{y:-5,duration:1.35,yoyo:true,repeat:3,stagger:.12},9.1).to('#problem .problem-copy',{y:-7,duration:2.6,yoyo:true,repeat:1,ease:'sine.inOut'},9.2);
+  setScene('consent',15,27); tl.addLabel('scene:consent',15).fromTo('#consent .consent-left',{x:-44,opacity:0},{x:0,opacity:1,duration:.7},15.2).fromTo('#consent .capture',{x:70,rotate:3,opacity:0},{x:0,rotate:-1.1,opacity:1,duration:.9,ease:'expo.out'},15.45).fromTo('#consent .covenant-card',{y:45,opacity:0},{y:0,opacity:1,duration:.6},OM.sfx('stamp',18.0,{gain:.72})).to('#spine',{scaleY:.42,duration:1.2},15).to('#consent .capture',{y:-5,scale:1.012,duration:1.6,yoyo:true,repeat:4,ease:'sine.inOut'},19.15).to('#consent .covenant-card',{x:4,duration:1.3,yoyo:true,repeat:3,ease:'sine.inOut'},19.3);
+  setScene('settle',27,42); tl.addLabel('scene:settle',27).fromTo('#settle .settle-heading',{x:-60,opacity:0},{x:0,opacity:1,duration:.75},27.2).fromTo('#settle .settle-card',{x:80,opacity:0},{x:0,opacity:1,duration:.9,ease:'expo.out'},27.45).fromTo('#settle .amount',{y:30,opacity:0},{y:0,opacity:1,duration:.6},OM.sfx('thud',29.1,{gain:.82,note:5})).fromTo('#settle .alloc-row',{x:-30,opacity:0},{x:0,opacity:1,duration:.45,stagger:.18},30.1).fromTo('#settle .receipt',{y:25,opacity:0},{y:0,opacity:1,duration:.55},OM.sfx('ding',34.0,{gain:.68,note:6})).to('#spine',{scaleY:.58,duration:1.2},27).to('#settle .settle-card',{y:-7,scale:1.008,duration:1.8,yoyo:true,repeat:3,ease:'sine.inOut'},35.2).to('#settle .settle-heading',{y:-6,duration:2.4,yoyo:true,repeat:1,ease:'sine.inOut'},35.3);
+  setScene('denied',42,52); tl.addLabel('scene:denied',42).to('#spine',{scaleY:.75,duration:.8},42).fromTo('#denied .deny-wrap',{x:-50,opacity:0},{x:0,opacity:1,duration:.7},42.22).fromTo('#denied .vote',{x:65,opacity:0},{x:0,opacity:1,duration:.52,stagger:.23},42.55).to({}, {duration:.72},45.15).fromTo('#denied .deny-card',{scaleX:0,opacity:0},{scaleX:1,opacity:1,duration:.55,ease:'expo.out'},OM.sfx('reverse',45.85,{gain:.7,dur:.7})).fromTo('#denied .protected',{opacity:0,y:18},{opacity:1,y:0,duration:.55},47.2).to('#denied .deny-card',{backgroundColor:'#202924',duration:.2},49.15).to('#denied .deny-card strong',{color:'#d75e46',duration:.2},49.15).to('#spine',{scaleY:.68,duration:.55},49.15).to('#denied .vote-row',{y:-6,duration:1.1,yoyo:true,repeat:2,ease:'sine.inOut'},49.2).to('#denied .deny-wrap',{y:-5,duration:1.4,yoyo:true,repeat:1,ease:'sine.inOut'},49.3);
+  setScene('work',52,68); tl.addLabel('scene:work',52).fromTo('#work .work-head',{x:-55,opacity:0},{x:0,opacity:1,duration:.7},52.2).fromTo('#work .task',{y:55,opacity:0,rotate:2},{y:0,opacity:1,rotate:0,duration:.65,stagger:.28,ease:'expo.out'},OM.sfx('tick',53.0,{gain:.58})).fromTo('#work .work-foot',{y:24,opacity:0},{y:0,opacity:1,duration:.65},57.1).to('#spine',{scaleY:.86,duration:1.2},52).to('#work .task',{y:-5,duration:1.45,yoyo:true,repeat:4,stagger:.1,ease:'sine.inOut'},58.1).to('#work .work-head',{y:-6,duration:2.4,yoyo:true,repeat:1,ease:'sine.inOut'},59.1);
+  setScene('large',68,78); tl.addLabel('scene:large',68).fromTo('#large .large-left',{x:-55,opacity:0},{x:0,opacity:1,duration:.72},68.2).fromTo('#large .large-card',{x:78,opacity:0},{x:0,opacity:1,duration:.82,ease:'expo.out'},68.42).fromTo('#large .timeline-row',{x:30,opacity:0},{x:0,opacity:1,duration:.45,stagger:.25},OM.sfx('thud',70.25,{gain:.75})).fromTo('#large .large-stamp',{scale:0,opacity:0,rotate:-12},{scale:1,opacity:1,rotate:-4,duration:.65,ease:'back.out(1.7)'},OM.sfx('stamp',74.55,{gain:.72})).to('#spine',{scaleY:.96,duration:1.2},68).to('#large .large-card',{y:-6,duration:1.5,yoyo:true,repeat:3,ease:'sine.inOut'},74.1).to('#large .large-left',{y:-6,duration:2.2,yoyo:true,repeat:1,ease:'sine.inOut'},74.2);
+  setScene('end',78,84); tl.addLabel('scene:end',78).to('#spine',{scaleY:1,duration:.8},78).fromTo('#end .end-mark',{y:30,opacity:0},{y:0,opacity:1,duration:.72,ease:'expo.out'},78.25).fromTo('#end .end-rule',{scaleX:0},{scaleX:1,duration:.85,ease:'expo.inOut'},79.05).fromTo('#end .end-tag',{y:26,opacity:0},{y:0,opacity:1,duration:.72},79.55).fromTo('#end .end-meta',{y:18,opacity:0},{y:0,opacity:1,duration:.62},81.05).to('#end .end-tag',{y:-3,duration:1.3,ease:'sine.inOut'},81.7).to({}, {duration:.5},83.5);
+  window.__timelines = window.__timelines || {}; window.__timelines['covaunt-launch-film'] = tl;
+</script>
+</body>
+</html>

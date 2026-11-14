@@ -52,7 +52,7 @@ The supplied evidence records a valid 9 NEAR settlement, a unanimous 2 NEAR over
 4. Sputnik policy and council membership remain governance dependencies. A connected wallet is not automatically a council member.
 5. Testnet RPC, wallet manifests, explorer indexing and account solvency can change after the evidence timestamp.
 6. The browser wallet flow has been exercised through the production chooser, but a specific wallet-signed contract write still requires an authorized human account in the existing Chrome profile; CLI-signed testnet receipts are not a substitute for that graphical test.
-7. Work & Trust is separately deployed as `covaunt-work.testnet`. Small and Medium live receipts, direct-wallet rejection and the live Sputnik proposal for the Large path are recorded in `docs/live-evidence/work-evidence.json`; the Large path is not called settled until the second council receipt and downstream callback are observed.
+7. Work & Trust is separately deployed as `covaunt-work.testnet`. Small, Medium and Large live receipts, direct-wallet rejection and the Sputnik proposal/callback are recorded in `docs/live-evidence/work-evidence.json`; the Large path is called settled only after the second council receipt and downstream callback were observed.
 8. near.social reads mainnet public data only; signed posting and cross-network identity attribution remain disabled.
 
 ## Key recommendation
