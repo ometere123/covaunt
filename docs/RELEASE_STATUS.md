@@ -20,7 +20,8 @@
 - URL: `https://covaunt.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Production configuration: `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet`
-- The final deployment ID and release commit are recorded after the follow-up PR merge; Vercel immutable deployment IDs rotate per reviewed push.
+- Production deployment: `dpl_9v8BmTRE87UgSgFhxdeAE4J6XXZZ`
+- Production release commit: `717339d54b79fe433b913e712837d565e0da1c6c` (merged PR #8); Vercel immutable deployment IDs rotate per reviewed push.
 
 ## Live financial evidence
 
@@ -41,8 +42,8 @@ The Work account was separately funded and initialized with a 1 NEAR reserve. It
 | Sandbox receipts | PASS; 2/2 in Linux/CI, no skips |
 | Next typecheck | PASS |
 | Next lint | PASS; zero warnings |
-| Next production build | PASS; 15 route entries at the prior checkpoint; rerun after the final UI patch is required |
-| Browser suite | PASS; 22/22 desktop and mobile Chromium at the prior checkpoint; rerun after the final UI patch is required |
+| Next production build | PASS; 15 route entries |
+| Browser suite | PASS; 22/22 desktop and mobile Chromium |
 | Vault read-only audit | PASS for accounting/source match; expected non-zero security signal because FullAccess remains |
 | Work read-only audit | PASS; code hash, DAO binding, reserve, solvency and balanced summary |
 | Live Work small reward | VERIFIED_LIVE; task 0 settled through verifier callback |

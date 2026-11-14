@@ -2,9 +2,10 @@
 
 **Verification date:** 14 November 2026 (Africa/Lagos)
 **Network:** NEAR testnet for COVAUNT and Work & Trust; near.social reads public mainnet data only
-**Release branch:** `feature/covaunt-work-trust-live-final`
-**Pull request:** [#8](https://github.com/ometere123/covaunt/pull/8)
-**Current branch head:** `6060031` (`Align preview assertion with work boundary copy`)
+**Release branch:** `main`
+**Merged pull request:** [#8](https://github.com/ometere123/covaunt/pull/8)
+**Current main head:** `717339d54b79fe433b913e712837d565e0da1c6c`
+**Production deployment:** `dpl_9v8BmTRE87UgSgFhxdeAE4J6XXZZ` at `https://covaunt.vercel.app`
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
 This report records verified state; a submitted transaction, an approved DAO proposal, or a connected browser does not by itself prove downstream payment settlement.
