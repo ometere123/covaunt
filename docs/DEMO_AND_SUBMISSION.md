@@ -45,7 +45,7 @@ The Work & Trust route may be shown as live evidence only for the task records a
 - Work deployment: `covaunt-work.testnet` (code hash `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`)
 - Work receipts: [live Work evidence](live-evidence/work-evidence.json)
 - Public testnet deployment: `https://covaunt.vercel.app`
-- Production source checkpoint: branch `main`, merge commit `717339d54b79fe433b913e712837d565e0da1c6c`; deployment inspected at `dpl_9v8BmTRE87UgSgFhxdeAE4J6XXZZ`; deployment IDs rotate with main pushes
+- Production source checkpoint: branch `main`, functional application commit `a7b17054e5c2e54908e027f8bfd11a6dff9b5a3d`; deployment inspected at `dpl_AhrY1wnrnefjSBEjj43dUd1WaTcV`; deployment IDs rotate with main pushes
 
 The public URL above is a verified live-testnet application. A real wallet signature and browser-to-wallet write walkthrough still require an authorized human account in the existing Chrome profile; do not describe CLI-signed receipts as graphical wallet evidence. Work records shown publicly are from the separately funded auxiliary account; they are not donor vault balances.
 

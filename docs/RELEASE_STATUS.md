@@ -21,7 +21,7 @@
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Production configuration: `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet`
 - Production deployment: `dpl_9v8BmTRE87UgSgFhxdeAE4J6XXZZ`
-- Production release commit: `717339d54b79fe433b913e712837d565e0da1c6c` (merged PR #8); Vercel immutable deployment IDs rotate per reviewed push.
+- Functional production release commit: `a7b17054e5c2e54908e027f8bfd11a6dff9b5a3d` (merged PR #9); the subsequent release-record PR changes documentation only; Vercel immutable deployment IDs rotate per reviewed push.
 
 ## Live financial evidence
 
