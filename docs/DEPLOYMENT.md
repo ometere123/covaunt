@@ -43,7 +43,7 @@ totals contributed 18200000000000000000000000
 
 The command’s non-zero exit is expected until the FullAccess key is deliberately handled. Do not silence or weaken that check.
 
-The preserved evidence snapshot at `2026-11-13T10:15:56.256Z` records 18.1 NEAR across four contributions. The current read-only audit at `2026-11-13T22:31:39.251Z` includes a fifth 0.1 NEAR available entry, COV-004 from `elpadree.testnet`, and therefore reports 18.2 NEAR deposited across five contributions. The audit does not broadcast a transaction. The complete current read is recorded in [live-evidence/current-audit.json](live-evidence/current-audit.json).
+The preserved evidence snapshot at `2026-11-13T10:15:56.256Z` records 18.1 NEAR across four contributions. The current read-only audit at `2026-11-14T01:12:24.4618119Z` includes a fifth 0.1 NEAR available entry, COV-004 from `elpadree.testnet`, and therefore reports 18.2 NEAR deposited across five contributions. The audit does not broadcast a transaction. The complete current read is recorded in [live-evidence/current-audit.json](live-evidence/current-audit.json).
 
 ## Do not redeploy this instance
 

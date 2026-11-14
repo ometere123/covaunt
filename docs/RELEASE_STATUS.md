@@ -24,7 +24,7 @@
 
 ## Recorded live outcome
 
-At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR deposited across four contributions, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending spend, zero pending refund and a balanced ledger. It includes the valid 9 NEAR settlement, the failed 2 NEAR override, an early locked refund rejection and the successful 0.1 NEAR refund. A separate read-only audit at `2026-11-13T22:31:39.251Z` reports the current chain at 18.2 NEAR deposited across five contributions, 9 NEAR paid, 0.1 NEAR refunded, 9.1 NEAR available and zero pending obligations. The fifth entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; see [current-audit.json](live-evidence/current-audit.json).
+At `2026-11-13T10:15:56.256Z`, the preserved evidence set recorded 18.1 NEAR deposited across four contributions, 9 NEAR paid, 0.1 NEAR refunded, 9 NEAR available, zero pending spend, zero pending refund and a balanced ledger. It includes the valid 9 NEAR settlement, the failed 2 NEAR override, an early locked refund rejection and the successful 0.1 NEAR refund. A separate read-only audit at `2026-11-14T01:12:24.4618119Z` reports the current chain at 18.2 NEAR deposited across five contributions, 9 NEAR paid, 0.1 NEAR refunded, 9.1 NEAR available and zero pending obligations. The fifth entry is COV-004, a 0.1 NEAR available contribution from `elpadree.testnet`; see [current-audit.json](live-evidence/current-audit.json).
 
 ## Local engineering gates
 
