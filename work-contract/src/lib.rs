@@ -144,6 +144,9 @@ pub struct Submission {
     pub submitted_at_ns: u64,
     pub status: SubmissionStatus,
     pub verifier_note: Option<String>,
+    /// The named account that made the on-chain attestation. This is not a
+    /// claim of independent real-world verification.
+    pub verified_by: Option<AccountId>,
 }
 
 #[derive(BorshDeserialize, BorshSerialize, Serialize, Deserialize, Clone)]
@@ -269,6 +272,8 @@ pub struct SubmissionView {
     pub submitted_at_ns: U64,
     pub status: SubmissionStatus,
     pub verifier_note: Option<String>,
+    pub verified_by: Option<AccountId>,
+    pub verification_model: Option<String>,
 }
 
 impl From<Submission> for SubmissionView {
@@ -282,6 +287,8 @@ impl From<Submission> for SubmissionView {
             submitted_at_ns: U64(value.submitted_at_ns),
             status: value.status,
             verifier_note: value.verifier_note,
+            verified_by: value.verified_by.clone(),
+            verification_model: value.verified_by.as_ref().map(|_| "named_account_attestation".to_string()),
         }
     }
 }
@@ -327,6 +334,7 @@ pub struct ContributorView {
     pub rewards_paid: U128,
     pub reputation_points: u64,
     pub last_settled_at_ns: Option<U64>,
+    pub reputation_basis: String,
 }
 
 impl From<ContributorStats> for ContributorView {
@@ -338,6 +346,7 @@ impl From<ContributorStats> for ContributorView {
             rewards_paid: U128(value.rewards_paid),
             reputation_points: value.reputation_points,
             last_settled_at_ns: value.last_settled_at_ns.map(U64),
+            reputation_basis: "callback_settled_reward_only".to_string(),
         }
     }
 }
@@ -441,21 +450,35 @@ impl CovauntWork {
         unique.sort();
         unique.dedup();
         require!(unique.len() == eligibility.len(), "ERR_DUP_ELIGIBILITY");
+        let creator = env::predecessor_account_id();
+        require!(creator != self.dao_id, "ERR_CREATOR_DAO_CONFLICT");
         require!(verifier != env::current_account_id(), "ERR_VERIFIER_CONTRACT");
+        require!(verifier != creator, "ERR_VERIFIER_CREATOR_CONFLICT");
+        require!(verifier != self.dao_id, "ERR_VERIFIER_DAO_CONFLICT");
         let amount = reward_amount.0;
         require!(amount > 0 && amount <= budget, "ERR_REWARD_AMOUNT");
         match tier {
-            RewardTier::Small => require!(amount <= MAX_SMALL_REWARD, "ERR_SMALL_CAP"),
+            RewardTier::Small => {
+                require!(approver.is_none(), "ERR_APPROVER_UNEXPECTED");
+                require!(amount <= MAX_SMALL_REWARD, "ERR_SMALL_CAP");
+            }
             RewardTier::Medium => {
-                require!(approver.is_some(), "ERR_APPROVER_REQUIRED");
+                let configured = approver.as_ref().expect("ERR_APPROVER_REQUIRED");
+                require!(configured != &creator, "ERR_APPROVER_CREATOR_CONFLICT");
+                require!(configured != &verifier, "ERR_APPROVER_VERIFIER_CONFLICT");
+                require!(configured != &self.dao_id, "ERR_APPROVER_DAO_CONFLICT");
+                require!(configured != &env::current_account_id(), "ERR_APPROVER_CONTRACT");
                 require!(amount <= MAX_MEDIUM_REWARD, "ERR_MEDIUM_CAP");
             }
-            RewardTier::Large => require!(amount <= MAX_LARGE_REWARD, "ERR_LARGE_CAP"),
+            RewardTier::Large => {
+                require!(approver.is_none(), "ERR_APPROVER_UNEXPECTED");
+                require!(amount <= MAX_LARGE_REWARD, "ERR_LARGE_CAP");
+            }
         }
         let id = self.tasks.len();
         let task = Task {
             id,
-            creator: env::predecessor_account_id(),
+            creator,
             title,
             purpose,
             budget,
@@ -492,6 +515,11 @@ impl CovauntWork {
         require!(task.status == TaskStatus::Open, "ERR_TASK_NOT_OPEN");
         require!(env::block_timestamp() <= task.deadline_ns, "ERR_TASK_EXPIRED");
         let claimant = env::predecessor_account_id();
+        require!(claimant != task.creator, "ERR_CREATOR_CLAIM");
+        require!(claimant != task.verifier, "ERR_VERIFIER_CLAIMANT_CONFLICT");
+        if task.tier == RewardTier::Medium {
+            require!(task.approver.as_ref() != Some(&claimant), "ERR_APPROVER_CLAIMANT_CONFLICT");
+        }
         require!(task.eligibility.is_empty() || task.eligibility.contains(&claimant), "ERR_NOT_ELIGIBLE");
         task.claimant = Some(claimant.clone());
         task.status = TaskStatus::Claimed;
@@ -521,6 +549,7 @@ impl CovauntWork {
             submitted_at_ns: env::block_timestamp(),
             status: SubmissionStatus::Pending,
             verifier_note: None,
+            verified_by: None,
         };
         self.submissions.push(&submission);
         task.submission_id = Some(id);
@@ -536,12 +565,17 @@ impl CovauntWork {
     pub fn verify_submission(&mut self, task_id: u64, approved: bool, note: String) -> Option<Promise> {
         require!(note.as_bytes().len() <= MAX_NOTE_BYTES, "ERR_NOTE");
         let mut task = self.task(task_id);
-        require!(env::predecessor_account_id() == task.verifier, "ERR_VERIFIER_ONLY");
+        let verifier = env::predecessor_account_id();
+        require!(verifier == task.verifier, "ERR_VERIFIER_ONLY");
         require!(task.status == TaskStatus::Submitted, "ERR_SUBMISSION_STATE");
         require!(task.dispute.is_none(), "ERR_DISPUTE_OPEN");
         let submission_id = task.submission_id.expect("ERR_SUBMISSION");
         let mut submission = self.submission(submission_id);
         require!(submission.status == SubmissionStatus::Pending, "ERR_SUBMISSION_REPLAY");
+        let claimant = task.claimant.as_ref().expect("ERR_CLAIMANT");
+        require!(verifier.as_str() != claimant.as_str(), "ERR_VERIFIER_CLAIMANT_CONFLICT");
+        require!(verifier != task.creator, "ERR_VERIFIER_CREATOR_CONFLICT");
+        submission.verified_by = Some(verifier.clone());
         submission.verifier_note = if note.is_empty() { None } else { Some(note) };
         if !approved {
             submission.status = SubmissionStatus::Rejected;
@@ -557,7 +591,7 @@ impl CovauntWork {
         task.verified_at_ns = Some(env::block_timestamp());
         self.submissions.replace(submission_id, &submission);
         self.tasks.replace(task_id, &task);
-        event("completion_verified", near_sdk::serde_json::json!({"task_id": task_id, "submission_id": submission_id, "tier": tier_name(&task.tier)}));
+        event("completion_verified", near_sdk::serde_json::json!({"task_id": task_id, "submission_id": submission_id, "tier": tier_name(&task.tier), "verification_model": "named_account_attestation", "reputation_basis": "callback_settled_reward_only"}));
         self.bump_verified(task.claimant.as_ref().expect("ERR_CLAIMANT").clone());
         self.assert_solvency();
         if task.tier == RewardTier::Small {
@@ -953,9 +987,10 @@ mod tests {
 
     fn create(c: &mut CovauntWork, tier: RewardTier) -> u64 {
         testing_env!(ctx("creator.testnet", 2 * YOCTO, T).build());
+        let approver = if tier == RewardTier::Medium { Some(id("approver.testnet")) } else { None };
         c.create_task(
             "Document a local need".into(), "Community research".into(), U64(T + 3_600_000_000_000),
-            vec![id("worker.testnet")], id("verifier.testnet"), Some(id("approver.testnet")), tier, U128(YOCTO / 10),
+            vec![id("worker.testnet")], id("verifier.testnet"), approver, tier, U128(YOCTO / 10),
         )
     }
 
@@ -977,6 +1012,70 @@ mod tests {
         assert_eq!(task.available.0, 2 * YOCTO);
         assert_eq!(task.reward_amount.0, YOCTO / 10);
         assert!(contract.get_summary().is_balanced);
+    }
+
+    #[test]
+    fn role_conflicts_are_rejected_before_funding() {
+        let mut contract = setup();
+        testing_env!(ctx("creator.testnet", 2 * YOCTO, T).build());
+        let base = || {
+            (
+                "Role-bound task".to_string(),
+                "Separate named roles".to_string(),
+                U64(T + 3_600_000_000_000),
+                Vec::<AccountId>::new(),
+                U128(YOCTO / 10),
+            )
+        };
+
+        let (title, purpose, deadline, eligibility, reward) = base();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| contract.create_task(title, purpose, deadline, eligibility, id("creator.testnet"), None, RewardTier::Small, reward))).is_err());
+
+        let (title, purpose, deadline, eligibility, reward) = base();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| contract.create_task(title, purpose, deadline, eligibility, id("dao.testnet"), None, RewardTier::Small, reward))).is_err());
+
+        let (title, purpose, deadline, eligibility, reward) = base();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| contract.create_task(title, purpose, deadline, eligibility, id("verifier.testnet"), Some(id("creator.testnet")), RewardTier::Medium, reward))).is_err());
+
+        let (title, purpose, deadline, eligibility, reward) = base();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| contract.create_task(title, purpose, deadline, eligibility, id("verifier.testnet"), Some(id("verifier.testnet")), RewardTier::Medium, reward))).is_err());
+
+        let (title, purpose, deadline, eligibility, reward) = base();
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| contract.create_task(title, purpose, deadline, eligibility, id("verifier.testnet"), Some(id("approver.testnet")), RewardTier::Small, reward))).is_err());
+    }
+
+    #[test]
+    fn claimant_cannot_overlap_creator_verifier_or_medium_approver() {
+        let mut contract = setup();
+        testing_env!(ctx("creator.testnet", 2 * YOCTO, T).build());
+        let creator_task = contract.create_task(
+            "Creator claim".into(), "Role conflict".into(), U64(T + 3_600_000_000_000),
+            vec![id("creator.testnet")], id("verifier.testnet"), None, RewardTier::Small, U128(YOCTO / 10),
+        );
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            testing_env!(ctx("creator.testnet", 0, T + 1).build());
+            contract.claim_task(creator_task);
+        })).is_err());
+
+        testing_env!(ctx("creator.testnet", 2 * YOCTO, T + 1).build());
+        let verifier_task = contract.create_task(
+            "Verifier claim".into(), "Role conflict".into(), U64(T + 3_600_000_000_000),
+            vec![id("verifier.testnet")], id("verifier.testnet"), None, RewardTier::Small, U128(YOCTO / 10),
+        );
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            testing_env!(ctx("verifier.testnet", 0, T + 1).build());
+            contract.claim_task(verifier_task);
+        })).is_err());
+
+        testing_env!(ctx("creator.testnet", 2 * YOCTO, T + 1).build());
+        let approver_task = contract.create_task(
+            "Approver claim".into(), "Role conflict".into(), U64(T + 3_600_000_000_000),
+            vec![id("approver.testnet")], id("verifier.testnet"), Some(id("approver.testnet")), RewardTier::Medium, U128(YOCTO / 10),
+        );
+        assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+            testing_env!(ctx("approver.testnet", 0, T + 1).build());
+            contract.claim_task(approver_task);
+        })).is_err());
     }
 
     #[test]
@@ -1041,6 +1140,38 @@ mod tests {
         callback(true);
         assert!(std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| contract.on_reward_payout(0))).is_err());
         assert!(contract.get_summary().is_balanced);
+    }
+
+    #[test]
+    fn verification_records_named_attestor_and_reputation_waits_for_callback() {
+        let mut contract = setup();
+        let task_id = create(&mut contract, RewardTier::Small);
+        submit(&mut contract, task_id);
+        testing_env!(ctx("verifier.testnet", 0, T + 2).build());
+        contract.verify_submission(task_id, true, "Named review".into());
+        let submission = contract.get_submission(0).unwrap();
+        assert_eq!(submission.verified_by, Some(id("verifier.testnet")));
+        assert_eq!(submission.verification_model.as_deref(), Some("named_account_attestation"));
+        let contributor = contract.get_contributor(id("worker.testnet")).unwrap();
+        assert_eq!(contributor.verified_tasks, 1);
+        assert_eq!(contributor.settled_tasks, 0);
+        assert_eq!(contributor.reputation_points, 0);
+        assert_eq!(contributor.reputation_basis, "callback_settled_reward_only");
+        callback(false);
+        assert!(!contract.on_reward_payout(0));
+        let contributor = contract.get_contributor(id("worker.testnet")).unwrap();
+        assert_eq!(contributor.reputation_points, 0);
+    }
+
+    #[test]
+    fn task_listing_pages_beyond_fifty_records() {
+        let mut contract = setup();
+        for _ in 0..55 {
+            create(&mut contract, RewardTier::Small);
+        }
+        assert_eq!(contract.get_tasks(None, None).len(), 50);
+        assert_eq!(contract.get_tasks(Some(50), None).len(), 5);
+        assert_eq!(contract.get_tasks(Some(55), None).len(), 0);
     }
 
     #[test]
