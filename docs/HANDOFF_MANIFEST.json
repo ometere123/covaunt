@@ -8,11 +8,15 @@
   "contract_code_hash": "B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u",
   "hosted_preview": {
     "url": "https://covaunt-git-feature-covaunt-db31e4-delealufejoel-4184s-projects.vercel.app",
-    "deployment_id": "dpl_Gb4C9KBS2gecg5FaZbDzRW6XEDjP",
     "branch": "feature/covaunt-work-trust",
-    "commit": "18fdc7befd58862a0629530537d012da792ef61f",
     "network": "testnet",
-    "production_published": false
+    "production_published": false,
+    "last_observed_deployment": {
+      "id": "dpl_65pqPhhRmU5z8vS1jtYmeTdrxxCK",
+      "commit": "13b0eb7bcf8c9979abc5d381841509fb6f1981f5",
+      "status": "READY",
+      "note": "Vercel deployment IDs rotate after each branch push; the branch alias is the public preview entry point."
+    }
   },
   "wasm_artifact": {
     "path": "contract/artifacts/covaunt.wasm",
