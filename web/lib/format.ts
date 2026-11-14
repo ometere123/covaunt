@@ -19,7 +19,7 @@ export function formatNear(value: string | number | bigint | undefined, decimals
 
 export function formatWorkNear(value: string | number | bigint | undefined) {
   const amount = BigInt(value || 0);
-  return amount > BigInt(0) && amount < YOCTO / BigInt(100) ? formatNear(amount, 7) : formatNear(amount);
+  return amount > BigInt(0) && amount < YOCTO ? formatNear(amount, 7) : formatNear(amount);
 }
 
 export function parseNear(value: string) {

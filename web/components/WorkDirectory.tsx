@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { CONFIG } from '../lib/config';
-import { formatNear, formatWorkNear, humanDate, shortAccount, statusLabel } from '../lib/format';
+import { formatWorkNear, humanDate, shortAccount, statusLabel } from '../lib/format';
 import { loadWorkSnapshot } from '../lib/work';
 import type { WorkSnapshot } from '../lib/work';
 
@@ -34,9 +34,9 @@ export function WorkDirectory() {
     {snapshot?.configured && snapshot.summary && <>
       <div className="work-actions"><Link className="button button-ink" href="/work/funding">Fund a task <span aria-hidden="true">↗</span></Link><Link className="button button-outline" href="/contributors">Contributor records</Link></div>
       <div className="work-stats" aria-label="Work contract accounting">
-        <div><span>Task budgets</span><strong>{formatNear(snapshot.summary.total_budget)} <small>Ⓝ</small></strong></div>
-        <div><span>Settled rewards</span><strong>{formatNear(snapshot.summary.total_paid)} <small>Ⓝ</small></strong></div>
-        <div><span>Available</span><strong>{formatNear(snapshot.summary.available_budget)} <small>Ⓝ</small></strong></div>
+        <div><span>Task budgets</span><strong>{formatWorkNear(snapshot.summary.total_budget)} <small>Ⓝ</small></strong></div>
+        <div><span>Settled rewards</span><strong>{formatWorkNear(snapshot.summary.total_paid)} <small>Ⓝ</small></strong></div>
+        <div><span>Available</span><strong>{formatWorkNear(snapshot.summary.available_budget)} <small>Ⓝ</small></strong></div>
         <div><span>State</span><strong className={snapshot.summary.is_balanced ? 'work-good' : 'work-bad'}>{snapshot.summary.is_balanced ? 'Balanced' : 'Review'}</strong></div>
       </div>
       <div className="section-heading work-list-heading"><div><p className="kicker">On-chain task register</p><h2>Open work and <em>accountable outcomes</em></h2></div><span className="table-meta">{snapshot.summary.tasks} task record{snapshot.summary.tasks === 1 ? '' : 's'} · {CONFIG.workContractId}</span></div>
