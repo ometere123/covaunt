@@ -1,11 +1,13 @@
 import { CONFIG } from './config';
-import { view } from './near';
+import { decodeFunctionCallArgs, encodeJsonBase64, view } from './near';
+import type { DaoPolicy, DaoProposal } from './types';
 import { signCall } from './wallet';
 
 // Verification and reward calls create a native transfer plus a private
 // callback. Keep the wallet-side budget at 200 Tgas so the callback path is
 // not mistaken for a successful state transition when the action runs out of gas.
 export const WORK_GAS = '200000000000000';
+const WORK_PAGE_SIZE = 50;
 
 export type WorkTier = 'Small' | 'Medium' | 'Large';
 export type WorkTaskStatus = 'Open' | 'Claimed' | 'Submitted' | 'Verified' | 'Rejected' | 'Settled' | 'Closed';
@@ -71,6 +73,8 @@ export type WorkSubmission = {
   submitted_at_ns: string;
   status: SubmissionStatus;
   verifier_note: string | null;
+  verified_by: string | null;
+  verification_model: string | null;
 };
 
 export type WorkPayout = {
@@ -93,6 +97,12 @@ export type ContributorStats = {
   rewards_paid: string;
   reputation_points: number;
   last_settled_at_ns: string | null;
+  reputation_basis: string;
+};
+
+export type WorkDaoProposal = DaoProposal & {
+  work_method: 'execute_large_reward' | 'resolve_dispute';
+  work_args: Record<string, string | number | boolean>;
 };
 
 export type WorkSnapshot = {
@@ -117,7 +127,12 @@ export async function loadWorkSnapshot(options: { allowLive?: boolean } = {}): P
   if (!workConfigured()) return { configured: false, summary: null, tasks: [] };
   const contractId = requireWorkContract();
   const summary = await view<WorkSummary>(contractId, 'get_summary');
-  const tasks = await view<WorkTask[]>(contractId, 'get_tasks', { from_index: 0, limit: 50 });
+  const tasks: WorkTask[] = [];
+  for (let from = 0; from < summary.tasks; from += WORK_PAGE_SIZE) {
+    const page = await view<WorkTask[]>(contractId, 'get_tasks', { from_index: from, limit: WORK_PAGE_SIZE });
+    tasks.push(...page);
+    if (page.length < WORK_PAGE_SIZE) break;
+  }
   return { configured: true, summary, tasks };
 }
 
@@ -130,7 +145,13 @@ export async function loadWorkSubmission(submissionId: number) {
 }
 
 export async function loadWorkPayouts(taskId: number) {
-  return view<WorkPayout[]>(requireWorkContract(), 'get_payouts', { task_id: taskId, from_index: 0, limit: 50 });
+  const payouts: WorkPayout[] = [];
+  for (let from = 0; ; from += WORK_PAGE_SIZE) {
+    const page = await view<WorkPayout[]>(requireWorkContract(), 'get_payouts', { task_id: taskId, from_index: from, limit: WORK_PAGE_SIZE });
+    payouts.push(...page);
+    if (page.length < WORK_PAGE_SIZE) break;
+  }
+  return payouts;
 }
 
 export async function loadContributorStats(account: string) {
@@ -139,4 +160,52 @@ export async function loadContributorStats(account: string) {
 
 export async function workCall(methodName: string, args: Record<string, unknown>, gas = WORK_GAS, deposit = '0') {
   return signCall(requireWorkContract(), methodName, args, gas, deposit);
+}
+
+export async function loadWorkDaoPolicy() {
+  return view<DaoPolicy>(CONFIG.daoId, 'get_policy');
+}
+
+export async function loadWorkDaoProposals(taskId: number): Promise<WorkDaoProposal[]> {
+  const workContract = requireWorkContract();
+  const lastRaw = await view<number | string>(CONFIG.daoId, 'get_last_proposal_id');
+  const last = Number(lastRaw);
+  if (!Number.isSafeInteger(last) || last <= 0) return [];
+  const from = Math.max(0, last - WORK_PAGE_SIZE);
+  const proposals = await view<DaoProposal[]>(CONFIG.daoId, 'get_proposals', {
+    from_index: from,
+    limit: Math.min(WORK_PAGE_SIZE, last),
+  });
+  return proposals.flatMap((proposal) => {
+    const kind = proposal.kind?.FunctionCall;
+    if (kind?.receiver_id !== workContract) return [];
+    const action = kind.actions.find((candidate) => candidate.method_name === 'execute_large_reward' || candidate.method_name === 'resolve_dispute');
+    if (!action) return [];
+    const args = decodeFunctionCallArgs(action.args);
+    if (!args || String(args.task_id) !== String(taskId)) return [];
+    return [{ ...proposal, work_method: action.method_name as WorkDaoProposal['work_method'], work_args: args as Record<string, string | number | boolean> }];
+  });
+}
+
+export async function submitWorkDaoProposal(methodName: 'execute_large_reward' | 'resolve_dispute', args: Record<string, unknown>, description: string) {
+  const policy = await loadWorkDaoPolicy();
+  const proposal = {
+    description,
+    kind: {
+      FunctionCall: {
+        receiver_id: requireWorkContract(),
+        actions: [{ method_name: methodName, args: encodeJsonBase64(args), deposit: '0', gas: WORK_GAS }],
+      },
+    },
+  };
+  return signCall(CONFIG.daoId, 'add_proposal', { proposal }, '160000000000000', policy.proposal_bond);
+}
+
+export async function voteOnWorkDaoProposal(proposal: DaoProposal, choice: 'Approve' | 'Reject') {
+  return signCall(CONFIG.daoId, 'act_proposal', {
+    id: proposal.id,
+    action: `Vote${choice}`,
+    proposal: proposal.kind,
+    memo: `COVAUNT Work council ${choice.toLowerCase()}`,
+  }, '300000000000000', '0');
 }

@@ -64,9 +64,9 @@ The optional Work & Trust contract is a separate escrow registry, not a permissi
 | --- | --- | --- |
 | Duplicate claimant | `Open → Claimed` is atomic and one claimant is stored | A human verifier still decides whether evidence is sufficient |
 | Unauthorized evidence | Only the stored claimant can submit once, before deadline | URI/hash does not prove physical-world work |
-| Fake verification | Only the stored verifier can approve/reject | Verifier account governance is an operational dependency |
+| Role-collusion / self-verification | Creator/verifier/claimant conflicts are rejected; Medium approver must also be distinct; submission records the named attestor | Named-account separation is not proof of independent people or real-world work |
 | Unauthorized medium payout | Only the exact configured approver can start it | Approver compromise is not prevented by the task contract |
-| Direct large payout | Only the configured Sputnik DAO predecessor can execute it | The auxiliary DAO identity must be verified at any future deployment |
+| Direct large payout | Only the configured Sputnik DAO predecessor can execute it; the browser exposes a proposal path rather than a wallet bypass | The auxiliary DAO identity must be verified at any future deployment |
 | Payout replay | One payout key per task/tier, failed attempts only, eight-attempt cap | A permanently failing recipient needs a human recovery path through the task creator/contract rules |
 | Callback spoofing | Private callbacks, in-flight state and amount checks | A permanently stuck callback can leave funds pending |
 | Dispute replay | One open dispute, DAO-only resolution, no unsettled reward after an upheld dispute | Settled native rewards are not clawed back |

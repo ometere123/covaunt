@@ -33,8 +33,10 @@ The Rust and sandbox counts were rerun in WSL after the frontend migration. Brow
 - ESLint / eslint-config-next: 9.39.5 / 16.4.6
 - `contract/artifacts/covaunt.wasm`: 183,746 bytes
 - SHA-256: `96762824A7226F90981B9685890146D94F4A06DC8A3E66E1F9893254F9896888`
-- Final CI upload from run `43541716644`: 183,335 bytes, SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; non-byte-identical due to the explicitly non-reproducible build mode.
+- Final CI upload from run `43578729757`: 183,335 bytes, SHA-256 `C67CF6B0F4B32E66471963C8273C5E76DD0843AB7F78482E176E6EE12B07E679`; non-byte-identical due to the explicitly non-reproducible build mode.
 - Base58 code hash: `B8LetBV7jQjzL8yPjkLbvy73NALaUpAn86FVsBqTjE9u`
-- `work-contract/artifacts/covaunt_work.wasm`: 214,474 bytes, canonical GitHub Actions artifact from run `43541716644`
-- Work artifact SHA-256: `0ab11329ddb982393631d2aa62eb275613f4bf5f78bc3e71e3f43e40e00eb3f6`
-- Work Rust tests: 13/13; Work sandbox receipt tests: 1/1 combined with the preserved vault test suite (2/2 total)
+- `work-contract/artifacts/covaunt_work.wasm`: 216,158 bytes, canonical GitHub Actions artifact from run `43578729757`
+- Work artifact SHA-256: `50e3ea76d1d0da8d2cdfaf977149e59c76277dd85a3c92e44baee54188204500`
+- Work artifact SHA-256 base58: `6SmBmxFQQaAhnP19yadMa1A5eroNg98jh1qYgQm2yNsh`
+- Work Rust tests: 17/17; Work sandbox receipt tests: 1/1 combined with the preserved vault test suite (2/2 total)
+- Follow-up branch CI: [43578729757](https://github.com/ometere123/covaunt/actions/runs/43578729757), interface and contract success
