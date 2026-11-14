@@ -20,8 +20,9 @@
 - URL: `https://covaunt.vercel.app`
 - Vercel project: `covaunt` in `delealufejoel-4184s-projects`
 - Production configuration: `NEXT_PUBLIC_COVAUNT_WORK_CONTRACT=covaunt-work.testnet`
-- Production deployment: `dpl_F84Mfc9xzKpQZBP7pcP5hrxMV47H`
-- Functional production release commit: `0b1f69a8f0a66553295103b575e2cac94659407f` (merged PR #11); the subsequent release-record PR changes documentation only; Vercel immutable deployment IDs rotate per reviewed push.
+- Production deployment: `dpl_HaUx5pxBGnkiE49GKrDikWom9aYT`
+- Functional production release commit: `1f9089ee50eb70d9d1504cfce02ae988625036c8` (merged PR #14); Vercel immutable deployment IDs rotate per reviewed push.
+- Launch film release asset: `https://github.com/ometere123/covaunt/releases/tag/covaunt-launch-film-2026-11-14`
 
 ## Live financial evidence
 

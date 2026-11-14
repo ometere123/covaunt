@@ -4,9 +4,9 @@
 **Network:** NEAR testnet for COVAUNT and Work & Trust; near.social reads public mainnet data only
 **Release branch:** `main`
 **Merged pull request:** [#8](https://github.com/ometere123/covaunt/pull/8)
-**Functional application commit:** `0b1f69a8f0a66553295103b575e2cac94659407f`
-**Production deployment:** `dpl_F84Mfc9xzKpQZBP7pcP5hrxMV47H` at `https://covaunt.vercel.app`
-**Release-record PR:** documentation-only follow-up after the functional application merge
+**Functional application commit:** `1f9089ee50eb70d9d1504cfce02ae988625036c8`
+**Production deployment:** `dpl_HaUx5pxBGnkiE49GKrDikWom9aYT` at `https://covaunt.vercel.app`
+**Release-record PR:** [#14](https://github.com/ometere123/covaunt/pull/14), merged into `main`
 **Verdict:** `READY_WITH_DISCLOSED_LIMITATIONS`
 
 This report records verified state; a submitted transaction, an approved DAO proposal, or a connected browser does not by itself prove downstream payment settlement.
@@ -34,7 +34,7 @@ Work & Trust is separately funded at `covaunt-work.testnet` and initialized agai
 - account creation: [5vWHG1Wa...](https://explorer.testnet.near.org/transactions/5vWHG1WaX37FsKDxuWpaoSPDF3WS88xgzJv7tg51gjdY)
 - deploy and initialization: [8t8EgAx...](https://explorer.testnet.near.org/transactions/8t8EgAxLMAUx94sEMpiXAa2mpq4R2P1QN6cycjuxfeZF)
 
-The live Work audit passes code-hash, DAO-binding, solvency and accounting checks. At audit time it contained three real tasks with 0.42 NEAR total budget, 0.0000002 NEAR settled, 0.4199998 NEAR available, and zero pending reward or refund obligations. The small live reward was intentionally tiny (`0.0000001` NEAR) to keep isolated testnet exposure low; it must not be described as a 0.1 NEAR payment.
+The live Work audit passes code-hash, DAO-binding, solvency and accounting checks. After the large DAO callback, it contained three real tasks with 0.42 NEAR total budget, 0.0000003 NEAR settled, 0.4199997 NEAR available, and zero pending reward or refund obligations. The live rewards were intentionally tiny (`0.0000001` NEAR each) to keep isolated testnet exposure low; they must not be described as 0.1 NEAR payments.
 
 ### Verified live task transitions
 

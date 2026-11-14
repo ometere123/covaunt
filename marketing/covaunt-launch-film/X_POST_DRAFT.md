@@ -16,4 +16,4 @@ Built for NEAR HACKATHON — @NEARProtocol #NEARHackathon
 
 https://covaunt.vercel.app
 
-Film: `COVAUNT_LAUNCH_FILM_FINAL.mp4` (attach the public upload URL after publishing)
+Film: https://github.com/ometere123/covaunt/releases/download/covaunt-launch-film-2026-11-14/COVAUNT_LAUNCH_FILM_FINAL.mp4
